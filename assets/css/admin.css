@@ -1,0 +1,490 @@
+/**
+ * eFix Repair Booking - Enterprise Admin Design System v2.0.0
+ * Modern, SaaS-Grade, High-Performance Dashboard Styles
+ */
+
+:root {
+    --rbf-primary: #017c36;
+    --rbf-primary-hover: #01622b;
+    --rbf-primary-light: #e6f5ec;
+    --rbf-dark: #0f172a;
+    --rbf-slate: #334155;
+    --rbf-muted: #64748b;
+    --rbf-border: #e2e8f0;
+    --rbf-bg: #f8fafc;
+    --rbf-card-bg: #ffffff;
+    --rbf-radius: 12px;
+    --rbf-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --rbf-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    --rbf-shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+    --rbf-accent: #25D366;
+}
+
+/* ==========================================================================
+   Base Scope & Reset
+   ========================================================================== */
+.rbf-admin-wrap {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    color: var(--rbf-dark);
+    margin: 20px 20px 40px 0;
+    max-width: 1400px;
+}
+
+.rbf-admin-wrap * {
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Header Banner
+   ========================================================================== */
+.rbf-admin-header {
+    background: linear-gradient(135deg, #05413a 0%, #017c36 100%);
+    color: #ffffff;
+    padding: 28px 32px;
+    border-radius: var(--rbf-radius);
+    box-shadow: var(--rbf-shadow);
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.rbf-header-left h1 {
+    color: #ffffff !important;
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    margin: 0 0 6px 0 !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rbf-version-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+.rbf-header-desc {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    margin: 0;
+}
+
+.rbf-header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.rbf-btn-light {
+    background: #ffffff;
+    color: #05413a !important;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: var(--rbf-shadow-sm);
+}
+
+.rbf-btn-light:hover {
+    background: #f1f5f9;
+    color: #017c36 !important;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Admin Navigation Tabs
+   ========================================================================== */
+.rbf-nav-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: #ffffff;
+    padding: 8px;
+    border-radius: var(--rbf-radius);
+    border: 1px solid var(--rbf-border);
+    box-shadow: var(--rbf-shadow-sm);
+    overflow-x: auto;
+}
+
+.rbf-nav-tab {
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--rbf-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.rbf-nav-tab:hover {
+    color: var(--rbf-primary);
+    background: var(--rbf-primary-light);
+}
+
+.rbf-nav-tab.active {
+    background: var(--rbf-primary);
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Onboarding / Getting Started Banner
+   ========================================================================== */
+.rbf-onboarding-card {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-left: 5px solid var(--rbf-primary);
+    border-radius: var(--rbf-radius);
+    padding: 22px 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--rbf-shadow-sm);
+}
+
+.rbf-onboarding-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--rbf-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rbf-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 14px;
+}
+
+.rbf-step-card {
+    background: var(--rbf-bg);
+    border: 1px solid var(--rbf-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.rbf-step-badge {
+    background: var(--rbf-primary);
+    color: #ffffff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.rbf-step-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rbf-dark);
+}
+
+.rbf-step-info p {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--rbf-muted);
+    line-height: 1.4;
+}
+
+.rbf-code-pill {
+    background: #1e293b;
+    color: #38bdf8;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+}
+
+/* ==========================================================================
+   KPI Stats Grid
+   ========================================================================== */
+.rbf-dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.rbf-stat-card {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-radius: var(--rbf-radius);
+    padding: 22px 24px;
+    box-shadow: var(--rbf-shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rbf-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rbf-shadow);
+}
+
+.rbf-stat-icon-wrapper {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.rbf-stat-icon-wrapper.primary { background: #e6f5ec; color: var(--rbf-primary); }
+.rbf-stat-icon-wrapper.warning { background: #fef3c7; color: #d97706; }
+.rbf-stat-icon-wrapper.info    { background: #e0f2fe; color: #0284c7; }
+.rbf-stat-icon-wrapper.success { background: #dcfce7; color: #16a34a; }
+
+.rbf-stat-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.rbf-stat-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--rbf-dark);
+    line-height: 1.1;
+}
+
+.rbf-stat-label {
+    font-size: 13px;
+    color: var(--rbf-muted);
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   Dashboard Sections & Cards
+   ========================================================================== */
+.rbf-card {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-radius: var(--rbf-radius);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--rbf-shadow-sm);
+}
+
+.rbf-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rbf-border);
+}
+
+.rbf-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--rbf-dark);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Two-column layout */
+.rbf-grid-2col {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .rbf-grid-2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Modern Data Tables
+   ========================================================================== */
+.rbf-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.rbf-modern-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    font-size: 13.5px;
+}
+
+.rbf-modern-table th {
+    background: #f8fafc;
+    color: var(--rbf-slate);
+    font-weight: 600;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--rbf-border);
+    text-transform: uppercase;
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
+}
+
+.rbf-modern-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--rbf-border);
+    color: var(--rbf-dark);
+    vertical-align: middle;
+}
+
+.rbf-modern-table tr:hover td {
+    background: #fbfcfe;
+}
+
+/* Status Badges */
+.rbf-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.rbf-badge-pending   { background: #fef3c7; color: #92400e; }
+.rbf-badge-confirmed { background: #e0f2fe; color: #0369a1; }
+.rbf-badge-completed { background: #dcfce7; color: #15803d; }
+.rbf-badge-cancelled { background: #fee2e2; color: #991b1b; }
+
+.rbf-wa-btn {
+    background: #25D366;
+    color: #ffffff !important;
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s ease;
+}
+
+.rbf-wa-btn:hover {
+    background: #1eb956;
+}
+
+/* ==========================================================================
+   Form Fields & Settings Cards
+   ========================================================================== */
+.rbf-form-group {
+    margin-bottom: 20px;
+}
+
+.rbf-form-group label {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--rbf-dark);
+    margin-bottom: 6px;
+}
+
+.rbf-form-group .description {
+    font-size: 12.5px;
+    color: var(--rbf-muted);
+    margin-top: 4px;
+}
+
+.rbf-input,
+.rbf-select,
+.rbf-textarea {
+    width: 100%;
+    max-width: 550px;
+    padding: 10px 14px;
+    border: 1px solid var(--rbf-border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--rbf-dark);
+    background: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rbf-input:focus,
+.rbf-select:focus,
+.rbf-textarea:focus {
+    border-color: var(--rbf-primary);
+    box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.15);
+    outline: none;
+}
+
+.rbf-btn-primary {
+    background: var(--rbf-primary);
+    color: #ffffff !important;
+    font-weight: 600;
+    padding: 11px 22px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.rbf-btn-primary:hover {
+    background: var(--rbf-primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Diagnostics Drawer */
+.rbf-diagnostics-box {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.rbf-diagnostics-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rbf-slate);
+}
+
+.rbf-diagnostics-info p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--rbf-muted);
+}
