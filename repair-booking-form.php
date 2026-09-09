@@ -20,13 +20,19 @@ define('RBF_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('RBF_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
 // Include error logger
-require_once __DIR__ . '/error-logger.php';
+require_once __DIR__ . '/includes/class-rbf-error-logger.php';
 
-// Include brands and models manager
+// Include helper and engine classes
 require_once __DIR__ . '/includes/class-brands-models-manager.php';
 require_once __DIR__ . '/includes/class-rbf-currency.php';
 require_once __DIR__ . '/includes/class-rbf-whatsapp.php';
 require_once __DIR__ . '/includes/class-rbf-tracker.php';
+require_once __DIR__ . '/includes/class-rbf-pricing.php';
+require_once __DIR__ . '/includes/class-rbf-catalog.php';
+require_once __DIR__ . '/includes/suppliers/interface-rbf-supplier.php';
+require_once __DIR__ . '/includes/suppliers/class-rbf-supplier-manager.php';
+require_once __DIR__ . '/includes/suppliers/class-rbf-supplier-lxcell.php';
+require_once __DIR__ . '/includes/suppliers/class-rbf-supplier-sync-manager.php';
 
 class RepairBookingForm {
     
@@ -41,6 +47,20 @@ class RepairBookingForm {
         if (class_exists('RBF_Tracker')) {
             RBF_Tracker::get_instance();
         }
+        if (class_exists('RBF_Pricing')) {
+            RBF_Pricing::get_instance();
+        }
+        if (class_exists('RBF_Catalog')) {
+            RBF_Catalog::get_instance();
+        }
+        if (class_exists('RBF_Supplier_Manager')) {
+            RBF_Supplier_Manager::get_instance();
+        }
+        if (class_exists('RBF_Supplier_Sync_Manager')) {
+            RBF_Supplier_Sync_Manager::get_instance();
+        }
+        add_filter('cron_schedules', array($this, 'add_cron_intervals'));
+        register_deactivation_hook(__FILE__, array($this, 'deactivate_plugin'));
 
         // Check if plugin is disabled due to license deactivation
         if (get_option('rbf_plugin_disabled', false)) {
@@ -144,6 +164,16 @@ class RepairBookingForm {
     public function init() {
         // Create database tables if needed (only for bookings)
         $this->create_bookings_table();
+        
+        // Initialize Tier Pricing schema and seed data
+        if (class_exists('RBF_Pricing')) {
+            RBF_Pricing::get_instance()->create_tables();
+        }
+
+        // Initialize Catalog tables and sync from JSON if empty
+        if (class_exists('RBF_Catalog')) {
+            RBF_Catalog::get_instance()->sync_from_json_to_db();
+        }
         
         // Run data migration if needed
         $this->maybe_migrate_data();
@@ -270,7 +300,7 @@ class RepairBookingForm {
         $default_currency = $currency_mgr ? $currency_mgr->get_default_currency() : 'AED';
         
         // Localize script for AJAX with complete enterprise details
-        wp_localize_script('rbf-main', 'rbf_ajax', array(
+        $rbf_script_data = array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('rbf_nonce'),
             'plugin_url' => RBF_PLUGIN_URL,
@@ -281,12 +311,15 @@ class RepairBookingForm {
             'site_logo' => get_option('rbf_business_logo', get_site_icon_url()),
             'vat_number' => get_option('rbf_vat_number', 'VAT No: 123456789012345'),
             'vat_rate' => floatval(get_option('rbf_vat_rate', 5)),
+            'business_whatsapp' => get_option('rbf_business_whatsapp', '+971501234567'),
             'paypal_enabled' => get_option('rbf_paypal_enabled', false),
             'stripe_enabled' => get_option('rbf_stripe_enabled', false),
             'default_currency' => $default_currency,
             'currencies' => $currencies_data,
             'rates' => $exchange_rates
-        ));
+        );
+        wp_localize_script('rbf-main', 'rbf_ajax', $rbf_script_data);
+        wp_localize_script('rbf-main', 'rbfData', $rbf_script_data);
     }
     
     public function render_form($atts) {
@@ -301,10 +334,6 @@ class RepairBookingForm {
         $brand = sanitize_text_field($_POST['brand']);
         $models = $this->get_models_by_brand($brand);
         
-        // Debug logging
-        error_log('RBF Debug: Brand requested: ' . $brand);
-        error_log('RBF Debug: Models returned: ' . print_r($models, true));
-        
         wp_send_json_success($models);
     }
     
@@ -314,22 +343,12 @@ class RepairBookingForm {
             
             $brand = sanitize_text_field($_POST['brand']);
             $model = sanitize_text_field($_POST['model']);
+            $country_code = !empty($_POST['country_code']) ? sanitize_text_field($_POST['country_code']) : null;
             
-            rbf_log_info("Fetching repairs for brand: $brand, model: $model", 'AJAX_Get_Repairs');
-            
-            // Debug logging
-            error_log("RBF Debug: AJAX request - Brand: $brand, Model: $model");
-            
-            $repairs = $this->get_repairs_by_model($brand, $model);
-            
-            // Debug logging
-            error_log("RBF Debug: Repairs returned: " . print_r($repairs, true));
-            
-            rbf_log_info("Found " . count($repairs) . " repairs", 'AJAX_Get_Repairs');
+            $repairs = $this->get_repairs_by_model($brand, $model, $country_code);
             
             wp_send_json_success($repairs);
         } catch (Exception $e) {
-            rbf_log_error("Error in ajax_get_repairs: " . $e->getMessage(), 'AJAX_Get_Repairs');
             wp_send_json_error('Error fetching repairs: ' . $e->getMessage());
         }
     }
@@ -342,20 +361,37 @@ class RepairBookingForm {
         // Ensure bookings table exists
         $this->ensure_bookings_table_exists();
         
-        // Debug: Log the raw POST data
-        error_log('RBF Debug: Raw POST data: ' . print_r($_POST, true));
-        error_log('RBF Debug: POST keys: ' . implode(', ', array_keys($_POST)));
+        // Support both JSON-encoded booking_data and raw direct POST fields
+        $booking_data = array();
+        if (!empty($_POST['booking_data'])) {
+            $booking_data = json_decode(stripslashes($_POST['booking_data']), true);
+        }
+        if (empty($booking_data) || !is_array($booking_data)) {
+            $booking_data = array(
+                'name' => sanitize_text_field($_POST['name'] ?? ''),
+                'email' => sanitize_email($_POST['email'] ?? ''),
+                'phone' => sanitize_text_field($_POST['phone'] ?? ''),
+                'selected_brand' => sanitize_text_field($_POST['selected_brand'] ?? ''),
+                'selected_model' => sanitize_text_field($_POST['selected_model'] ?? ''),
+                'imei' => sanitize_text_field($_POST['imei'] ?? ''),
+                'service_type' => sanitize_text_field($_POST['service_type'] ?? 'pickup'),
+                'address' => sanitize_textarea_field($_POST['address'] ?? ''),
+                'street_building' => sanitize_text_field($_POST['street_building'] ?? ''),
+                'city' => sanitize_text_field($_POST['city'] ?? 'Dubai'),
+                'emirate' => sanitize_text_field($_POST['emirate'] ?? 'Dubai'),
+                'service_date' => sanitize_text_field($_POST['service_date'] ?? ''),
+                'service_time' => sanitize_text_field($_POST['service_time'] ?? ''),
+                'notes' => sanitize_textarea_field($_POST['notes'] ?? ''),
+                'currency' => sanitize_text_field($_POST['currency'] ?? 'AED'),
+                'subtotal' => floatval($_POST['subtotal'] ?? 0),
+                'vat_amount' => floatval($_POST['vat_amount'] ?? 0),
+                'total_amount' => floatval($_POST['total_amount'] ?? 0),
+                'cart_items' => isset($_POST['cart_items']) ? (array)$_POST['cart_items'] : array()
+            );
+        }
         
-        // Parse the booking data
-        $booking_data = json_decode(stripslashes($_POST['booking_data']), true);
-        
-        // Debug: Log the parsed data
-        error_log('RBF Debug: Parsed booking data: ' . print_r($booking_data, true));
-        error_log('RBF Debug: JSON decode error: ' . json_last_error_msg());
-        
-        if (!$booking_data) {
-            error_log('RBF Debug: JSON decode failed. Raw data: ' . $_POST['booking_data']);
-            wp_send_json_error('Invalid booking data - JSON decode failed');
+        if (empty($booking_data['name']) && empty($_POST['name'])) {
+            wp_send_json_error('Invalid booking data');
         }
         
         // Handle custom brand/model if applicable
@@ -384,20 +420,64 @@ class RepairBookingForm {
             }
         }
         
-        // Validate subtotal
-        if (!isset($booking_data['subtotal']) || floatval($booking_data['subtotal']) <= 0) {
-            error_log('RBF Debug: Invalid subtotal: ' . ($booking_data['subtotal'] ?? 'not set'));
-            wp_send_json_error('Invalid subtotal amount');
-        }
-        
         // Generate unique booking ID - shorter format with brand name
         $booking_id = 'eFIX-' . strtoupper(substr(md5(time() . rand()), 0, 5));
         
-        // Calculate VAT and totals
-        $subtotal = floatval($booking_data['subtotal']);
+        // Authoritative Server-Side Pricing Recalculation (Phase 1, Item 3)
+        // Never trust client-submitted prices, subtotal, VAT, or total.
+        $server_model_id = 0;
+        if (is_numeric($booking_data['selected_model'])) {
+            $server_model_id = intval($booking_data['selected_model']);
+        } else {
+            $found_model = RBF_Catalog::get_instance()->get_model_by_name(
+                $booking_data['selected_brand'], 
+                $booking_data['selected_model']
+            );
+            if ($found_model) {
+                $server_model_id = intval($found_model['id']);
+            }
+        }
+
+        $pricing_engine = RBF_Pricing::get_instance();
+        $server_subtotal = 0.0;
+        $country_code = !empty($booking_data['country_code']) ? sanitize_text_field($booking_data['country_code']) : null;
+
+        if (isset($booking_data['cart_items']) && is_array($booking_data['cart_items'])) {
+            foreach ($booking_data['cart_items'] as &$item) {
+                $repair_id = intval($item['id'] ?? 0);
+                $repair_name = sanitize_text_field($item['name'] ?? '');
+
+                if ($repair_id <= 0 && !empty($repair_name)) {
+                    $repair_id = intval($wpdb->get_var($wpdb->prepare(
+                        "SELECT id FROM {$wpdb->prefix}rbf_repairs WHERE LOWER(name) = LOWER(%s) LIMIT 1",
+                        $repair_name
+                    )));
+                }
+
+                if ($repair_id > 0) {
+                    $verified_unit_price = $pricing_engine->get_price($server_model_id, $repair_id, $country_code);
+                    $server_subtotal += $verified_unit_price;
+                    $item['price'] = $verified_unit_price;
+                }
+            }
+            unset($item);
+        }
+
+        if ($server_subtotal > 0) {
+            $subtotal = $server_subtotal;
+        } else {
+            // Safety fallback only for custom brand/model quote on inspection
+            $subtotal = floatval($booking_data['subtotal'] ?? 0);
+        }
+
+        if ($subtotal <= 0) {
+            error_log('RBF Debug: Invalid subtotal amount: ' . $subtotal);
+            wp_send_json_error('Invalid subtotal amount');
+        }
+
         $vat_rate = floatval(get_option('rbf_vat_rate', 5)) / 100.0;
-        $vat_amount = $subtotal * $vat_rate;
-        $total_amount = $subtotal + $vat_amount;
+        $vat_amount = round($subtotal * $vat_rate, 2);
+        $total_amount = round($subtotal + $vat_amount, 2);
         $currency = !empty($booking_data['currency']) ? sanitize_text_field($booking_data['currency']) : 'AED';
         $imei = !empty($booking_data['imei']) ? sanitize_text_field($booking_data['imei']) : null;
         
@@ -584,97 +664,24 @@ class RepairBookingForm {
     }
     
     private function get_models_by_brand($brand) {
-        // Use JSON data source instead of hardcoded data
-        if (!class_exists('RBF_Brands_Models_Manager')) {
-            require_once RBF_PLUGIN_PATH . 'includes/class-brands-models-manager.php';
+        if (class_exists('RBF_Catalog')) {
+            return RBF_Catalog::get_instance()->get_models_by_brand($brand);
         }
-        
-        $brands_manager = new RBF_Brands_Models_Manager();
-        $brands = $brands_manager->get_brands();
-        
-        // Find the brand by name (case-insensitive)
-        $selected_brand = null;
-        foreach ($brands as $b) {
-            if (strtolower($b['name']) === strtolower($brand)) {
-                $selected_brand = $b;
-                break;
-            }
-        }
-        
-        if (!$selected_brand || empty($selected_brand['models'])) {
-            return array();
-        }
-        
-        // Convert models to the format expected by frontend
-        $models = array();
-        foreach ($selected_brand['models'] as $model) {
-            $models[] = array(
-                'name' => $model['name'],
-                'image' => $model['image'],
-                'description' => isset($model['description']) ? $model['description'] : 'Professional mobile device'
-            );
-        }
-        
-        return $models;
+        return array();
     }
     
     private function get_all_brands() {
-        return array(
-            'Apple' => RBF_PLUGIN_URL . 'Brands/apple.png',
-            'Samsung' => RBF_PLUGIN_URL . 'Brands/samsung.png',
-            'Google Pixel' => RBF_PLUGIN_URL . 'Brands/googlepixel.png',
-            'OnePlus' => RBF_PLUGIN_URL . 'Brands/oneplus.png',
-            'Others' => RBF_PLUGIN_URL . 'Brands/other_brand.jpg'
-        );
+        if (class_exists('RBF_Catalog')) {
+            return RBF_Catalog::get_instance()->get_brands();
+        }
+        return array();
     }
     
-    private function get_repairs_by_model($brand, $model) {
-        // Use JSON data source instead of hardcoded data
-        if (!class_exists('RBF_Brands_Models_Manager')) {
-            require_once RBF_PLUGIN_PATH . 'includes/class-brands-models-manager.php';
+    private function get_repairs_by_model($brand, $model, $country_code = null) {
+        if (class_exists('RBF_Catalog')) {
+            return RBF_Catalog::get_instance()->get_repairs_by_model($brand, $model, $country_code);
         }
-        
-        $brands_manager = new RBF_Brands_Models_Manager();
-        $repair_services = $brands_manager->get_repair_services();
-        
-        // Check if this is "Others" brand - show repair options without individual pricing (quote after inspection)
-        if (strtolower($brand) === 'others') {
-            // For "Others" brand, show repair options without individual pricing
-            $others_repairs = array();
-            foreach ($repair_services as $service) {
-                $others_repairs[] = array(
-                    'id' => $service['id'],
-                    'name' => $service['name'],
-                    'price' => 0, // Quote on inspection
-                    'duration' => isset($service['duration']) ? $service['duration'] : '01-02 Day(s)',
-                    'icon' => $service['icon'],
-                    'description' => isset($service['description']) ? $service['description'] : 'Service available (price quoted after inspection)'
-                );
-            }
-            return $others_repairs;
-        }
-        
-        // Use JSON data for repairs with prices
-        $repairs = array();
-        foreach ($repair_services as $service) {
-            // Always use JSON price as the primary source
-            $price = isset($service['price']) ? floatval($service['price']) : 0;
-            
-            // Debug logging
-            error_log("RBF Debug: Processing repair service: " . $service['name']);
-            error_log("RBF Debug: Using JSON price: $price");
-            
-            $repairs[] = array(
-                'id' => $service['id'],
-                'name' => $service['name'],
-                'price' => $price,
-                'duration' => isset($service['duration']) ? $service['duration'] : '01-02 Day(s)',
-                'icon' => $service['icon'],
-                'description' => isset($service['description']) ? $service['description'] : 'Professional repair service'
-            );
-        }
-        
-        return $repairs;
+        return array();
     }
     
     private function save_booking($data) {
@@ -1551,6 +1558,182 @@ class RepairBookingForm {
                     closeModal();
                 }
             });
+
+            // --- TAB 4: Save Settings & Labour Costs ---
+            $('#rbf-btn-save-settings').on('click', function() {
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('Saving Settings...');
+
+                var markup = parseFloat($('#rbf-global-markup-input').val()) || 13;
+                var labourCosts = {};
+
+                $('.rbf-labour-input').each(function() {
+                    var repairId = $(this).data('repair-id');
+                    var val = parseFloat($(this).val()) || 0;
+                    labourCosts[repairId] = val;
+                });
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_save_pricing_settings',
+                        nonce: nonce,
+                        global_markup: markup,
+                        labour_costs: labourCosts
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-saved"></span> Save Pricing Settings & Labour Costs');
+                        if (resp.success) {
+                            showToast('Pricing settings and labour costs saved successfully!', true);
+                        } else {
+                            showToast('Error: ' + (resp.data || 'Failed to save'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-saved"></span> Save Pricing Settings & Labour Costs');
+                        showToast('Network error while saving settings', false);
+                    }
+                });
+            });
+
+            // --- TAB 5: Supplier Price Sync & Feed Import ---
+            $('#rbf-btn-toggle-feed-import').on('click', function() {
+                $('#rbf-feed-import-box').slideToggle(200);
+            });
+            $('#rbf-btn-cancel-feed').on('click', function() {
+                $('#rbf-feed-import-box').slideUp(200);
+            });
+
+            $('#rbf-btn-manual-sync').on('click', function() {
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('Syncing with Supplier...');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_manual_supplier_sync',
+                        nonce: nonce,
+                        supplier_id: 'lxcell'
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-update"></span> Sync Supplier Prices Now');
+                        if (resp.success) {
+                            showToast(resp.data.message || 'Sync completed successfully!', true);
+                            setTimeout(function() { location.reload(); }, 1500);
+                        } else {
+                            showToast('Sync Error: ' + (resp.data || 'Failed'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-update"></span> Sync Supplier Prices Now');
+                        showToast('Network error during supplier sync', false);
+                    }
+                });
+            });
+
+            $('#rbf-btn-process-feed').on('click', function() {
+                var $btn = $(this);
+                var csv = $('#rbf-csv-feed-content').val().trim();
+                if (!csv) {
+                    alert('Please paste CSV price data first.');
+                    return;
+                }
+
+                $btn.prop('disabled', true).text('Parsing & Ingesting...');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_import_supplier_feed',
+                        nonce: nonce,
+                        supplier_id: 'lxcell',
+                        csv_content: csv
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Parse & Update Supplier Prices');
+                        if (resp.success) {
+                            showToast(resp.data.message || 'Feed imported successfully!', true);
+                            setTimeout(function() { location.reload(); }, 1500);
+                        } else {
+                            showToast('Import Error: ' + (resp.data || 'Failed to import feed'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-yes"></span> Parse & Update Supplier Prices');
+                        showToast('Network error during feed import', false);
+                    }
+                });
+            });
+
+            // --- TAB 6: Supplier Mappings ---
+            $('#rbf-btn-save-mapping').on('click', function() {
+                var $btn = $(this);
+                var supplier = $('#rbf-map-supplier').val();
+                var modelId = $('#rbf-map-model').val();
+                var repairId = $('#rbf-map-repair').val();
+                var sku = $('#rbf-map-sku').val().trim();
+
+                if (!modelId || !repairId || !sku) {
+                    alert('Please select Model, Repair, and enter Supplier SKU.');
+                    return;
+                }
+
+                $btn.prop('disabled', true).text('Saving Mapping...');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_save_supplier_mapping',
+                        nonce: nonce,
+                        supplier_id: supplier,
+                        model_id: modelId,
+                        repair_id: repairId,
+                        supplier_sku: sku,
+                        match_status: 'verified'
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-plus-alt2"></span> Save Mapping');
+                        if (resp.success) {
+                            showToast('Mapping saved successfully!', true);
+                            setTimeout(function() { location.reload(); }, 1200);
+                        } else {
+                            showToast('Error: ' + (resp.data || 'Failed to save mapping'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-plus-alt2"></span> Save Mapping');
+                        showToast('Network error saving mapping', false);
+                    }
+                });
+            });
+
+            $(document).on('click', '.rbf-btn-delete-mapping', function() {
+                if (!confirm('Remove this supplier mapping?')) return;
+                var id = $(this).data('id');
+                var $row = $(this).closest('tr');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_delete_supplier_mapping',
+                        nonce: nonce,
+                        id: id
+                    },
+                    success: function(resp) {
+                        if (resp.success) {
+                            $row.fadeOut(300, function() { $(this).remove(); });
+                            showToast('Mapping removed.', true);
+                        } else {
+                            showToast('Error removing mapping', false);
+                        }
+                    }
+                });
+            });
         });
         </script>
         <?php
@@ -2371,53 +2554,22 @@ class RepairBookingForm {
                 // Redirect to edit page or show edit modal
                 showToast('Edit functionality coming soon!', 'info');
             });
-            
-            // Delete Booking
-            $('.delete-booking').on('click', function(e) {
-                e.preventDefault();
-                var bookingId = $(this).data('booking-id');
-                
-                if (confirm('Are you sure you want to delete this booking? This action cannot be undone.')) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'rbf_delete_booking',
-                            booking_id: bookingId,
-                            nonce: nonce
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                showToast('Booking deleted successfully!', 'success');
-                                location.reload();
-                            } else {
-                                showToast('Error deleting booking: ' + response.data, 'error');
-                            }
-                        },
-                        error: function() {
-                            showToast('Error deleting booking. Please try again.', 'error');
-                        }
-                    });
-                }
-            });
-            
+
             // Print Invoice
             $('.print-invoice').on('click', function(e) {
                 e.preventDefault();
                 var bookingId = $(this).data('booking-id');
                 
-                // Get raw booking data for invoice
                 $.ajax({
                     url: ajaxurl,
                     type: 'POST',
                     data: {
-                        action: 'rbf_get_invoice_data',
+                        action: 'rbf_get_booking_details',
                         booking_id: bookingId,
                         nonce: nonce
                     },
                     success: function(response) {
                         if (response.success) {
-                            // Create invoice content
                             var invoiceContent = createInvoiceContent(response.data, bookingId);
                             printInvoice(invoiceContent);
                         } else {
@@ -5131,25 +5283,34 @@ class RepairBookingForm {
         ));
         
         if ($existing) {
-            // Update existing price
+            // Update existing price as an EXPLICIT manual override
             $result = $wpdb->update(
                 $table_name,
-                array('price' => $price),
+                array(
+                    'price' => $price,
+                    'is_manual_override' => 1,
+                    'source' => 'manual',
+                    'updated_at' => current_time('mysql')
+                ),
                 array('brand_id' => $brand_id, 'model_id' => $model_id, 'repair_id' => $repair_id),
-                array('%f'),
+                array('%f', '%d', '%s', '%s'),
                 array('%d', '%d', '%d')
             );
         } else {
-            // Insert new price
+            // Insert new price as an EXPLICIT manual override
             $result = $wpdb->insert(
                 $table_name,
                 array(
                     'brand_id' => $brand_id,
                     'model_id' => $model_id,
                     'repair_id' => $repair_id,
-                    'price' => $price
+                    'price' => $price,
+                    'is_manual_override' => 1,
+                    'source' => 'manual',
+                    'created_at' => current_time('mysql'),
+                    'updated_at' => current_time('mysql')
                 ),
-                array('%d', '%d', '%d', '%f')
+                array('%d', '%d', '%d', '%f', '%d', '%s', '%s', '%s')
             );
         }
         
@@ -5990,7 +6151,7 @@ class RepairBookingForm {
                 <h2>3. Customer Status Tracking Shortcode</h2>
                 <div style="background: #f0f6fc; border-left: 4px solid #0073aa; padding: 15px; border-radius: 4px; max-width: 700px;">
                     <p style="margin: 0; font-size: 14px;">Place this shortcode on any WordPress page to give customers a real-time status tracker:</p>
-                    <code style="display: block; margin-top: 10px; font-size: 16px; padding: 8px 12px; background: #fff; border: 1px solid #cce5ff; border-radius: 4px; color: #0073aa;">[rbf_track_repair]</code>
+<code style="display: block; margin-top: 10px; font-size: 16px; padding: 8px 12px; background: #fff; border: 1px solid #cce5ff; border-radius: 4px; color: #0073aa;">[rbf_track_repair]</code>
                 </div>
 
                 <p class="submit" style="margin-top: 25px;">
@@ -6002,986 +6163,1386 @@ class RepairBookingForm {
     }
 
     /**
-     * Admin Repair Prices Page
+     * Admin Repair Prices Page - Modern Tiered Pricing & Cascading Engine
      */
     public function admin_repair_prices() {
         global $wpdb;
-        
-        // Ensure proper database structure exists
-        $this->ensure_pricing_database_structure();
-        
-        // Get all brands, models, and repairs
-        $brands = $wpdb->get_results("
-            SELECT id, name FROM {$wpdb->prefix}rbf_brands 
-            WHERE status = 'active' 
-            ORDER BY name
-        ");
-        
-        $models = $wpdb->get_results("
-            SELECT m.id, m.name, b.name as brand_name, b.id as brand_id
-            FROM {$wpdb->prefix}rbf_models m
-            JOIN {$wpdb->prefix}rbf_brands b ON m.brand_id = b.id
-            WHERE m.status = 'active' 
-            ORDER BY b.name, m.name
-        ");
-        
-        $repairs = $wpdb->get_results("
-            SELECT id, name, description 
-            FROM {$wpdb->prefix}rbf_repairs 
-            WHERE status = 'active' 
-            ORDER BY id
-        ");
-        
-        // Get default prices
-        $default_prices = $wpdb->get_results("
-            SELECT repair_id, price FROM {$wpdb->prefix}rbf_default_prices
-        ");
-        
-        $default_price_lookup = array();
-        foreach ($default_prices as $dp) {
-            $default_price_lookup[$dp->repair_id] = $dp->price;
+
+        // Ensure database tables and catalog are initialized
+        if (class_exists('RBF_Pricing')) {
+            RBF_Pricing::get_instance()->create_tables();
         }
-        
-        // Get existing prices
-        $prices = $wpdb->get_results("
-            SELECT brand_id, model_id, repair_id, price 
-            FROM {$wpdb->prefix}rbf_pricing
-        ");
-        
-        // Convert to associative array for easy lookup
-        $price_lookup = array();
-        foreach ($prices as $price) {
-            $price_lookup[$price->brand_id . '_' . $price->model_id . '_' . $price->repair_id] = $price->price;
+        if (class_exists('RBF_Catalog')) {
+            $count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_models");
+            if (!$count || intval($count) === 0) {
+                RBF_Catalog::get_instance()->sync_from_json_to_db();
+            }
         }
-        
-        // Filter brands to only include the 4 specified brands for combinations table
-        $allowed_brands = array('iPhone', 'Samsung', 'Google Pixel', 'OnePlus');
-        $filtered_brands = array_filter($brands, function($brand) use ($allowed_brands) {
-            return in_array($brand->name, $allowed_brands);
-        });
-        
-        // Filter models to only include models from allowed brands for combinations table
-        $allowed_brand_ids = array_column($filtered_brands, 'id');
-        $filtered_models = array_filter($models, function($model) use ($allowed_brand_ids) {
-            return in_array($model->brand_id, $allowed_brand_ids);
-        });
-        
-        // Filter repairs to exclude the 7 specified ones for combinations table (keep for default pricing)
-        $excluded_repairs = array(
-            'General Diagnosis',
-            'Software Support',
-            'Back Glass Replacement',
-            'Data Recovery',
-            'Device Unlock Service',
-            'Screen Protector Installation',
-            'Device Recycling'
+
+        $pricing = class_exists('RBF_Pricing') ? RBF_Pricing::get_instance() : null;
+        $catalog = class_exists('RBF_Catalog') ? RBF_Catalog::get_instance() : null;
+
+        $tiers = $pricing ? $pricing->get_tiers() : array();
+        $repairs = $catalog ? $catalog->get_all_repairs() : array();
+        $brands = $catalog ? $catalog->get_all_brands() : array();
+        $models = $catalog ? $catalog->get_all_models() : array();
+        $grid = $pricing ? $pricing->get_tier_pricing_grid() : array();
+        $global_markup = $pricing ? $pricing->get_global_markup() : 13;
+        $repairs_with_labour = $wpdb->get_results("SELECT id, name, icon, price, labour_cost FROM {$wpdb->prefix}rbf_repairs WHERE status = 'active' ORDER BY id ASC", ARRAY_A);
+        $mappings = class_exists('RBF_Supplier_Manager') ? RBF_Supplier_Manager::get_instance()->get_mappings() : array();
+        $last_sync = get_option('rbf_last_supplier_sync', array());
+        $sync_logs = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}rbf_supplier_sync_logs ORDER BY id DESC LIMIT 10", ARRAY_A);
+        $next_sync = wp_next_scheduled('rbf_supplier_price_sync');
+
+        $pricing_table = $wpdb->prefix . 'rbf_pricing';
+        $overrides = $wpdb->get_results(
+            "SELECT p.*, b.name as brand_name, m.name as model_name, r.name as repair_name 
+             FROM $pricing_table p 
+             LEFT JOIN {$wpdb->prefix}rbf_brands b ON p.brand_id = b.id 
+             LEFT JOIN {$wpdb->prefix}rbf_models m ON p.model_id = m.id 
+             LEFT JOIN {$wpdb->prefix}rbf_repairs r ON p.repair_id = r.id 
+             ORDER BY p.id DESC",
+            ARRAY_A
         );
-        $filtered_repairs = array_filter($repairs, function($repair) use ($excluded_repairs) {
-            return !in_array($repair->name, $excluded_repairs);
-        });
-        
-        // Use filtered data for combinations table, but keep original data for default pricing
-        $combinations_brands = $filtered_brands;
-        $combinations_models = $filtered_models;
-        $combinations_repairs = $filtered_repairs;
-        
-        echo '<div class="wrap">';
-        echo '<h1>Repair Prices Management</h1>';
-        echo '<p>Manage repair prices for all models with default pricing fallbacks.</p>';
-        
-        // Information about filtering
-        echo '<div class="notice notice-info" style="margin-bottom: 20px;">';
-        echo '<h3>📋 Combinations Table Filtering</h3>';
-        echo '<p><strong>Brands included:</strong> iPhone, Samsung, Google Pixel, OnePlus</p>';
-        echo '<p><strong>Repairs excluded from combinations:</strong> General Diagnosis, Software Support, Back Glass Replacement, Data Recovery, Device Unlock Service, Screen Protector Installation, Device Recycling</p>';
-        echo '<p><strong>Note:</strong> Excluded repairs still use default pricing but are not shown in the combinations table below.</p>';
-        echo '<p><strong>Total combinations shown:</strong> ' . count($combinations_models) . ' models × ' . count($combinations_repairs) . ' repairs = ' . (count($combinations_models) * count($combinations_repairs)) . ' price combinations</p>';
-        echo '</div>';
-        
-        // Database setup button
-        echo '<div class="rbf-db-setup-section" style="background: #fff; padding: 15px; border: 1px solid #ccd0d4; border-radius: 4px; margin-bottom: 20px;">';
-        echo '<h3>Database Setup</h3>';
-        
-        // Check database status
-        try {
-            $brands_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_brands");
-            $models_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_models");
-            $repairs_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_repairs");
-            $pricing_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_pricing");
-            
-            echo '<div style="margin-bottom: 15px;">';
-            echo '<strong>Current Database Status:</strong><br>';
-            echo 'Brands: ' . ($brands_count ?: '0') . ' | ';
-            echo 'Models: ' . ($models_count ?: '0') . ' | ';
-            echo 'Repairs: ' . ($repairs_count ?: '0') . ' | ';
-            echo 'Pricing: ' . ($pricing_count ?: '0');
-            echo '</div>';
-            
-            if (!$brands_count || !$models_count || !$repairs_count) {
-                echo '<p style="color: #dc3232;"><strong>⚠️ Database tables are missing or empty. Click the button below to create them:</strong></p>';
-            } else {
-                echo '<p style="color: #46b450;"><strong>✓ Database tables are properly set up.</strong></p>';
-            }
-        } catch (Exception $e) {
-            echo '<div style="margin-bottom: 15px;">';
-            echo '<strong>Current Database Status:</strong><br>';
-            echo '<span style="color: #dc3232;">Error checking database: ' . esc_html($e->getMessage()) . '</span>';
-            echo '</div>';
-            echo '<p style="color: #dc3232;"><strong>⚠️ Database tables are missing. Click the button below to create them:</strong></p>';
-        }
-        
-        echo '<button type="button" class="button button-primary" id="setup-database">Setup Database Tables</button>';
-        echo '<button type="button" class="button button-secondary" id="fix-database" style="margin-left: 10px;">Fix Database Issues</button>';
-        echo '<span id="db-setup-status" style="margin-left: 10px;"></span>';
-        echo '</div>';
-        
-        // Default Prices Section
-        echo '<div class="rbf-default-prices-section">';
-        echo '<h2>Default Prices</h2>';
-        echo '<p>Set default prices for repairs. These will be used when no specific price is set for a model.</p>';
-        echo '<div class="rbf-default-prices-grid">';
-        
-        foreach ($repairs as $repair) {
-            $default_price = isset($default_price_lookup[$repair->id]) ? $default_price_lookup[$repair->id] : '0.00';
-            echo '<div class="rbf-default-price-item">';
-            echo '<label for="default-price-' . $repair->id . '">' . esc_html($repair->name) . '</label>';
-            echo '<input type="number" 
-                       id="default-price-' . $repair->id . '" 
-                       class="default-price-input" 
-                       data-repair-id="' . esc_attr($repair->id) . '" 
-                       value="' . esc_attr($default_price) . '" 
-                       step="0.01" 
-                       min="0" 
-                       placeholder="0.00">';
-            echo '<span class="rbf-currency">AED</span>';
-            echo '</div>';
-        }
-        
-        echo '</div>';
-        echo '<button type="button" class="button button-primary" id="save-default-prices">Save Default Prices</button>';
-        echo '</div>';
-        
-        // Bulk Update Controls
-        echo '<div class="rbf-bulk-update-section">';
-        echo '<h2>Bulk Price Updates</h2>';
-        echo '<div class="rbf-bulk-controls">';
-        
-        // Global bulk update
-        echo '<div class="rbf-bulk-control">';
-        echo '<label for="global-price">Global Price (AED):</label>';
-        echo '<input type="number" id="global-price" step="0.01" min="0" placeholder="0.00">';
-        echo '<button type="button" class="button button-secondary" id="apply-global-price">Apply to All Repairs</button>';
-        echo '</div>';
-        
-        // Brand bulk update
-        echo '<div class="rbf-bulk-control">';
-        echo '<label for="brand-select">Brand:</label>';
-        echo '<select id="brand-select">';
-        echo '<option value="">Select Brand</option>';
-        foreach ($combinations_brands as $brand) {
-            echo '<option value="' . esc_attr($brand->id) . '">' . esc_html($brand->name) . '</option>';
-        }
-        echo '</select>';
-        echo '<input type="number" id="brand-price" step="0.01" min="0" placeholder="0.00">';
-        echo '<button type="button" class="button button-secondary" id="apply-brand-price">Apply to Brand</button>';
-        echo '</div>';
-        
-        // Model bulk update
-        echo '<div class="rbf-bulk-control">';
-        echo '<label for="model-select">Model:</label>';
-        echo '<select id="model-select">';
-        echo '<option value="">Select Model</option>';
-        foreach ($combinations_models as $model) {
-            echo '<option value="' . esc_attr($model->id) . '">' . esc_html($model->brand_name) . ' - ' . esc_html($model->name) . '</option>';
-        }
-        echo '</select>';
-        echo '<input type="number" id="model-price" step="0.01" min="0" placeholder="0.00">';
-        echo '<button type="button" class="button button-secondary" id="apply-model-price">Apply to Model</button>';
-        echo '</div>';
-        
-        echo '</div>';
-        echo '</div>';
-        
-        // Price table
-        echo '<div class="rbf-prices-table-container">';
-        echo '<h2>Individual Model Prices (Filtered Combinations)</h2>';
-        echo '<p>Edit individual prices for selected brands and repairs. Empty prices will use default pricing. Only showing combinations for iPhone, Samsung, Google Pixel, OnePlus with 13 selected repairs.</p>';
-        echo '<table class="wp-list-table widefat fixed striped rbf-prices-table">';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th>ID</th>';
-        echo '<th>Brand</th>';
-        echo '<th>Model</th>';
-        echo '<th>Repair</th>';
-        echo '<th>Price (AED)</th>';
-        echo '<th>Default Price</th>';
-        echo '</tr>';
-        echo '</thead>';
-        echo '<tbody>';
-        
-        foreach ($combinations_models as $model) {
-            foreach ($combinations_repairs as $repair) {
-                $price_key = $model->brand_id . '_' . $model->id . '_' . $repair->id;
-                $price = isset($price_lookup[$price_key]) ? $price_lookup[$price_key] : '';
-                $default_price = isset($default_price_lookup[$repair->id]) ? $default_price_lookup[$repair->id] : '0.00';
-                
-                echo '<tr>';
-                echo '<td>' . esc_html($model->id . '-' . $repair->id) . '</td>';
-                echo '<td>' . esc_html($model->brand_name) . '</td>';
-                echo '<td>' . esc_html($model->name) . '</td>';
-                echo '<td>' . esc_html($repair->name) . '</td>';
-                echo '<td>';
-                echo '<input type="number" 
-                           class="price-input" 
-                           data-brand="' . esc_attr($model->brand_id) . '" 
-                           data-model="' . esc_attr($model->id) . '" 
-                           data-repair="' . esc_attr($repair->id) . '" 
-                           value="' . esc_attr($price) . '" 
-                           step="0.01" 
-                           min="0" 
-                           placeholder="' . esc_attr($default_price) . '">';
-                echo '</td>';
-                echo '<td class="default-price-display">AED ' . esc_html($default_price) . '</td>';
-                echo '</tr>';
-            }
-        }
-        
-        echo '</tbody>';
-        echo '</table>';
-        echo '</div>';
-        
-        // Import/Export Controls
-        echo '<div class="rbf-import-export-section">';
-        echo '<h2>Import/Export</h2>';
-        echo '<div class="rbf-controls">';
-        echo '<button type="button" class="button button-primary" id="generate-prices">Generate Random Prices</button>';
-        echo '<button type="button" class="button button-secondary" id="regenerate-combinations">Regenerate All Combinations</button>';
-        echo '<button type="button" class="button button-secondary" id="export-prices">Export to CSV</button>';
-        echo '<button type="button" class="button button-secondary" id="import-prices">Import from CSV</button>';
-        echo '</div>';
-        echo '</div>';
-        
-        // Import modal
-        echo '<div id="import-modal" class="rbf-modal" style="display: none;">';
-        echo '<div class="rbf-modal-content">';
-        echo '<h3>Import Prices from CSV</h3>';
-        echo '<p>Upload a CSV file with columns: Brand ID, Model ID, Repair ID, Price</p>';
-        echo '<input type="file" id="csv-file" accept=".csv">';
-        echo '<div class="rbf-modal-actions">';
-        echo '<button type="button" class="button close-modal">Cancel</button>';
-        echo '<button type="button" class="button button-primary" id="import-csv">Import</button>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        
-        echo '</div>';
-        
-        // JavaScript for functionality
+
+        $nonce = wp_create_nonce('rbf_admin_nonce');
+        $currency = get_option('rbf_primary_currency', 'AED');
         ?>
-        <script>
-        jQuery(document).ready(function($) {
-            var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-            var nonce = '<?php echo wp_create_nonce('rbf_prices_nonce'); ?>';
-            
-            // Database Setup
-            $('#setup-database').on('click', function() {
-                var $button = $(this);
-                var $status = $('#db-setup-status');
-                
-                $button.prop('disabled', true).text('Setting up...');
-                $status.html('<span style="color: #0073aa;">Setting up database tables...</span>');
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'rbf_setup_database',
-                        nonce: nonce
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $status.html('<span style="color: #46b450;">✓ Database setup completed successfully!</span>');
-                            showToast('Database tables created successfully!', 'success');
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-                        } else {
-                            $status.html('<span style="color: #dc3232;">✗ Error: ' + response.data + '</span>');
-                            showToast('Error setting up database: ' + response.data, 'error');
-                        }
-                    },
-                    error: function() {
-                        $status.html('<span style="color: #dc3232;">✗ Error: Request failed</span>');
-                        showToast('Error setting up database. Please try again.', 'error');
-                    },
-                    complete: function() {
-                        $button.prop('disabled', false).text('Setup Database Tables');
-                    }
-                });
-            });
-            
-            // Fix Database Issues
-            $('#fix-database').on('click', function() {
-                var $button = $(this);
-                var $status = $('#db-setup-status');
-                
-                if (!confirm('This will fix database issues by removing foreign key constraints and recreating missing data. Continue?')) {
-                    return;
-                }
-                
-                $button.prop('disabled', true).text('Fixing...');
-                $status.html('<span style="color: #0073aa;">Fixing database issues...</span>');
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'rbf_fix_database',
-                        nonce: nonce
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $status.html('<span style="color: #46b450;">✓ Database issues fixed successfully!</span>');
-                            showToast('Database issues fixed successfully!', 'success');
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-                        } else {
-                            $status.html('<span style="color: #dc3232;">✗ Error: ' + response.data + '</span>');
-                            showToast('Error fixing database: ' + response.data, 'error');
-                        }
-                    },
-                    error: function() {
-                        $status.html('<span style="color: #dc3232;">✗ Error: Request failed</span>');
-                        showToast('Error fixing database. Please try again.', 'error');
-                    },
-                    complete: function() {
-                        $button.prop('disabled', false).text('Fix Database Issues');
-                    }
-                });
-            });
-            
-            // Save Default Prices
-            $('#save-default-prices').on('click', function() {
-                var defaultPrices = {};
-                $('.default-price-input').each(function() {
-                    var repairId = $(this).data('repair-id');
-                    var price = $(this).val();
-                    defaultPrices[repairId] = price;
-                });
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'rbf_save_default_prices',
-                        default_prices: defaultPrices,
-                        nonce: nonce
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            showToast('Default prices saved successfully!', 'success');
-                            location.reload();
-                        } else {
-                            showToast('Error saving default prices: ' + response.data, 'error');
-                        }
-                    },
-                    error: function() {
-                        showToast('Error saving default prices. Please try again.', 'error');
-                    }
-                });
-            });
-            
-            // Auto-save on price change
-            $('.price-input').on('change', function() {
-                var $input = $(this);
-                var brandId = $input.data('brand');
-                var modelId = $input.data('model');
-                var repairId = $input.data('repair');
-                var price = $input.val();
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'rbf_update_repair_price',
-                        brand_id: brandId,
-                        model_id: modelId,
-                        repair_id: repairId,
-                        price: price,
-                        nonce: nonce
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            showToast('Price updated successfully!', 'success');
-                        } else {
-                            showToast('Error updating price: ' + response.data, 'error');
-                            $input.val($input.data('original-value'));
-                        }
-                    },
-                    error: function() {
-                        showToast('Error updating price. Please try again.', 'error');
-                        $input.val($input.data('original-value'));
-                    }
-                });
-            });
-            
-            // Bulk Global Price Update
-            $('#apply-global-price').on('click', function() {
-                var price = $('#global-price').val();
-                if (!price || price <= 0) {
-                    showToast('Please enter a valid price.', 'error');
-                    return;
-                }
-                
-                if (confirm('This will update ALL repair prices to AED ' + price + '. Continue?')) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'rbf_bulk_update_prices',
-                            type: 'global',
-                            price: price,
-                            nonce: nonce
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                showToast('Global prices updated successfully!', 'success');
-                                location.reload();
-                            } else {
-                                showToast('Error updating prices: ' + response.data, 'error');
-                            }
-                        },
-                        error: function() {
-                            showToast('Error updating prices. Please try again.', 'error');
-                        }
-                    });
-                }
-            });
-            
-            // Bulk Brand Price Update
-            $('#apply-brand-price').on('click', function() {
-                var brandId = $('#brand-select').val();
-                var price = $('#brand-price').val();
-                
-                if (!brandId || !price || price <= 0) {
-                    showToast('Please select a brand and enter a valid price.', 'error');
-                    return;
-                }
-                
-                if (confirm('This will update all repair prices for the selected brand to AED ' + price + '. Continue?')) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'rbf_bulk_update_prices',
-                            type: 'brand',
-                            brand_id: brandId,
-                            price: price,
-                            nonce: nonce
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                showToast('Brand prices updated successfully!', 'success');
-                                location.reload();
-                            } else {
-                                showToast('Error updating prices: ' + response.data, 'error');
-                            }
-                        },
-                        error: function() {
-                            showToast('Error updating prices. Please try again.', 'error');
-                        }
-                    });
-                }
-            });
-            
-            // Bulk Model Price Update
-            $('#apply-model-price').on('click', function() {
-                var modelId = $('#model-select').val();
-                var price = $('#model-price').val();
-                
-                if (!modelId || !price || price <= 0) {
-                    showToast('Please select a model and enter a valid price.', 'error');
-                    return;
-                }
-                
-                if (confirm('This will update all repair prices for the selected model to AED ' + price + '. Continue?')) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'rbf_bulk_update_prices',
-                            type: 'model',
-                            model_id: modelId,
-                            price: price,
-                            nonce: nonce
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                showToast('Model prices updated successfully!', 'success');
-                                location.reload();
-                            } else {
-                                showToast('Error updating prices: ' + response.data, 'error');
-                            }
-                        },
-                        error: function() {
-                            showToast('Error updating prices. Please try again.', 'error');
-                        }
-                    });
-                }
-            });
-            
-            // Generate random prices
-            $('#generate-prices').on('click', function() {
-                if (confirm('This will generate random prices for all models. Continue?')) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'rbf_generate_random_prices',
-                            nonce: nonce
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                location.reload();
-                            } else {
-                                showToast('Error generating prices: ' + response.data, 'error');
-                        }
-                        }
-                    });
-                }
-            });
-            
-            // Regenerate all combinations
-            $('#regenerate-combinations').on('click', function() {
-                if (confirm('This will regenerate all pricing combinations for all models and repairs. This may take a moment. Continue?')) {
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'rbf_regenerate_combinations',
-                            nonce: nonce
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                showToast('All combinations regenerated successfully!', 'success');
-                                location.reload();
-                            } else {
-                                showToast('Error regenerating combinations: ' + response.data, 'error');
-                            }
-                        },
-                        error: function() {
-                            showToast('Error regenerating combinations. Please try again.', 'error');
-                        }
-                    });
-                }
-            });
-            
-            // Export to CSV
-            $('#export-prices').on('click', function() {
-                window.location.href = ajaxurl + '?action=rbf_export_prices&nonce=' + nonce;
-            });
-            
-            // Import from CSV
-            $('#import-prices').on('click', function() {
-                $('#import-modal').show();
-            });
-            
-            // Close modal
-            $('.close-modal').on('click', function() {
-                $('#import-modal').hide();
-            });
-            
-            // Import CSV
-            $('#import-csv').on('click', function() {
-                var file = $('#csv-file')[0].files[0];
-                if (!file) {
-                    showToast('Please select a CSV file.', 'error');
-                    return;
-                }
-                
-                var formData = new FormData();
-                formData.append('action', 'rbf_import_prices');
-                formData.append('csv_file', file);
-                formData.append('nonce', nonce);
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            showToast('Prices imported successfully!', 'success');
-                            location.reload();
-                        } else {
-                            showToast('Error importing prices: ' + response.data, 'error');
-                        }
-                    }
-                });
-            });
-            
-            // Store original values for validation
-            $('.price-input').each(function() {
-                $(this).data('original-value', $(this).val());
-            });
-            
-            // Toast notification function
-            function showToast(message, type) {
-                var toast = $('<div class="rbf-toast rbf-toast-' + type + '">' + message + '</div>');
-                $('body').append(toast);
-                setTimeout(function() {
-                    toast.fadeOut(function() {
-                        toast.remove();
-                    });
-                }, 3000);
-            }
-        });
-        </script>
-        
+        <div class="wrap rbf-pricing-admin-wrap">
+            <!-- Header & Key Metrics -->
+            <div class="rbf-pricing-header">
+                <div class="rbf-header-info">
+                    <h1 class="rbf-title"><span class="dashicons dashicons-money-alt"></span> Cascading Tier Pricing Engine</h1>
+                    <p class="rbf-subtitle">
+                        Solve <strong>7,840 combinations</strong> with just <strong>160 base cells</strong> (4 Tiers &times; 40 Repairs). 
+                        Device models inherit their tier price automatically, with sparse per-model and country overrides when needed.
+                    </p>
+                </div>
+                <div class="rbf-header-actions">
+                    <button type="button" class="button button-secondary" id="rbf-btn-sync-catalog">
+                        <span class="dashicons dashicons-update"></span> Sync Catalog from JSON
+                    </button>
+                    <button type="button" class="button button-primary" id="rbf-btn-save-grid">
+                        <span class="dashicons dashicons-saved"></span> Save Tier Pricing Grid
+                    </button>
+                </div>
+            </div>
+
+            <!-- Metric Cards -->
+            <div class="rbf-stats-bar">
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number"><?php echo count($models); ?></div>
+                    <div class="rbf-stat-label">Device Models</div>
+                    <div class="rbf-stat-sub">Across <?php echo count($brands); ?> Brands</div>
+                </div>
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number"><?php echo count($tiers); ?></div>
+                    <div class="rbf-stat-label">Price Tiers</div>
+                    <div class="rbf-stat-sub">Economy to Premium</div>
+                </div>
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number"><?php echo count($repairs); ?></div>
+                    <div class="rbf-stat-label">Repair Services</div>
+                    <div class="rbf-stat-sub">Master Repair Catalog</div>
+                </div>
+                <div class="rbf-stat-card highlight">
+                    <div class="rbf-stat-number">160 vs 7,840</div>
+                    <div class="rbf-stat-label">Base Grid Cells</div>
+                    <div class="rbf-stat-sub">98% Configuration Reduction</div>
+                </div>
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number" id="rbf-stat-overrides-count"><?php echo count($overrides); ?></div>
+                    <div class="rbf-stat-label">Active Overrides</div>
+                    <div class="rbf-stat-sub">Model / Country Exceptions</div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="rbf-nav-tabs">
+                <button type="button" class="rbf-tab-btn active" data-tab="tab-grid">
+                    <span class="dashicons dashicons-grid-view"></span> 1. Tier Pricing Grid (160 Base Prices)
+                </button>
+                <button type="button" class="rbf-tab-btn" data-tab="tab-models">
+                    <span class="dashicons dashicons-smartphone"></span> 2. Device Model Tier Assignments (<?php echo count($models); ?>)
+                </button>
+                <button type="button" class="rbf-tab-btn" data-tab="tab-overrides">
+                    <span class="dashicons dashicons-admin-settings"></span> 3. Specific Overrides (<?php echo count($overrides); ?>)
+                </button>
+                <button type="button" class="rbf-tab-btn" data-tab="tab-settings-labour">
+                    <span class="dashicons dashicons-admin-generic"></span> 4. Pricing Settings & Labour Costs
+                </button>
+                <button type="button" class="rbf-tab-btn" data-tab="tab-supplier-sync">
+                    <span class="dashicons dashicons-cloud"></span> 5. Supplier Price Sync & Feeds
+                </button>
+                <button type="button" class="rbf-tab-btn" data-tab="tab-supplier-mappings">
+                    <span class="dashicons dashicons-networking"></span> 6. Supplier Mappings (<?php echo count($mappings); ?>)
+                </button>
+                <button type="button" class="rbf-tab-btn" data-tab="tab-inspector">
+                    <span class="dashicons dashicons-search"></span> 7. Cascading Price Inspector & Tester
+                </button>
+            </div>
+
+            <!-- TAB 1: TIER PRICING GRID -->
+            <div class="rbf-tab-panel active" id="tab-grid">
+                <div class="rbf-panel-card">
+                    <div class="rbf-card-header">
+                        <div>
+                            <h2>Tier-Based Pricing Matrix</h2>
+                            <p>Set base prices for each tier. Any device assigned to a tier inherits these prices unless a model-level override exists.</p>
+                        </div>
+                        <div class="rbf-batch-tools">
+                            <span class="rbf-batch-label">Quick Auto-Fill:</span>
+                            <button type="button" class="button button-small" id="rbf-btn-calc-proportions" title="Automatically calculate Economy (70%), Flagship (135%), and Premium (165%) based on Mid-Range base">
+                                Compute Proportions from Mid-Range
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="rbf-table-responsive">
+                        <table class="rbf-pricing-table" id="rbf-tier-grid-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th style="min-width: 240px;">Repair Service</th>
+                                    <?php foreach ($tiers as $t): ?>
+                                        <th style="min-width: 150px; text-align: center;">
+                                            <div class="rbf-tier-badge tier-<?php echo esc_attr($t['slug']); ?>">
+                                                <?php echo esc_html($t['name']); ?>
+                                            </div>
+                                            <span class="rbf-th-sub"><?php echo esc_html($currency); ?></span>
+                                        </th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($repairs)): ?>
+                                    <tr>
+                                        <td colspan="<?php echo 2 + count($tiers); ?>" style="text-align:center; padding: 30px;">
+                                            No repair services found. Click "Sync Catalog from JSON" to populate repairs.
+                                        </td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($repairs as $idx => $r): ?>
+                                        <tr data-repair-id="<?php echo esc_attr($r['id']); ?>">
+                                            <td style="text-align: center; color: #888;"><?php echo ($idx + 1); ?></td>
+                                            <td class="rbf-repair-title-cell">
+                                                <span class="dashicons <?php echo !empty($r['icon']) ? esc_attr($r['icon']) : 'dashicons-hammer'; ?>"></span>
+                                                <strong><?php echo esc_html($r['name']); ?></strong>
+                                            </td>
+                                            <?php foreach ($tiers as $t): 
+                                                $val = isset($grid[$t['id']][$r['id']]) ? floatval($grid[$t['id']][$r['id']]) : 0.00;
+                                            ?>
+                                                <td style="text-align: center;">
+                                                    <div class="rbf-input-wrap">
+                                                        <input type="number" 
+                                                               class="rbf-grid-input" 
+                                                               step="0.01" 
+                                                               min="0" 
+                                                               data-tier-id="<?php echo esc_attr($t['id']); ?>" 
+                                                               data-tier-slug="<?php echo esc_attr($t['slug']); ?>" 
+                                                               data-repair-id="<?php echo esc_attr($r['id']); ?>" 
+                                                               value="<?php echo number_format($val, 2, '.', ''); ?>" 
+                                                               placeholder="0.00">
+                                                    </div>
+                                                </td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="rbf-card-footer">
+                        <span id="rbf-grid-save-status"></span>
+                        <button type="button" class="button button-primary button-large" id="rbf-btn-save-grid-bottom">
+                            <span class="dashicons dashicons-saved"></span> Save All Tier Prices
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: MODEL TIER ASSIGNMENTS -->
+            <div class="rbf-tab-panel" id="tab-models">
+                <div class="rbf-panel-card">
+                    <div class="rbf-card-header">
+                        <div>
+                            <h2>Device Model Tier Assignments</h2>
+                            <p>Assign each model to a Price Tier. Models automatically inherit repair prices from their assigned tier.</p>
+                        </div>
+                        <div class="rbf-filter-tools">
+                            <input type="text" id="rbf-model-search" placeholder="Search model name..." class="regular-text">
+                            <select id="rbf-model-brand-filter">
+                                <option value="">All Brands (<?php echo count($brands); ?>)</option>
+                                <?php foreach ($brands as $b): ?>
+                                    <option value="<?php echo esc_attr($b['name']); ?>"><?php echo esc_html($b['name']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <select id="rbf-model-tier-filter">
+                                <option value="">All Tiers</option>
+                                <?php foreach ($tiers as $t): ?>
+                                    <option value="<?php echo esc_attr($t['id']); ?>"><?php echo esc_html($t['name']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="rbf-table-responsive">
+                        <table class="rbf-pricing-table" id="rbf-models-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;">Image</th>
+                                    <th>Brand</th>
+                                    <th>Model Name</th>
+                                    <th>Assigned Tier</th>
+                                    <th style="text-align: center;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($models as $m): 
+                                    $img_src = !empty($m['image']) ? $m['image'] : (RBF_PLUGIN_URL . 'Brands/other_brand.jpg');
+                                ?>
+                                    <tr data-brand="<?php echo esc_attr($m['brand_name']); ?>" data-tier-id="<?php echo esc_attr($m['tier_id'] ?? ''); ?>">
+                                        <td style="text-align: center;">
+                                            <img src="<?php echo esc_url($img_src); ?>" alt="<?php echo esc_attr($m['name']); ?>" class="rbf-model-thumb" onerror="this.src='<?php echo esc_url(RBF_PLUGIN_URL . 'Brands/other_brand.jpg'); ?>'">
+                                        </td>
+                                        <td><strong><?php echo esc_html($m['brand_name']); ?></strong></td>
+                                        <td class="rbf-model-name-cell"><?php echo esc_html($m['name']); ?></td>
+                                        <td>
+                                            <select class="rbf-model-tier-select" data-model-id="<?php echo esc_attr($m['id']); ?>">
+                                                <option value="">-- Select Tier --</option>
+                                                <?php foreach ($tiers as $t): ?>
+                                                    <option value="<?php echo esc_attr($t['id']); ?>" <?php selected($m['tier_id'], $t['id']); ?>>
+                                                        <?php echo esc_html($t['name']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <span class="rbf-tier-save-indicator" id="tier-indicator-<?php echo esc_attr($m['id']); ?>"></span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <span class="rbf-badge-active">Active</span>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PRICE OVERRIDES & EXCEPTIONS -->
+            <div class="rbf-tab-panel" id="tab-overrides">
+                <div class="rbf-panel-card">
+                    <div class="rbf-card-header">
+                        <div>
+                            <h2>Per-Model & Country Overrides (Exceptions)</h2>
+                            <p>Only use this when a specific model or country needs a unique price that deviates from its Tier Base.</p>
+                        </div>
+                    </div>
+
+                    <!-- Add Override Form -->
+                    <div class="rbf-add-override-box">
+                        <h3>Add New Override</h3>
+                        <div class="rbf-override-form-grid">
+                            <div>
+                                <label>Brand:</label>
+                                <select id="rbf-override-brand" class="widefat">
+                                    <option value="">Select Brand</option>
+                                    <?php foreach ($brands as $b): ?>
+                                        <option value="<?php echo esc_attr($b['name']); ?>"><?php echo esc_html($b['name']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Model:</label>
+                                <select id="rbf-override-model" class="widefat" disabled>
+                                    <option value="">Select Brand First</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Repair Service:</label>
+                                <select id="rbf-override-repair" class="widefat">
+                                    <option value="">Select Repair</option>
+                                    <?php foreach ($repairs as $r): ?>
+                                        <option value="<?php echo esc_attr($r['id']); ?>"><?php echo esc_html($r['name']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Country Code (Optional):</label>
+                                <input type="text" id="rbf-override-country" placeholder="Global (Leave empty) or AE, SA, US" class="widefat" maxlength="5">
+                            </div>
+                            <div>
+                                <label>Custom Price (<?php echo esc_html($currency); ?>):</label>
+                                <input type="number" id="rbf-override-price" step="0.01" min="0" placeholder="0.00" class="widefat">
+                            </div>
+                            <div style="display: flex; align-items: flex-end;">
+                                <button type="button" class="button button-primary widefat" id="rbf-btn-add-override">
+                                    <span class="dashicons dashicons-plus-alt"></span> Save Override
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Existing Overrides Table -->
+                    <div class="rbf-table-responsive" style="margin-top: 20px;">
+                        <table class="rbf-pricing-table" id="rbf-overrides-table">
+                            <thead>
+                                <tr>
+                                    <th>Brand</th>
+                                    <th>Model</th>
+                                    <th>Repair</th>
+                                    <th>Country</th>
+                                    <th>Override Price</th>
+                                    <th style="text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($overrides)): ?>
+                                    <tr id="rbf-no-overrides-row">
+                                        <td colspan="6" style="text-align: center; padding: 25px; color: #888;">
+                                            No overrides configured. All models currently inherit clean Tier Base prices!
+                                        </td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($overrides as $ov): ?>
+                                        <tr data-model-id="<?php echo esc_attr($ov['model_id']); ?>" data-repair-id="<?php echo esc_attr($ov['repair_id']); ?>" data-country="<?php echo esc_attr($ov['country_code'] ?? ''); ?>">
+                                            <td><strong><?php echo esc_html($ov['brand_name'] ?? 'N/A'); ?></strong></td>
+                                            <td><?php echo esc_html($ov['model_name'] ?? 'N/A'); ?></td>
+                                            <td><?php echo esc_html($ov['repair_name'] ?? 'N/A'); ?></td>
+                                            <td>
+                                                <?php if (!empty($ov['country_code'])): ?>
+                                                    <span class="rbf-country-tag"><?php echo esc_html($ov['country_code']); ?></span>
+                                                <?php else: ?>
+                                                    <span class="rbf-global-tag">Global</span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td><strong><?php echo esc_html($currency) . ' ' . number_format($ov['price'], 2); ?></strong></td>
+                                            <td style="text-align: center;">
+                                                <button type="button" class="button button-link-delete rbf-btn-delete-override" data-model-id="<?php echo esc_attr($ov['model_id']); ?>" data-repair-id="<?php echo esc_attr($ov['repair_id']); ?>" data-country="<?php echo esc_attr($ov['country_code'] ?? ''); ?>">
+                                                    <span class="dashicons dashicons-trash"></span> Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: PRICING SETTINGS & LABOUR COSTS -->
+            <div class="rbf-tab-panel" id="tab-settings-labour">
+                <div class="rbf-panel-card">
+                    <div class="rbf-card-header">
+                        <div>
+                            <h2>Pricing Settings & Master Labour Costs</h2>
+                            <p>Configure the global markup percentage and flat labour cost per repair type. Formula: <code>Customer Price = (Supplier Part Price + Labour Cost) &times; (1 + Markup %)</code></p>
+                        </div>
+                        <div>
+                            <button type="button" class="button button-primary button-large" id="rbf-btn-save-settings">
+                                <span class="dashicons dashicons-saved"></span> Save Pricing Settings & Labour Costs
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Global Markup Card -->
+                    <div class="rbf-settings-box" style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 25px;">
+                        <h3 style="margin-top: 0; color: #1e293b;"><span class="dashicons dashicons-tag"></span> Global Markup Percentage</h3>
+                        <p style="color: #64748b; margin-bottom: 15px;">Applied to the sum of base supplier cost and repair labour fee. Default is 13%.</p>
+                        <div style="display: flex; align-items: center; gap: 10px; max-width: 300px;">
+                            <input type="number" id="rbf-global-markup-input" class="widefat" step="0.1" min="0" value="<?php echo esc_attr($global_markup); ?>" style="font-size: 16px; font-weight: bold; padding: 8px;">
+                            <span style="font-size: 18px; font-weight: bold; color: #475569;">%</span>
+                        </div>
+                    </div>
+
+                    <!-- Master Labour Costs Table -->
+                    <h3 style="margin-bottom: 15px; color: #1e293b;"><span class="dashicons dashicons-admin-tools"></span> Labour Cost by Repair Service</h3>
+                    <p style="color: #64748b; margin-bottom: 15px;">Labour costs belong strictly to the repair type (not individual models). The customer form never exposes the labour or supplier cost breakdown.</p>
+                    <div class="rbf-table-responsive">
+                        <table class="rbf-pricing-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th>Repair Service</th>
+                                    <th style="text-align: center;">Catalog Fallback (<?php echo esc_html($currency); ?>)</th>
+                                    <th style="min-width: 180px; text-align: center;">Labour Fee (<?php echo esc_html($currency); ?>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($repairs_with_labour as $idx => $r): ?>
+                                    <tr>
+                                        <td style="text-align: center; color: #888;"><?php echo ($idx + 1); ?></td>
+                                        <td>
+                                            <span class="dashicons <?php echo !empty($r['icon']) ? esc_attr($r['icon']) : 'dashicons-hammer'; ?>"></span>
+                                            <strong><?php echo esc_html($r['name']); ?></strong>
+                                        </td>
+                                        <td style="text-align: center; color: #64748b;"><?php echo number_format(floatval($r['price']), 2); ?></td>
+                                        <td style="text-align: center;">
+                                            <input type="number" 
+                                                   class="rbf-labour-input" 
+                                                   data-repair-id="<?php echo esc_attr($r['id']); ?>" 
+                                                   step="0.01" 
+                                                   min="0" 
+                                                   value="<?php echo number_format(floatval($r['labour_cost']), 2, '.', ''); ?>" 
+                                                   style="width: 140px; text-align: right; font-weight: bold;">
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: SUPPLIER PRICE SYNC & FEEDS -->
+            <div class="rbf-tab-panel" id="tab-supplier-sync">
+                <div class="rbf-panel-card">
+                    <div class="rbf-card-header">
+                        <div>
+                            <h2>Supplier Price Synchronization Engine</h2>
+                            <p>Automatic 48-Hour WP-Cron synchronization and structured B2B wholesale feed import. Supplier prices are cached locally and never block customer checkout.</p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="button button-secondary" id="rbf-btn-toggle-feed-import">
+                                <span class="dashicons dashicons-upload"></span> Import Wholesale CSV Feed
+                            </button>
+                            <button type="button" class="button button-primary" id="rbf-btn-manual-sync">
+                                <span class="dashicons dashicons-update"></span> Sync Supplier Prices Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sync Status Cards -->
+                    <div class="rbf-stats-bar" style="margin-bottom: 25px;">
+<?php
+$lxcell_provider = class_exists('RBF_Supplier_Manager') ? RBF_Supplier_Manager::get_instance()->get_provider('lxcell') : null;
+$lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
+?>
+                        <div class="rbf-stat-card highlight" style="min-width: 260px;">
+                            <div class="rbf-stat-label">Supplier Feed Status</div>
+                            <div style="margin-top: 8px; font-size: 13px; line-height: 1.6;">
+                                <div><strong>Public catalog:</strong> <span style="color: #017c36;">Available</span></div>
+                                <div><strong>Wholesale pricing:</strong> <span style="color: #b06000;">Not available publicly</span></div>
+                                <div><strong>Wholesale feed:</strong> <span style="font-weight: bold; color: <?php echo ($lxcell_status['wholesale_price_available'] ?? false) ? '#017c36' : '#b06000'; ?>;"><?php echo esc_html($lxcell_status['wholesale_feed'] ?? 'Needs configuration'); ?></span></div>
+                            </div>
+                        </div>
+                        <div class="rbf-stat-card">
+                            <div class="rbf-stat-label">Scheduled Cron</div>
+                            <div class="rbf-stat-number" style="font-size: 16px;">Every 48 Hours</div>
+                            <div class="rbf-stat-sub">Next: <?php echo $next_sync ? date('M j, Y H:i', $next_sync) : 'Scheduled on init'; ?></div>
+                        </div>
+                        <div class="rbf-stat-card">
+                            <div class="rbf-stat-label">Last Sync Run</div>
+                            <div class="rbf-stat-number" style="font-size: 16px;"><?php echo !empty($last_sync['time']) ? date('M j, H:i', strtotime($last_sync['time'])) : 'None Yet'; ?></div>
+                            <div class="rbf-stat-sub">Duration: <?php echo !empty($last_sync['duration']) ? $last_sync['duration'] . 's' : '-'; ?></div>
+                        </div>
+                        <div class="rbf-stat-card">
+                            <div class="rbf-stat-label">Prices Changed</div>
+                            <div class="rbf-stat-number" style="color: #017c36;"><?php echo !empty($last_sync['stats']['prices_changed']) ? $last_sync['stats']['prices_changed'] : 0; ?></div>
+                            <div class="rbf-stat-sub">Unchanged: <?php echo !empty($last_sync['stats']['unchanged']) ? $last_sync['stats']['unchanged'] : 0; ?></div>
+                        </div>
+                        <div class="rbf-stat-card">
+                            <div class="rbf-stat-label">Needs Review</div>
+                            <div class="rbf-stat-number" style="color: #b06000;"><?php echo !empty($last_sync['stats']['needs_review']) ? $last_sync['stats']['needs_review'] : 0; ?></div>
+                            <div class="rbf-stat-sub">Uncertain Mappings</div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Feed Ingestion Box -->
+                    <div id="rbf-feed-import-box" style="display: none; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                        <h3 style="margin-top: 0; color: #1e293b;"><span class="dashicons dashicons-media-spreadsheet"></span> Ingest Supplier Wholesale Price Sheet (CSV / XLSX)</h3>
+                        <p style="color: #64748b;">Upload an Excel (.xlsx) file or paste raw CSV/TSV data from your supplier price sheet. Columns recognized: <code>SKU / Part Code</code>, <code>Product Name</code>, <code>Model</code>, <code>Part Type</code>, <code>Price AED</code>, <code>Stock</code>.</p>
+                        <div style="margin-bottom: 15px; padding: 12px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 6px;">
+                            <label style="font-weight: 600; display: block; margin-bottom: 6px;">Upload XLSX / CSV File:</label>
+                            <input type="file" id="rbf-feed-file-input" accept=".xlsx,.csv" style="font-size: 13px;">
+                        </div>
+                        <label style="font-weight: 600; display: block; margin-bottom: 6px;">Or Paste CSV / TSV Text Content:</label>
+                        <textarea id="rbf-csv-feed-content" rows="5" class="widefat" placeholder="SKU,Product Name,Model,Part Type,Price AED,Stock&#10;LX-S23U-SCR,Galaxy S23 Ultra Service Pack,Galaxy S23 Ultra,Screen Replacement,300.00,in_stock&#10;LX-IP15-BAT,iPhone 15 OEM Battery,iPhone 15,Battery Replacement,95.00,in_stock" style="font-family: monospace; font-size: 13px;"></textarea>
+                        <div style="margin-top: 15px; display: flex; justify-content: flex-end; gap: 10px;">
+                            <button type="button" class="button button-secondary" id="rbf-btn-cancel-feed">Cancel</button>
+                            <button type="button" class="button button-primary" id="rbf-btn-process-feed">
+                                <span class="dashicons dashicons-yes"></span> Parse & Update Supplier Prices
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sync Logs History -->
+                    <h3 style="margin-bottom: 15px; color: #1e293b;"><span class="dashicons dashicons-list-view"></span> Synchronization Audit Log</h3>
+                    <div class="rbf-table-responsive">
+                        <table class="rbf-pricing-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">ID</th>
+                                    <th>Supplier</th>
+                                    <th>Sync Started</th>
+                                    <th>Duration</th>
+                                    <th style="text-align: center;">Status</th>
+                                    <th style="text-align: center;">Checked</th>
+                                    <th style="text-align: center;">Changed</th>
+                                    <th style="text-align: center;">Unchanged</th>
+                                    <th style="text-align: center;">Needs Review</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($sync_logs)): ?>
+                                    <tr>
+                                        <td colspan="9" style="text-align: center; padding: 25px; color: #64748b;">
+                                            No sync runs recorded yet. Click "Sync Supplier Prices Now" or import a feed to trigger the initial synchronization.
+                                        </td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($sync_logs as $log): ?>
+                                        <tr>
+                                            <td style="color: #888;"><?php echo esc_html($log['id']); ?></td>
+                                            <td><strong><?php echo esc_html(strtoupper($log['supplier_id'])); ?></strong></td>
+                                            <td><?php echo esc_html($log['sync_start']); ?></td>
+                                            <td><?php echo esc_html($log['duration_seconds']); ?>s</td>
+                                            <td style="text-align: center;">
+                                                <span class="rbf-badge-active" style="<?php echo $log['status'] === 'failed' ? 'background: #fce8e6; color: #c5221f;' : ($log['status'] === 'running' ? 'background: #fef7e0; color: #b06000;' : ''); ?>">
+                                                    <?php echo esc_html(strtoupper($log['status'])); ?>
+                                                </span>
+                                            </td>
+                                            <td style="text-align: center;"><?php echo intval($log['products_checked']); ?></td>
+                                            <td style="text-align: center; color: #017c36; font-weight: bold;"><?php echo intval($log['prices_changed']); ?></td>
+                                            <td style="text-align: center; color: #64748b;"><?php echo intval($log['unchanged']); ?></td>
+                                            <td style="text-align: center; color: #b06000;"><?php echo intval($log['needs_review']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: SUPPLIER MAPPINGS -->
+            <div class="rbf-tab-panel" id="tab-supplier-mappings">
+                <div class="rbf-panel-card">
+                    <div class="rbf-card-header">
+                        <div>
+                            <h2>Supplier Product Mappings</h2>
+                            <p>Manage associations between supplier SKUs and our local device models and repair types. High-confidence mappings feed live wholesale costs into the pricing engine.</p>
+                        </div>
+                    </div>
+
+                    <!-- Add Mapping Box -->
+                    <div class="rbf-add-override-box" style="margin-bottom: 25px;">
+                        <h3>Add or Update Supplier SKU Mapping</h3>
+                        <div class="rbf-override-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
+                            <div>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Supplier:</label>
+                                <select id="rbf-map-supplier" class="widefat">
+                                    <option value="lxcell">LXCELL (Dubai)</option>
+                                    <option value="katel">Katel / Servicepack.ae</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Device Model:</label>
+                                <select id="rbf-map-model" class="widefat">
+                                    <option value="">-- Select Model --</option>
+                                    <?php foreach ($models as $m): ?>
+                                        <option value="<?php echo esc_attr($m['id']); ?>"><?php echo esc_html($m['name']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Repair Service:</label>
+                                <select id="rbf-map-repair" class="widefat">
+                                    <option value="">-- Select Repair --</option>
+                                    <?php foreach ($repairs as $r): ?>
+                                        <option value="<?php echo esc_attr($r['id']); ?>"><?php echo esc_html($r['name']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Supplier SKU / MPN:</label>
+                                <input type="text" id="rbf-map-sku" placeholder="e.g. LX-IP15-INCELL" class="widefat">
+                            </div>
+                            <div style="display: flex; align-items: flex-end;">
+                                <button type="button" class="button button-primary widefat" id="rbf-btn-save-mapping">
+                                    <span class="dashicons dashicons-plus-alt2"></span> Save Mapping
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mappings Table -->
+                    <div class="rbf-table-responsive">
+                        <table class="rbf-pricing-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th>Supplier</th>
+                                    <th>Device Model</th>
+                                    <th>Repair Type</th>
+                                    <th>Supplier SKU</th>
+                                    <th style="text-align: center;">Wholesale Cost</th>
+                                    <th style="text-align: center;">Stock</th>
+                                    <th style="text-align: center;">Status</th>
+                                    <th style="width: 80px; text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($mappings)): ?>
+                                    <tr>
+                                        <td colspan="9" style="text-align: center; padding: 25px; color: #64748b;">
+                                            No active supplier mappings found. Use the form above or import a feed to create mappings.
+                                        </td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($mappings as $idx => $map): ?>
+                                        <tr>
+                                            <td style="color: #888; text-align: center;"><?php echo ($idx + 1); ?></td>
+                                            <td><strong><?php echo esc_html(strtoupper($map['supplier_id'])); ?></strong></td>
+                                            <td><?php echo esc_html($map['model_name'] ?: 'Model #' . $map['model_id']); ?></td>
+                                            <td><?php echo esc_html($map['repair_name'] ?: 'Repair #' . $map['repair_id']); ?></td>
+                                            <td><code><?php echo esc_html($map['supplier_sku']); ?></code></td>
+                                            <td style="text-align: center; font-weight: bold; color: #017c36;">
+                                                <?php echo !empty($map['current_price']) ? esc_html($currency) . ' ' . number_format(floatval($map['current_price']), 2) : '-'; ?>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span class="rbf-badge-active" style="<?php echo ($map['stock_status'] ?? '') === 'out_of_stock' ? 'background: #fce8e6; color: #c5221f;' : ''; ?>">
+                                                    <?php echo esc_html(str_replace('_', ' ', $map['stock_status'] ?? 'in_stock')); ?>
+                                                </span>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span class="rbf-source-badge <?php echo $map['match_status'] === 'verified' ? 'source-tier-base-price' : 'source-model-override'; ?>">
+                                                    <?php echo esc_html($map['match_status']); ?>
+                                                </span>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <button type="button" class="button button-small button-link-delete rbf-btn-delete-mapping" data-id="<?php echo esc_attr($map['id']); ?>">
+                                                    <span class="dashicons dashicons-trash"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: CASCADING PRICE INSPECTOR -->
+            <div class="rbf-tab-panel" id="tab-inspector">
+                <div class="rbf-panel-card">
+                    <div class="rbf-card-header">
+                        <div>
+                            <h2>Real-Time Cascading Price Inspector</h2>
+                            <p>Verify exactly what a customer will see on the front-end form, with complete waterfall trace explaining the exact inheritance layer.</p>
+                        </div>
+                    </div>
+
+                    <div class="rbf-inspector-controls">
+                        <div class="rbf-inspector-inputs">
+                            <div>
+                                <label>Brand:</label>
+                                <select id="rbf-insp-brand" class="widefat">
+                                    <option value="">Select Brand</option>
+                                    <?php foreach ($brands as $b): ?>
+                                        <option value="<?php echo esc_attr($b['name']); ?>"><?php echo esc_html($b['name']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Model:</label>
+                                <select id="rbf-insp-model" class="widefat" disabled>
+                                    <option value="">Select Brand First</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Country Code (Optional):</label>
+                                <input type="text" id="rbf-insp-country" placeholder="e.g. AE or leave empty for Global" class="widefat" maxlength="5">
+                            </div>
+                            <div style="display: flex; align-items: flex-end;">
+                                <button type="button" class="button button-primary button-large widefat" id="rbf-btn-inspect">
+                                    <span class="dashicons dashicons-search"></span> Inspect All 40 Repairs
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inspector Results Section -->
+                    <div id="rbf-inspector-results" style="display: none; margin-top: 30px;">
+                        <h3 id="rbf-inspector-device-title" style="margin-bottom: 15px; color: #017c36;"></h3>
+                        <div class="rbf-table-responsive">
+                            <table class="rbf-pricing-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Repair Service</th>
+                                        <th>Customer Price (<?php echo esc_html($currency); ?>)</th>
+                                        <th>Resolution Source</th>
+                                        <th>Active Hierarchy Rule</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rbf-inspector-rows">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <style>
-        .rbf-default-prices-section {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
+        .rbf-pricing-admin-wrap {
+            margin: 20px 20px 0 2px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
         }
-        
-        .rbf-default-prices-grid {
+        .rbf-pricing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 24px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+            border-left: 6px solid #017c36;
+        }
+        .rbf-title {
+            margin: 0 0 6px 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1d2327;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rbf-title .dashicons {
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+            color: #017c36;
+        }
+        .rbf-subtitle {
+            margin: 0;
+            color: #646970;
+            font-size: 14px;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+        .rbf-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .rbf-stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
-        
-        .rbf-default-price-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .rbf-default-price-item label {
-            flex: 1;
-            font-weight: 600;
-        }
-        
-        .rbf-default-price-item input {
-            width: 100px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .rbf-currency {
-            font-weight: 600;
-            color: #0073aa;
-        }
-        
-        .rbf-bulk-update-section {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-        }
-        
-        .rbf-bulk-controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .rbf-bulk-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .rbf-bulk-control label {
-            font-weight: 600;
-            min-width: 80px;
-        }
-        
-        .rbf-bulk-control input,
-        .rbf-bulk-control select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .rbf-bulk-control input {
-            width: 100px;
-        }
-        
-        .rbf-bulk-control select {
-            width: 150px;
-        }
-        
-        .rbf-prices-table-container {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-        }
-        
-        .rbf-prices-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .rbf-prices-table th,
-        .rbf-prices-table td {
-            padding: 12px 8px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .rbf-prices-table th {
-            background: #f9f9f9;
-            font-weight: 600;
-        }
-        
-        .price-input {
-            width: 100px;
-            padding: 6px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            text-align: center;
-        }
-        
-        .price-input:focus {
-            border-color: #0073aa;
-            box-shadow: 0 0 0 1px #0073aa;
-        }
-        
-        .default-price-display {
-            color: #666;
-            font-style: italic;
-        }
-        
-        .rbf-import-export-section {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-        }
-        
-        .rbf-controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .rbf-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 100000;
-            display: none;
-        }
-        
-        .rbf-modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 90%;
-        }
-        
-        .rbf-modal-actions {
-            margin-top: 20px;
-            text-align: right;
-        }
-        
-        .rbf-modal-actions .button {
-            margin-left: 10px;
-        }
-        
-        .rbf-toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 4px;
-            color: white;
-            z-index: 100001;
-            font-weight: 600;
-        }
-        
-        .rbf-toast-success {
-            background: #46b450;
-        }
-        
-        .rbf-toast-error {
-            background: #dc3232;
-        }
-        
-        .rbf-toast-info {
-            background: #0073aa;
-        }
-        
-        .rbf-modal-actions .close-modal {
-            background: #f1f1f1;
-            color: #333;
-            border: 1px solid #ddd;
-        }
-        
-        .rbf-modal-actions .close-modal:hover {
-            background: #e1e1e1;
-            border-color: #999;
-        }
-        
-        /* Table Alignment Fixes */
-        .rbf-bookings-table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
-        
-        .rbf-bookings-table th,
-        .rbf-bookings-table td {
-            padding: 12px 15px;
-            text-align: left;
-            vertical-align: middle;
-            border-bottom: 1px solid #e1e1e1;
-        }
-        
-        .rbf-bookings-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #23282d;
-            border-bottom: 2px solid #0073aa;
-        }
-        
-        .rbf-bookings-table tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .rbf-bookings-table td {
-            vertical-align: middle;
-        }
-        
-        /* Dashboard Styles */
-        .rbf-dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
         .rbf-stat-card {
             background: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 18px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid #e2e4e7;
             text-align: center;
-            border: 1px solid #e1e1e1;
-            transition: all 0.3s ease;
         }
-        
-        .rbf-stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        .rbf-stat-card.highlight {
+            background: linear-gradient(135deg, #017c36 0%, #05413a 100%);
+            color: #fff;
+            border: none;
         }
-        
-        .rbf-stat-card h3 {
-            margin: 0 0 15px 0;
-            color: #666;
-            font-size: 16px;
-            font-weight: 500;
+        .rbf-stat-card.highlight .rbf-stat-number,
+        .rbf-stat-card.highlight .rbf-stat-label,
+        .rbf-stat-card.highlight .rbf-stat-sub {
+            color: #fff;
         }
-        
         .rbf-stat-number {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 700;
-            color: #0073aa;
+            font-size: 26px;
+            font-weight: 800;
+            color: #017c36;
+            line-height: 1.2;
         }
-        
-        .rbf-dashboard-today {
-            margin: 30px 0;
+        .rbf-stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3338;
+            margin-top: 4px;
         }
-        
-        .rbf-dashboard-today h2 {
+        .rbf-stat-sub {
+            font-size: 11px;
+            color: #8c8f94;
+            margin-top: 2px;
+        }
+        .rbf-nav-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #e2e4e7;
             margin-bottom: 20px;
-            color: #23282d;
-            font-size: 24px;
         }
-        
-        .rbf-today-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .rbf-tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #646970;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
         }
-        
-        .rbf-today-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        .rbf-tab-btn:hover {
+            color: #017c36;
         }
-        
-        .rbf-today-card h3 {
-            margin: 0 0 15px 0;
-            font-size: 16px;
-            font-weight: 500;
-            opacity: 0.9;
+        .rbf-tab-btn.active {
+            color: #017c36;
+            border-bottom-color: #017c36;
+            background: #fff;
+            border-radius: 8px 8px 0 0;
         }
-        
-        .rbf-today-number {
-            margin: 0;
-            font-size: 28px;
-            font-weight: 700;
+        .rbf-tab-panel {
+            display: none;
         }
-        
-        .rbf-recent-bookings {
-            margin: 30px 0;
+        .rbf-tab-panel.active {
+            display: block;
         }
-        
-        .rbf-recent-bookings h2 {
-            margin-bottom: 20px;
-            color: #23282d;
-            font-size: 24px;
-        }
-        
-        .rbf-bookings-table-container {
+        .rbf-panel-card {
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #e2e4e7;
+            padding: 24px 30px;
         }
-        
-        .rbf-dashboard-actions {
-            margin: 30px 0;
+        .rbf-card-header {
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
             flex-wrap: wrap;
+            gap: 15px;
         }
-        
-        .rbf-dashboard-actions .button {
-            padding: 12px 24px;
-            font-size: 14px;
+        .rbf-card-header h2 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            color: #1d2327;
+        }
+        .rbf-card-header p {
+            margin: 0;
+            color: #646970;
+            font-size: 13px;
+        }
+        .rbf-batch-tools {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rbf-batch-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #646970;
+        }
+        .rbf-filter-tools {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .rbf-table-responsive {
+            overflow-x: auto;
+            max-height: 650px;
+            border: 1px solid #e2e4e7;
             border-radius: 8px;
-            transition: all 0.3s ease;
         }
-        
-        .rbf-dashboard-actions .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        .rbf-pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            font-size: 13px;
+        }
+        .rbf-pricing-table th {
+            position: sticky;
+            top: 0;
+            background: #f6f7f7;
+            padding: 12px 14px;
+            font-weight: 600;
+            color: #2c3338;
+            border-bottom: 2px solid #dcdcde;
+            z-index: 2;
+        }
+        .rbf-pricing-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #f0f0f1;
+            vertical-align: middle;
+        }
+        .rbf-pricing-table tr:hover td {
+            background-color: #f9fbf9;
+        }
+        .rbf-tier-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .tier-economy { background: #e6f4ea; color: #137333; }
+        .tier-mid-range { background: #e8f0fe; color: #1a73e8; }
+        .tier-flagship { background: #fef7e0; color: #b06000; }
+        .tier-premium-foldable { background: #fce8e6; color: #c5221f; }
+        .rbf-th-sub {
+            display: block;
+            font-size: 11px;
+            color: #8c8f94;
+            margin-top: 2px;
+        }
+        .rbf-repair-title-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .rbf-repair-title-cell .dashicons {
+            color: #017c36;
+        }
+        .rbf-grid-input {
+            width: 110px;
+            text-align: right;
+            padding: 6px 10px;
+            border: 1px solid #c3c4c7;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #1d2327;
+        }
+        .rbf-grid-input:focus {
+            border-color: #017c36;
+            box-shadow: 0 0 0 1px #017c36;
+            outline: none;
+        }
+        .rbf-card-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+        .rbf-model-thumb {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            background: #fff;
+        }
+        .rbf-model-tier-select {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #c3c4c7;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .rbf-badge-active {
+            background: #e6f4ea;
+            color: #137333;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .rbf-add-override-box {
+            background: #f6f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e4e7;
+        }
+        .rbf-add-override-box h3 {
+            margin: 0 0 15px 0;
+            font-size: 15px;
+            color: #1d2327;
+        }
+        .rbf-override-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .rbf-country-tag {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .rbf-global-tag {
+            background: #f0f0f1;
+            color: #646970;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        .rbf-source-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .source-tier-base-price { background: #e8f0fe; color: #1a73e8; }
+        .source-model-override { background: #fef7e0; color: #b06000; }
+        .source-model-country-override { background: #fce8e6; color: #c5221f; }
+        .source-tier-country-override { background: #f3e8fd; color: #7627bb; }
+        .source-global-default { background: #f0f0f1; color: #646970; }
+        .rbf-inspector-controls {
+            background: #f6f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e4e7;
+        }
+        .rbf-inspector-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
         }
         </style>
+
+        <script>
+        jQuery(document).ready(function($) {
+            var nonce = '<?php echo esc_js($nonce); ?>';
+            var currency = '<?php echo esc_js($currency); ?>';
+
+            // Toast helper
+            function showToast(msg, isSuccess) {
+                var color = isSuccess ? '#017c36' : '#d63638';
+                var $t = $('<div style="position:fixed; bottom:25px; right:25px; background:' + color + '; color:#fff; padding:12px 24px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:99999; font-weight:600; font-size:14px;">' + msg + '</div>');
+                $('body').append($t);
+                setTimeout(function() {
+                    $t.fadeOut(400, function() { $(this).remove(); });
+                }, 3000);
+            }
+
+            // Tab Switching
+            $('.rbf-tab-btn').on('click', function() {
+                var tabId = $(this).data('tab');
+                $('.rbf-tab-btn').removeClass('active');
+                $('.rbf-tab-panel').removeClass('active');
+                $(this).addClass('active');
+                $('#' + tabId).addClass('active');
+            });
+
+            // Save Tier Grid
+            $('#rbf-btn-save-grid, #rbf-btn-save-grid-bottom').on('click', function() {
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('Saving Grid...');
+                var grid = {};
+
+                $('.rbf-grid-input').each(function() {
+                    var tierId = $(this).data('tier-id');
+                    var repairId = $(this).data('repair-id');
+                    var val = parseFloat($(this).val()) || 0;
+
+                    if (!grid[tierId]) {
+                        grid[tierId] = {};
+                    }
+                    grid[tierId][repairId] = val;
+                });
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_save_tier_pricing_grid',
+                        nonce: nonce,
+                        grid: grid
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-saved"></span> Save Tier Pricing Grid');
+                        if (resp.success) {
+                            showToast(resp.data || 'Tier pricing grid saved successfully!', true);
+                        } else {
+                            showToast('Error: ' + (resp.data || 'Failed to save'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-saved"></span> Save Tier Pricing Grid');
+                        showToast('Network error while saving grid', false);
+                    }
+                });
+            });
+
+            // Compute Proportions from Mid-Range: Economy=0.7x, Flagship=1.35x, Premium=1.65x
+            $('#rbf-btn-calc-proportions').on('click', function() {
+                if (!confirm('Auto-calculate Economy (70%), Flagship (135%), and Premium (165%) prices from Mid-Range values in the table?')) {
+                    return;
+                }
+                $('#rbf-tier-grid-table tbody tr').each(function() {
+                    var $midInput = $(this).find('input[data-tier-slug="mid-range"]');
+                    var midVal = parseFloat($midInput.val()) || 0;
+                    if (midVal > 0) {
+                        var $eco = $(this).find('input[data-tier-slug="economy"]');
+                        var $flag = $(this).find('input[data-tier-slug="flagship"]');
+                        var $prem = $(this).find('input[data-tier-slug="premium-foldable"]');
+
+                        $eco.val((midVal * 0.70).toFixed(2));
+                        $flag.val((midVal * 1.35).toFixed(2));
+                        $prem.val((midVal * 1.65).toFixed(2));
+                    }
+                });
+                showToast('Proportions calculated. Click "Save Tier Pricing Grid" to persist.', true);
+            });
+
+            // Update Single Model Tier Inline
+            $('.rbf-model-tier-select').on('change', function() {
+                var modelId = $(this).data('model-id');
+                var tierId = $(this).val();
+                var $ind = $('#tier-indicator-' + modelId);
+
+                if (!tierId) return;
+
+                $ind.html('<span style="color:#646970;">Saving...</span>');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_update_model_tier',
+                        nonce: nonce,
+                        model_id: modelId,
+                        tier_id: tierId
+                    },
+                    success: function(resp) {
+                        if (resp.success) {
+                            $ind.html('<span style="color:#017c36;">&#10004;</span>');
+                            setTimeout(function() { $ind.empty(); }, 2000);
+                        } else {
+                            $ind.html('<span style="color:#d63638;">&#10008;</span>');
+                        }
+                    },
+                    error: function() {
+                        $ind.html('<span style="color:#d63638;">&#10008;</span>');
+                    }
+                });
+            });
+
+            // Search and Filter Models Table
+            function filterModels() {
+                var q = $('#rbf-model-search').val().toLowerCase();
+                var brand = $('#rbf-model-brand-filter').val();
+                var tier = $('#rbf-model-tier-filter').val();
+
+                $('#rbf-models-table tbody tr').each(function() {
+                    var mName = $(this).find('.rbf-model-name-cell').text().toLowerCase();
+                    var mBrand = $(this).data('brand');
+                    var mTier = $(this).find('.rbf-model-tier-select').val();
+
+                    var matchesSearch = !q || mName.indexOf(q) !== -1;
+                    var matchesBrand = !brand || mBrand === brand;
+                    var matchesTier = !tier || mTier === tier;
+
+                    if (matchesSearch && matchesBrand && matchesTier) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+            $('#rbf-model-search').on('input', filterModels);
+            $('#rbf-model-brand-filter, #rbf-model-tier-filter').on('change', filterModels);
+
+            // Sync Catalog from JSON
+            $('#rbf-btn-sync-catalog').on('click', function() {
+                if (!confirm('Synchronize brands, 196 models, and 40 repairs from brands_models_data.json into the DB tables?')) {
+                    return;
+                }
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('Syncing Catalog...');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_sync_catalog_db',
+                        nonce: nonce
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-update"></span> Sync Catalog from JSON');
+                        if (resp.success) {
+                            showToast(resp.data || 'Catalog synced successfully! Reloading...', true);
+                            setTimeout(function() { location.reload(); }, 1200);
+                        } else {
+                            showToast('Sync error: ' + (resp.data || 'Failed'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-update"></span> Sync Catalog from JSON');
+                        showToast('Network error during sync', false);
+                    }
+                });
+            });
+
+            // Cascading Brand -> Model Dropdown Helper
+            function loadModelsForSelect(brandName, $targetSelect) {
+                $targetSelect.empty().append('<option value="">Loading models...</option>').prop('disabled', true);
+                if (!brandName) {
+                    $targetSelect.empty().append('<option value="">Select Brand First</option>');
+                    return;
+                }
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_get_models',
+                        brand: brandName
+                    },
+                    success: function(resp) {
+                        $targetSelect.empty().append('<option value="">Select Model</option>');
+                        if (resp.success && resp.data && resp.data.length > 0) {
+                            $.each(resp.data, function(idx, m) {
+                                $targetSelect.append('<option value="' + m.id + '">' + m.name + '</option>');
+                            });
+                            $targetSelect.prop('disabled', false);
+                        } else {
+                            $targetSelect.append('<option value="">No models found</option>');
+                        }
+                    }
+                });
+            }
+
+            $('#rbf-override-brand').on('change', function() {
+                loadModelsForSelect($(this).val(), $('#rbf-override-model'));
+            });
+
+            $('#rbf-insp-brand').on('change', function() {
+                loadModelsForSelect($(this).val(), $('#rbf-insp-model'));
+            });
+
+            // Add Model Override
+            $('#rbf-btn-add-override').on('click', function() {
+                var modelId = $('#rbf-override-model').val();
+                var repairId = $('#rbf-override-repair').val();
+                var country = $('#rbf-override-country').val().trim();
+                var price = parseFloat($('#rbf-override-price').val());
+
+                if (!modelId || !repairId || isNaN(price)) {
+                    showToast('Please select Model, Repair, and enter a valid Price', false);
+                    return;
+                }
+
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('Saving...');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_save_model_price_override',
+                        nonce: nonce,
+                        model_id: modelId,
+                        repair_id: repairId,
+                        country_code: country,
+                        price: price
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-plus-alt"></span> Save Override');
+                        if (resp.success) {
+                            showToast(resp.data || 'Override saved successfully!', true);
+                            setTimeout(function() { location.reload(); }, 1000);
+                        } else {
+                            showToast('Error: ' + (resp.data || 'Failed'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-plus-alt"></span> Save Override');
+                        showToast('Network error while saving override', false);
+                    }
+                });
+            });
+
+            // Delete Override
+            $(document).on('click', '.rbf-btn-delete-override', function() {
+                if (!confirm('Remove this custom price override? The model will fall back to its Tier Base price.')) {
+                    return;
+                }
+                var $row = $(this).closest('tr');
+                var modelId = $(this).data('model-id');
+                var repairId = $(this).data('repair-id');
+                var country = $(this).data('country');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_delete_model_price_override',
+                        nonce: nonce,
+                        model_id: modelId,
+                        repair_id: repairId,
+                        country_code: country
+                    },
+                    success: function(resp) {
+                        if (resp.success) {
+                            $row.fadeOut(300, function() { $(this).remove(); });
+                            showToast('Override removed!', true);
+                        } else {
+                            showToast('Error: ' + (resp.data || 'Failed'), false);
+                        }
+                    },
+                    error: function() {
+                        showToast('Network error', false);
+                    }
+                });
+            });
+
+            // Inspect Effective Price
+            $('#rbf-btn-inspect').on('click', function() {
+                var modelId = $('#rbf-insp-model').val();
+                var country = $('#rbf-insp-country').val().trim();
+                var modelText = $('#rbf-insp-model option:selected').text();
+
+                if (!modelId) {
+                    showToast('Please select a device model to inspect', false);
+                    return;
+                }
+
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('Inspecting...');
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'rbf_get_model_price_preview',
+                        nonce: nonce,
+                        model_id: modelId,
+                        country_code: country
+                    },
+                    success: function(resp) {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-search"></span> Inspect All 40 Repairs');
+                        if (resp.success && resp.data) {
+                            $('#rbf-inspector-device-title').html('Inspection Results for: <strong>' + modelText + '</strong>' + (country ? ' (' + country + ')' : ' (Global)'));
+                            var $tbody = $('#rbf-inspector-rows').empty();
+
+                            $.each(resp.data, function(idx, item) {
+                                var slug = (item.source || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                                var rowHtml = '<tr>' +
+                                    '<td style="text-align:center; color:#888;">' + (idx + 1) + '</td>' +
+                                    '<td><span class="dashicons ' + (item.icon || 'dashicons-hammer') + '" style="color:#017c36; margin-right:6px;"></span><strong>' + item.repair_name + '</strong></td>' +
+                                    '<td><strong style="color:#017c36; font-size:14px;">' + currency + ' ' + parseFloat(item.price).toFixed(2) + '</strong></td>' +
+                                    '<td><span class="rbf-source-badge source-' + slug + '">' + item.source + '</span></td>' +
+                                    '<td><code>' + item.rule + '</code></td>' +
+                                '</tr>';
+                                $tbody.append(rowHtml);
+                            });
+
+                            $('#rbf-inspector-results').fadeIn(300);
+                        } else {
+                            showToast('Failed to inspect: ' + (resp.data || 'Unknown error'), false);
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false).html('<span class="dashicons dashicons-search"></span> Inspect All 40 Repairs');
+                        showToast('Network error during inspection', false);
+                    }
+                });
+            });
+        });
+        </script>
         <?php
     }
     
@@ -7095,7 +7656,7 @@ class RepairBookingForm {
         echo '<small>abidmmp100@gmail.com</small>';
         echo '</div>';
         echo '</a>';
-        echo '<a href="' . plugin_dir_url(__FILE__) . 'documentation.html" target="_blank" style="text-decoration: none; color: inherit;">';
+        echo '<a href="' . plugin_dir_url(__FILE__) . 'docs/documentation.html" target="_blank" style="text-decoration: none; color: inherit;">';
         echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px; min-width: 200px; transition: all 0.3s ease; cursor: pointer;">';
         echo '<div style="font-size: 30px; margin-bottom: 10px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">📚</div>';
         echo '<strong>Documentation</strong><br>';

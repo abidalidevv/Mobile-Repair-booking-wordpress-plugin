@@ -107,7 +107,7 @@ class RBF_Currency {
         
         $response = wp_remote_get($api_url, [
             'timeout' => 8,
-            'sslverify' => false,
+            'sslverify' => true,
             'headers' => ['Accept' => 'application/json']
         ]);
 

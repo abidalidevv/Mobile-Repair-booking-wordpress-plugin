@@ -6,6 +6,9 @@
 (function($) {
     'use strict';
 
+    // Global data fallback
+    window.rbfData = window.rbfData || window.rbf_ajax || {};
+
     // Application State
     const state = {
         currentStep: 1,

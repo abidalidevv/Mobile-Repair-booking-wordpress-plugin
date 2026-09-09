@@ -1,1784 +1,3980 @@
 {
-    "brands": [
+  "brands": [
+    {
+      "id": 1,
+      "name": "Apple",
+      "logo": "Brands/apple.png",
+      "description": "Apple iPhone Devices",
+      "models": [
         {
-            "id": 1,
-            "name": "Apple",
-            "logo": "Brands/apple.png",
-            "description": "Apple iPhone Devices",
-            "models": [
-                {
-                    "id": 150,
-                    "name": "iPhone 17 Pro Max",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 17",
-                    "parent_series": "iPhone 17"
-                },
-                {
-                    "id": 151,
-                    "name": "iPhone 17 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 17",
-                    "parent_series": "iPhone 17"
-                },
-                {
-                    "id": 152,
-                    "name": "iPhone 17",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 17",
-                    "parent_series": "iPhone 17"
-                },
-                {
-                    "id": 153,
-                    "name": "iPhone Air",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 17",
-                    "parent_series": "iPhone 17"
-                },
-                {
-                    "id": 154,
-                    "name": "iPhone 17e",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 17",
-                    "parent_series": "iPhone 17"
-                },
-                {
-                    "id": 140,
-                    "name": "iPhone 16 Pro Max",
-                    "image": "Brands/iphone_modals/apple-iphone-16-pro-max.jpg",
-                    "series": "iPhone 16",
-                    "parent_series": "iPhone 16"
-                },
-                {
-                    "id": 141,
-                    "name": "iPhone 16 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 16",
-                    "parent_series": "iPhone 16"
-                },
-                {
-                    "id": 142,
-                    "name": "iPhone 16 Plus",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 16",
-                    "parent_series": "iPhone 16"
-                },
-                {
-                    "id": 143,
-                    "name": "iPhone 16",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 16",
-                    "parent_series": "iPhone 16"
-                },
-                {
-                    "id": 144,
-                    "name": "iPhone 16e",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 16",
-                    "parent_series": "iPhone 16"
-                },
-                {
-                    "id": 102,
-                    "name": "iPhone 15 Pro Max",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPhone 15",
-                    "parent_series": "iPhone 15"
-                },
-                {
-                    "id": 103,
-                    "name": "iPhone 15 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro.jpg",
-                    "series": "iPhone 15",
-                    "parent_series": "iPhone 15"
-                },
-                {
-                    "id": 104,
-                    "name": "iPhone 15 Plus",
-                    "image": "Brands/iphone_modals/apple-iphone-15-plus-.jpg",
-                    "series": "iPhone 15",
-                    "parent_series": "iPhone 15"
-                },
-                {
-                    "id": 105,
-                    "name": "iPhone 15",
-                    "image": "Brands/iphone_modals/apple-iphone-15.jpg",
-                    "series": "iPhone 15",
-                    "parent_series": "iPhone 15"
-                },
-                {
-                    "id": 106,
-                    "name": "iPhone 14 Pro Max",
-                    "image": "Brands/iphone_modals/apple-iphone-14-pro-max-.jpg",
-                    "series": "iPhone 14",
-                    "parent_series": "iPhone 14"
-                },
-                {
-                    "id": 108,
-                    "name": "iPhone 14 Plus",
-                    "image": "Brands/iphone_modals/apple-iphone-14-plus.jpg",
-                    "series": "iPhone 14",
-                    "parent_series": "iPhone 14"
-                },
-                {
-                    "id": 109,
-                    "name": "iPhone 14",
-                    "image": "Brands/iphone_modals/apple-iphone-14.jpg",
-                    "series": "iPhone 14",
-                    "parent_series": "iPhone 14"
-                },
-                {
-                    "id": 110,
-                    "name": "iPhone 13 Pro Max",
-                    "image": "Brands/iphone_modals/apple-iphone-13-pro-max.jpg",
-                    "series": "iPhone 13",
-                    "parent_series": "iPhone 13"
-                },
-                {
-                    "id": 111,
-                    "name": "iPhone 13 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-13-pro.jpg",
-                    "series": "iPhone 13",
-                    "parent_series": "iPhone 13"
-                },
-                {
-                    "id": 112,
-                    "name": "iPhone 13",
-                    "image": "Brands/iphone_modals/apple-iphone-13.jpg",
-                    "series": "iPhone 13",
-                    "parent_series": "iPhone 13"
-                },
-                {
-                    "id": 113,
-                    "name": "iPhone 13 Mini",
-                    "image": "Brands/iphone_modals/apple-iphone-13-mini.jpg",
-                    "series": "iPhone 13",
-                    "parent_series": "iPhone 13"
-                },
-                {
-                    "id": 114,
-                    "name": "iPhone 12 Pro Max",
-                    "image": "Brands/iphone_modals/apple-iphone-12-pro-max.jpg",
-                    "series": "iPhone 12",
-                    "parent_series": "iPhone 12"
-                },
-                {
-                    "id": 115,
-                    "name": "iPhone 12 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-12-pro.jpg",
-                    "series": "iPhone 12",
-                    "parent_series": "iPhone 12"
-                },
-                {
-                    "id": 116,
-                    "name": "iPhone 12",
-                    "image": "Brands/iphone_modals/apple-iphone-12.jpg",
-                    "series": "iPhone 12",
-                    "parent_series": "iPhone 12"
-                },
-                {
-                    "id": 117,
-                    "name": "iPhone 12 Mini",
-                    "image": "Brands/iphone_modals/apple-iphone-12-mini.jpg",
-                    "series": "iPhone 12",
-                    "parent_series": "iPhone 12"
-                },
-                {
-                    "id": 118,
-                    "name": "iPhone 11 Pro Max",
-                    "image": "Brands/iphone_modals/apple-iphone-11-pro max.jpg",
-                    "series": "iPhone 11",
-                    "parent_series": "iPhone 11"
-                },
-                {
-                    "id": 119,
-                    "name": "iPhone 11 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-11-pro.jpg",
-                    "series": "iPhone 11",
-                    "parent_series": "iPhone 11"
-                },
-                {
-                    "id": 120,
-                    "name": "iPhone 11",
-                    "image": "Brands/iphone_modals/apple-iphone-11.jpg",
-                    "series": "iPhone 11",
-                    "parent_series": "iPhone 11"
-                },
-                {
-                    "id": 121,
-                    "name": "iPhone XS Max",
-                    "image": "Brands/iphone_modals/apple-iphone-xs-max.jpg",
-                    "series": "iPhone XS",
-                    "parent_series": "iPhone XS"
-                },
-                {
-                    "id": 122,
-                    "name": "iPhone XS",
-                    "image": "Brands/iphone_modals/apple-iphone-xs.jpg",
-                    "series": "iPhone XS",
-                    "parent_series": "iPhone XS"
-                },
-                {
-                    "id": 123,
-                    "name": "iPhone XR",
-                    "image": "Brands/iphone_modals/apple-iphone-xr.jpg",
-                    "series": "iPhone XR",
-                    "parent_series": "iPhone XR"
-                },
-                {
-                    "id": 124,
-                    "name": "iPhone X",
-                    "image": "Brands/iphone_modals/apple-iphone-x.jpg",
-                    "series": "iPhone X",
-                    "parent_series": "iPhone X"
-                },
-                {
-                    "id": 125,
-                    "name": "iPhone 8 Plus",
-                    "image": "Brands/iphone_modals/apple-iphone-8-plus.jpg",
-                    "series": "iPhone 8",
-                    "parent_series": "iPhone 8"
-                },
-                {
-                    "id": 126,
-                    "name": "iPhone 8",
-                    "image": "Brands/iphone_modals/apple-iphone-8.jpg",
-                    "series": "iPhone 8",
-                    "parent_series": "iPhone 8"
-                },
-                {
-                    "id": 127,
-                    "name": "iPhone 7 Plus",
-                    "image": "Brands/iphone_modals/apple-iphone-7-plus.jpg",
-                    "series": "iPhone 7",
-                    "parent_series": "iPhone 7"
-                },
-                {
-                    "id": 128,
-                    "name": "iPhone 7",
-                    "image": "Brands/iphone_modals/apple-iphone-7.jpg",
-                    "series": "iPhone 7",
-                    "parent_series": "iPhone 7"
-                },
-                {
-                    "id": 129,
-                    "name": "iPhone 6S Plus",
-                    "image": "Brands/iphone_modals/apple-iphone-6s-plus.jpg",
-                    "series": "iPhone 6S",
-                    "parent_series": "iPhone 6S"
-                },
-                {
-                    "id": 130,
-                    "name": "iPhone 6S",
-                    "image": "Brands/iphone_modals/apple-iphone-6s1.jpg",
-                    "series": "iPhone 6S",
-                    "parent_series": "iPhone 6S"
-                },
-                {
-                    "id": 131,
-                    "name": "iPhone SE (2022)",
-                    "image": "Brands/iphone_modals/apple-iphone-se-2022.jpg",
-                    "series": "iPhone SE",
-                    "parent_series": "iPhone SE"
-                },
-                {
-                    "id": 132,
-                    "name": "iPhone SE (3rd Gen)",
-                    "image": "Brands/iphone_modals/apple-iphone-se-3rd gen.jpg",
-                    "series": "iPhone SE",
-                    "parent_series": "iPhone SE"
-                },
-                {
-                    "id": 133,
-                    "name": "iPhone SE",
-                    "image": "Brands/iphone_modals/apple-iphone-se-.jpg",
-                    "series": "iPhone SE",
-                    "parent_series": "iPhone SE"
-                }
-            ]
+          "id": 150,
+          "name": "iPhone 17 Pro Max",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 17",
+          "parent_series": "iPhone 17"
         },
         {
-            "id": 2,
-            "name": "Samsung",
-            "logo": "Brands/samsung.png",
-            "description": "Samsung Galaxy Devices",
-            "models": [
-                {
-                    "id": 250,
-                    "name": "Galaxy S25 Ultra",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-ultra-5g.jpg",
-                    "series": "Galaxy S25",
-                    "parent_series": "Galaxy S25"
-                },
-                {
-                    "id": 251,
-                    "name": "Galaxy S25+",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-plus-5g.jpg",
-                    "series": "Galaxy S25",
-                    "parent_series": "Galaxy S25"
-                },
-                {
-                    "id": 252,
-                    "name": "Galaxy S25",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
-                    "series": "Galaxy S25",
-                    "parent_series": "Galaxy S25"
-                },
-                {
-                    "id": 253,
-                    "name": "Galaxy S25 Edge",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
-                    "series": "Galaxy S25",
-                    "parent_series": "Galaxy S25"
-                },
-                {
-                    "id": 201,
-                    "name": "Galaxy S24 Ultra",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-ultra-5g.jpg",
-                    "series": "Galaxy S24",
-                    "parent_series": "Galaxy S24"
-                },
-                {
-                    "id": 202,
-                    "name": "Galaxy S24 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-plus-5g.jpg",
-                    "series": "Galaxy S24",
-                    "parent_series": "Galaxy S24"
-                },
-                {
-                    "id": 203,
-                    "name": "Galaxy S24",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
-                    "series": "Galaxy S24",
-                    "parent_series": "Galaxy S24"
-                },
-                {
-                    "id": 204,
-                    "name": "Galaxy S23 Ultra",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s23-ultra.jpg",
-                    "series": "Galaxy S23",
-                    "parent_series": "Galaxy S23"
-                },
-                {
-                    "id": 205,
-                    "name": "Galaxy S23 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s23-plus-5g.jpg",
-                    "series": "Galaxy S23",
-                    "parent_series": "Galaxy S23"
-                },
-                {
-                    "id": 206,
-                    "name": "Galaxy S23",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s23.jpg",
-                    "series": "Galaxy S23",
-                    "parent_series": "Galaxy S23"
-                },
-                {
-                    "id": 207,
-                    "name": "Galaxy S22 Ultra",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s22-ultra-5g.jpg",
-                    "series": "Galaxy S22",
-                    "parent_series": "Galaxy S22"
-                },
-                {
-                    "id": 208,
-                    "name": "Galaxy S22 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s22-plus.jpg",
-                    "series": "Galaxy S22",
-                    "parent_series": "Galaxy S22"
-                },
-                {
-                    "id": 209,
-                    "name": "Galaxy S22",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s22.jpg",
-                    "series": "Galaxy S22",
-                    "parent_series": "Galaxy S22"
-                },
-                {
-                    "id": 210,
-                    "name": "Galaxy S21 Ultra",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s21-ultra.jpg",
-                    "series": "Galaxy S21",
-                    "parent_series": "Galaxy S21"
-                },
-                {
-                    "id": 211,
-                    "name": "Galaxy S21 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s21-plus.jpg",
-                    "series": "Galaxy S21",
-                    "parent_series": "Galaxy S21"
-                },
-                {
-                    "id": 212,
-                    "name": "Galaxy S21",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s21.jpg",
-                    "series": "Galaxy S21",
-                    "parent_series": "Galaxy S21"
-                },
-                {
-                    "id": 213,
-                    "name": "Galaxy S20 Ultra",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s20-ultra.jpg",
-                    "series": "Galaxy S20",
-                    "parent_series": "Galaxy S20"
-                },
-                {
-                    "id": 214,
-                    "name": "Galaxy S20 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s20-plus.jpg",
-                    "series": "Galaxy S20",
-                    "parent_series": "Galaxy S20"
-                },
-                {
-                    "id": 215,
-                    "name": "Galaxy S20",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s20.jpg",
-                    "series": "Galaxy S20",
-                    "parent_series": "Galaxy S20"
-                },
-                {
-                    "id": 216,
-                    "name": "Galaxy S10 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s10-plus.jpg",
-                    "series": "Galaxy S10",
-                    "parent_series": "Galaxy S10"
-                },
-                {
-                    "id": 217,
-                    "name": "Galaxy S10",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s10.jpg",
-                    "series": "Galaxy S10",
-                    "parent_series": "Galaxy S10"
-                },
-                {
-                    "id": 218,
-                    "name": "Galaxy S10e",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s10e.jpg",
-                    "series": "Galaxy S10",
-                    "parent_series": "Galaxy S10"
-                },
-                {
-                    "id": 219,
-                    "name": "Galaxy S10 5G",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s10-5g.jpg",
-                    "series": "Galaxy S10",
-                    "parent_series": "Galaxy S10"
-                },
-                {
-                    "id": 220,
-                    "name": "Galaxy S9 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s9-plus.jpg",
-                    "series": "Galaxy S9",
-                    "parent_series": "Galaxy S9"
-                },
-                {
-                    "id": 221,
-                    "name": "Galaxy S9",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s9-.jpg",
-                    "series": "Galaxy S9",
-                    "parent_series": "Galaxy S9"
-                },
-                {
-                    "id": 222,
-                    "name": "Galaxy S8 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s8-plus-.jpg",
-                    "series": "Galaxy S8",
-                    "parent_series": "Galaxy S8"
-                },
-                {
-                    "id": 223,
-                    "name": "Galaxy S8",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s8.jpg",
-                    "series": "Galaxy S8",
-                    "parent_series": "Galaxy S8"
-                },
-                {
-                    "id": 224,
-                    "name": "Galaxy S7 Edge",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s7-edge.jpg",
-                    "series": "Galaxy S7",
-                    "parent_series": "Galaxy S7"
-                },
-                {
-                    "id": 225,
-                    "name": "Galaxy S7",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s7.jpg",
-                    "series": "Galaxy S7",
-                    "parent_series": "Galaxy S7"
-                },
-                {
-                    "id": 226,
-                    "name": "Galaxy S6 Edge Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s6-edge-plus.jpg",
-                    "series": "Galaxy S6",
-                    "parent_series": "Galaxy S6"
-                },
-                {
-                    "id": 227,
-                    "name": "Galaxy S6 Edge",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s6-edge.jpg",
-                    "series": "Galaxy S6",
-                    "parent_series": "Galaxy S6"
-                },
-                {
-                    "id": 228,
-                    "name": "Galaxy S6",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s6.jpg",
-                    "series": "Galaxy S6",
-                    "parent_series": "Galaxy S6"
-                },
-                {
-                    "id": 229,
-                    "name": "Galaxy Note 20 Ultra",
-                    "image": "Brands/samsung_modals/samsung-galaxy-note20-ultra.jpg",
-                    "series": "Galaxy Note 20",
-                    "parent_series": "Galaxy Note 20"
-                },
-                {
-                    "id": 230,
-                    "name": "Galaxy Note 20",
-                    "image": "Brands/samsung_modals/samsung-galaxy-note20.jpg",
-                    "series": "Galaxy Note 20",
-                    "parent_series": "Galaxy Note 20"
-                },
-                {
-                    "id": 231,
-                    "name": "Galaxy Note 10 Plus",
-                    "image": "Brands/samsung_modals/samsung-galaxy-note10-plus.jpg",
-                    "series": "Galaxy Note 10",
-                    "parent_series": "Galaxy Note 10"
-                },
-                {
-                    "id": 232,
-                    "name": "Galaxy Note 10",
-                    "image": "Brands/samsung_modals/samsung-galaxy-note10.jpg",
-                    "series": "Galaxy Note 10",
-                    "parent_series": "Galaxy Note 10"
-                },
-                {
-                    "id": 233,
-                    "name": "Galaxy Note 9",
-                    "image": "Brands/samsung_modals/samsung-galaxy-note9.jpg",
-                    "series": "Galaxy Note 9",
-                    "parent_series": "Galaxy Note 9"
-                },
-                {
-                    "id": 234,
-                    "name": "Galaxy Note 8",
-                    "image": "Brands/samsung_modals/samsung-galaxy-note-8.jpg",
-                    "series": "Galaxy Note 8",
-                    "parent_series": "Galaxy Note 8"
-                },
-                {
-                    "id": 270,
-                    "name": "Galaxy Z Fold 6",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-fold5-5g.jpg",
-                    "series": "Galaxy Z Fold",
-                    "parent_series": "Galaxy Z Fold"
-                },
-                {
-                    "id": 271,
-                    "name": "Galaxy Z Flip 6",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-flip5-5g.jpg",
-                    "series": "Galaxy Z Flip",
-                    "parent_series": "Galaxy Z Flip"
-                },
-                {
-                    "id": 235,
-                    "name": "Galaxy Z Fold 5",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-fold5-5g.jpg",
-                    "series": "Galaxy Z Fold",
-                    "parent_series": "Galaxy Z Fold"
-                },
-                {
-                    "id": 236,
-                    "name": "Galaxy Z Fold 4",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-fold4.jpg",
-                    "series": "Galaxy Z Fold",
-                    "parent_series": "Galaxy Z Fold"
-                },
-                {
-                    "id": 237,
-                    "name": "Galaxy Z Fold 3",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-fold3.jpg",
-                    "series": "Galaxy Z Fold",
-                    "parent_series": "Galaxy Z Fold"
-                },
-                {
-                    "id": 238,
-                    "name": "Galaxy Z Fold 2",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-fold2-5g.jpg",
-                    "series": "Galaxy Z Fold",
-                    "parent_series": "Galaxy Z Fold"
-                },
-                {
-                    "id": 239,
-                    "name": "Galaxy Z Flip 5",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-flip5-5g.jpg",
-                    "series": "Galaxy Z Flip",
-                    "parent_series": "Galaxy Z Flip"
-                },
-                {
-                    "id": 240,
-                    "name": "Galaxy Z Flip 4",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-flip4.jpg",
-                    "series": "Galaxy Z Flip",
-                    "parent_series": "Galaxy Z Flip"
-                },
-                {
-                    "id": 241,
-                    "name": "Galaxy Z Flip 3",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-flip3.jpg",
-                    "series": "Galaxy Z Flip",
-                    "parent_series": "Galaxy Z Flip"
-                },
-                {
-                    "id": 242,
-                    "name": "Galaxy Z Flip",
-                    "image": "Brands/samsung_modals/samsung-galaxy-z-flip.jpg",
-                    "series": "Galaxy Z Flip",
-                    "parent_series": "Galaxy Z Flip"
-                },
-                {
-                    "id": 260,
-                    "name": "Galaxy A55 5G",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
-                    "series": "Galaxy A",
-                    "parent_series": "Galaxy A"
-                },
-                {
-                    "id": 261,
-                    "name": "Galaxy A54 5G",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s23.jpg",
-                    "series": "Galaxy A",
-                    "parent_series": "Galaxy A"
-                },
-                {
-                    "id": 262,
-                    "name": "Galaxy A35 5G",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
-                    "series": "Galaxy A",
-                    "parent_series": "Galaxy A"
-                },
-                {
-                    "id": 263,
-                    "name": "Galaxy A25 5G",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s23.jpg",
-                    "series": "Galaxy A",
-                    "parent_series": "Galaxy A"
-                },
-                {
-                    "id": 264,
-                    "name": "Galaxy A15 5G",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s22.jpg",
-                    "series": "Galaxy A",
-                    "parent_series": "Galaxy A"
-                },
-                {
-                    "id": 265,
-                    "name": "Galaxy A15",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s22.jpg",
-                    "series": "Galaxy A",
-                    "parent_series": "Galaxy A"
-                },
-                {
-                    "id": 266,
-                    "name": "Galaxy A05s",
-                    "image": "Brands/samsung_modals/samsung-galaxy-s21.jpg",
-                    "series": "Galaxy A",
-                    "parent_series": "Galaxy A"
-                }
-            ]
+          "id": 151,
+          "name": "iPhone 17 Pro",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 17",
+          "parent_series": "iPhone 17"
         },
         {
-            "id": 3,
-            "name": "Google Pixel",
-            "logo": "Brands/googlepixel.png",
-            "description": "Google Pixel Devices",
-            "models": [
-                {
-                    "id": 301,
-                    "name": "Pixel 9 Pro Fold",
-                    "image": "Brands/google_modals/google-pixel-9-pro-fold.jpg",
-                    "series": "Pixel 9",
-                    "parent_series": "Pixel 9"
-                },
-                {
-                    "id": 302,
-                    "name": "Pixel 9 Pro XL",
-                    "image": "Brands/google_modals/google-pixel-9-pro-xl-.jpg",
-                    "series": "Pixel 9",
-                    "parent_series": "Pixel 9"
-                },
-                {
-                    "id": 303,
-                    "name": "Pixel 9 Pro",
-                    "image": "Brands/google_modals/google-pixel-9-pro-.jpg",
-                    "series": "Pixel 9",
-                    "parent_series": "Pixel 9"
-                },
-                {
-                    "id": 304,
-                    "name": "Pixel 9",
-                    "image": "Brands/google_modals/google-pixel-9-.jpg",
-                    "series": "Pixel 9",
-                    "parent_series": "Pixel 9"
-                },
-                {
-                    "id": 305,
-                    "name": "Pixel 9a",
-                    "image": "Brands/google_modals/google-pixel-9a.jpg",
-                    "series": "Pixel 9",
-                    "parent_series": "Pixel 9"
-                },
-                {
-                    "id": 306,
-                    "name": "Pixel 8 Pro",
-                    "image": "Brands/google_modals/google-pixel-8-pro.jpg",
-                    "series": "Pixel 8",
-                    "parent_series": "Pixel 8"
-                },
-                {
-                    "id": 307,
-                    "name": "Pixel 8",
-                    "image": "Brands/google_modals/google-pixel-8.jpg",
-                    "series": "Pixel 8",
-                    "parent_series": "Pixel 8"
-                },
-                {
-                    "id": 308,
-                    "name": "Pixel 8a",
-                    "image": "Brands/google_modals/google-pixel-8a.jpg",
-                    "series": "Pixel 8",
-                    "parent_series": "Pixel 8"
-                },
-                {
-                    "id": 309,
-                    "name": "Pixel 7 Pro",
-                    "image": "Brands/google_modals/google-pixel7-pro.jpg",
-                    "series": "Pixel 7",
-                    "parent_series": "Pixel 7"
-                },
-                {
-                    "id": 310,
-                    "name": "Pixel 7",
-                    "image": "Brands/google_modals/google-pixel7.jpg",
-                    "series": "Pixel 7",
-                    "parent_series": "Pixel 7"
-                },
-                {
-                    "id": 311,
-                    "name": "Pixel 7a",
-                    "image": "Brands/google_modals/google-pixel-7a.jpg",
-                    "series": "Pixel 7",
-                    "parent_series": "Pixel 7"
-                },
-                {
-                    "id": 312,
-                    "name": "Pixel 6 Pro",
-                    "image": "Brands/google_modals/google-pixel-6-pro.jpg",
-                    "series": "Pixel 6",
-                    "parent_series": "Pixel 6"
-                },
-                {
-                    "id": 313,
-                    "name": "Pixel 6",
-                    "image": "Brands/google_modals/google-pixel-6.jpg",
-                    "series": "Pixel 6",
-                    "parent_series": "Pixel 6"
-                },
-                {
-                    "id": 314,
-                    "name": "Pixel 6a",
-                    "image": "Brands/google_modals/google-pixel-6a.jpg",
-                    "series": "Pixel 6",
-                    "parent_series": "Pixel 6"
-                },
-                {
-                    "id": 315,
-                    "name": "Pixel 5",
-                    "image": "Brands/google_modals/google-pixel-5.jpg",
-                    "series": "Pixel 5",
-                    "parent_series": "Pixel 5"
-                },
-                {
-                    "id": 316,
-                    "name": "Pixel 5a",
-                    "image": "Brands/google_modals/google-pixel-5a.jpg",
-                    "series": "Pixel 5",
-                    "parent_series": "Pixel 5"
-                },
-                {
-                    "id": 317,
-                    "name": "Pixel 4 XL",
-                    "image": "Brands/google_modals/google-pixel-4XL.jpg",
-                    "series": "Pixel 4",
-                    "parent_series": "Pixel 4"
-                },
-                {
-                    "id": 318,
-                    "name": "Pixel 4",
-                    "image": "Brands/google_modals/google-pixel-4.jpg",
-                    "series": "Pixel 4",
-                    "parent_series": "Pixel 4"
-                },
-                {
-                    "id": 319,
-                    "name": "Pixel 4a",
-                    "image": "Brands/google_modals/google-pixel-4a.jpg",
-                    "series": "Pixel 4",
-                    "parent_series": "Pixel 4"
-                },
-                {
-                    "id": 320,
-                    "name": "Pixel 4a 5G",
-                    "image": "Brands/google_modals/google-pixel-4a-5g.jpg",
-                    "series": "Pixel 4",
-                    "parent_series": "Pixel 4"
-                },
-                {
-                    "id": 321,
-                    "name": "Pixel 3 XL",
-                    "image": "Brands/google_modals/google-pixel-3xl-.jpg",
-                    "series": "Pixel 3",
-                    "parent_series": "Pixel 3"
-                },
-                {
-                    "id": 322,
-                    "name": "Pixel 3",
-                    "image": "Brands/google_modals/google-pixel-3-.jpg",
-                    "series": "Pixel 3",
-                    "parent_series": "Pixel 3"
-                },
-                {
-                    "id": 323,
-                    "name": "Pixel 3a XL",
-                    "image": "Brands/google_modals/google-pixel-3a-xl-.jpg",
-                    "series": "Pixel 3",
-                    "parent_series": "Pixel 3"
-                },
-                {
-                    "id": 324,
-                    "name": "Pixel 3a",
-                    "image": "Brands/google_modals/google-pixel-3a.jpg",
-                    "series": "Pixel 3",
-                    "parent_series": "Pixel 3"
-                },
-                {
-                    "id": 325,
-                    "name": "Pixel 2",
-                    "image": "Brands/google_modals/google-pixel-2.jpg",
-                    "series": "Pixel 2",
-                    "parent_series": "Pixel 2"
-                },
-                {
-                    "id": 326,
-                    "name": "Pixel XL 2",
-                    "image": "Brands/google_modals/google-pixel-xl2-.jpg",
-                    "series": "Pixel 2",
-                    "parent_series": "Pixel 2"
-                },
-                {
-                    "id": 327,
-                    "name": "Pixel XL",
-                    "image": "Brands/google_modals/google-pixel-xl.jpg",
-                    "series": "Pixel 1",
-                    "parent_series": "Pixel 1"
-                },
-                {
-                    "id": 328,
-                    "name": "Pixel",
-                    "image": "Brands/google_modals/google-pixel.jpg",
-                    "series": "Pixel 1",
-                    "parent_series": "Pixel 1"
-                }
-            ]
+          "id": 152,
+          "name": "iPhone 17",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 17",
+          "parent_series": "iPhone 17"
         },
         {
-            "id": 4,
-            "name": "OnePlus",
-            "logo": "Brands/oneplus.png",
-            "description": "OnePlus Devices",
-            "models": [
-                {
-                    "id": 401,
-                    "name": "OnePlus 12",
-                    "image": "Brands/oneplus_modals/oneplus-12.jpg",
-                    "series": "OnePlus 12",
-                    "parent_series": "OnePlus 12"
-                },
-                {
-                    "id": 402,
-                    "name": "OnePlus 12R",
-                    "image": "Brands/oneplus_modals/oneplus-12r.jpg",
-                    "series": "OnePlus 12",
-                    "parent_series": "OnePlus 12"
-                },
-                {
-                    "id": 403,
-                    "name": "OnePlus 11",
-                    "image": "Brands/oneplus_modals/oneplus-11.jpg",
-                    "series": "OnePlus 11",
-                    "parent_series": "OnePlus 11"
-                },
-                {
-                    "id": 404,
-                    "name": "OnePlus 10 Pro",
-                    "image": "Brands/oneplus_modals/oneplus-10-pro.jpg",
-                    "series": "OnePlus 10",
-                    "parent_series": "OnePlus 10"
-                },
-                {
-                    "id": 405,
-                    "name": "OnePlus 10T",
-                    "image": "Brands/oneplus_modals/oneplus-10t.jpg",
-                    "series": "OnePlus 10",
-                    "parent_series": "OnePlus 10"
-                },
-                {
-                    "id": 406,
-                    "name": "OnePlus 9 Pro",
-                    "image": "Brands/oneplus_modals/oneplus-9-pro-.jpg",
-                    "series": "OnePlus 9",
-                    "parent_series": "OnePlus 9"
-                },
-                {
-                    "id": 407,
-                    "name": "OnePlus 9",
-                    "image": "Brands/oneplus_modals/oneplus-9-.jpg",
-                    "series": "OnePlus 9",
-                    "parent_series": "OnePlus 9"
-                },
-                {
-                    "id": 408,
-                    "name": "OnePlus 9R",
-                    "image": "Brands/oneplus_modals/oneplus-9r.jpg",
-                    "series": "OnePlus 9",
-                    "parent_series": "OnePlus 9"
-                },
-                {
-                    "id": 409,
-                    "name": "OnePlus 8 Pro",
-                    "image": "Brands/oneplus_modals/oneplus-8-pro.jpg",
-                    "series": "OnePlus 8",
-                    "parent_series": "OnePlus 8"
-                },
-                {
-                    "id": 410,
-                    "name": "OnePlus 8",
-                    "image": "Brands/oneplus_modals/oneplus-8.jpg",
-                    "series": "OnePlus 8",
-                    "parent_series": "OnePlus 8"
-                },
-                {
-                    "id": 411,
-                    "name": "OnePlus 8T",
-                    "image": "Brands/oneplus_modals/oneplus-8t.jpg",
-                    "series": "OnePlus 8",
-                    "parent_series": "OnePlus 8"
-                },
-                {
-                    "id": 412,
-                    "name": "OnePlus 7T Pro",
-                    "image": "Brands/oneplus_modals/oneplus-7t-pro.jpg",
-                    "series": "OnePlus 7",
-                    "parent_series": "OnePlus 7"
-                },
-                {
-                    "id": 413,
-                    "name": "OnePlus 7T",
-                    "image": "Brands/oneplus_modals/oneplus-7t-.jpg",
-                    "series": "OnePlus 7",
-                    "parent_series": "OnePlus 7"
-                },
-                {
-                    "id": 414,
-                    "name": "OnePlus 7 Pro",
-                    "image": "Brands/oneplus_modals/oneplus-7-pro.jpg",
-                    "series": "OnePlus 7",
-                    "parent_series": "OnePlus 7"
-                },
-                {
-                    "id": 415,
-                    "name": "OnePlus 7",
-                    "image": "Brands/oneplus_modals/oneplus-7.jpg",
-                    "series": "OnePlus 7",
-                    "parent_series": "OnePlus 7"
-                },
-                {
-                    "id": 416,
-                    "name": "OnePlus 6T",
-                    "image": "Brands/oneplus_modals/oneplus-6t.jpg",
-                    "series": "OnePlus 6",
-                    "parent_series": "OnePlus 6"
-                },
-                {
-                    "id": 417,
-                    "name": "OnePlus 6",
-                    "image": "Brands/oneplus_modals/oneplus-6.jpg",
-                    "series": "OnePlus 6",
-                    "parent_series": "OnePlus 6"
-                },
-                {
-                    "id": 418,
-                    "name": "OnePlus 5T",
-                    "image": "Brands/oneplus_modals/oneplus-5t.jpg",
-                    "series": "OnePlus 5",
-                    "parent_series": "OnePlus 5"
-                },
-                {
-                    "id": 419,
-                    "name": "OnePlus 3T",
-                    "image": "Brands/oneplus_modals/oneplus-3t.jpg",
-                    "series": "OnePlus 3",
-                    "parent_series": "OnePlus 3"
-                },
-                {
-                    "id": 420,
-                    "name": "OnePlus X",
-                    "image": "Brands/oneplus_modals/oneplus-x.jpg",
-                    "series": "OnePlus X",
-                    "parent_series": "OnePlus X"
-                },
-                {
-                    "id": 421,
-                    "name": "OnePlus Nord CE3",
-                    "image": "Brands/oneplus_modals/oneplus-nord-ce3.jpg",
-                    "series": "OnePlus Nord",
-                    "parent_series": "OnePlus Nord"
-                },
-                {
-                    "id": 422,
-                    "name": "OnePlus Nord 2T",
-                    "image": "Brands/oneplus_modals/oneplus-nord-2t.jpg",
-                    "series": "OnePlus Nord",
-                    "parent_series": "OnePlus Nord"
-                },
-                {
-                    "id": 423,
-                    "name": "OnePlus Ace 2",
-                    "image": "Brands/oneplus_modals/oneplus-ace2.jpg",
-                    "series": "OnePlus Ace",
-                    "parent_series": "OnePlus Ace"
-                }
-            ]
+          "id": 153,
+          "name": "iPhone Air",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 17",
+          "parent_series": "iPhone 17"
         },
         {
-            "id": 6,
-            "name": "Huawei",
-            "logo": "Brands/huawei.png",
-            "description": "Huawei Smartphones & Devices",
-            "models": [
-                {
-                    "id": 601,
-                    "name": "Mate 60 RS",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Mate 60",
-                    "parent_series": "Mate 60"
-                },
-                {
-                    "id": 602,
-                    "name": "Mate 60 Pro+",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Mate 60",
-                    "parent_series": "Mate 60"
-                },
-                {
-                    "id": 603,
-                    "name": "Mate 60 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Mate 60",
-                    "parent_series": "Mate 60"
-                },
-                {
-                    "id": 604,
-                    "name": "Mate 60",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Mate 60",
-                    "parent_series": "Mate 60"
-                },
-                {
-                    "id": 605,
-                    "name": "Mate 50 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Mate 50",
-                    "parent_series": "Mate 50"
-                },
-                {
-                    "id": 610,
-                    "name": "Pura 70 Ultra",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Pura 70",
-                    "parent_series": "Pura 70"
-                },
-                {
-                    "id": 611,
-                    "name": "Pura 70 Pro+",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Pura 70",
-                    "parent_series": "Pura 70"
-                },
-                {
-                    "id": 612,
-                    "name": "Pura 70 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Pura 70",
-                    "parent_series": "Pura 70"
-                },
-                {
-                    "id": 613,
-                    "name": "Pura 70",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Pura 70",
-                    "parent_series": "Pura 70"
-                },
-                {
-                    "id": 614,
-                    "name": "P60 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "P60",
-                    "parent_series": "P60"
-                },
-                {
-                    "id": 615,
-                    "name": "P60",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "P60",
-                    "parent_series": "P60"
-                },
-                {
-                    "id": 616,
-                    "name": "P50 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "P50",
-                    "parent_series": "P50"
-                },
-                {
-                    "id": 620,
-                    "name": "Nova 12 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Nova",
-                    "parent_series": "Nova"
-                },
-                {
-                    "id": 621,
-                    "name": "Nova 12",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Nova",
-                    "parent_series": "Nova"
-                },
-                {
-                    "id": 630,
-                    "name": "Mate X5",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Mate X",
-                    "parent_series": "Mate X"
-                },
-                {
-                    "id": 631,
-                    "name": "Mate X3",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Mate X",
-                    "parent_series": "Mate X"
-                }
-            ]
+          "id": 154,
+          "name": "iPhone 17e",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 17",
+          "parent_series": "iPhone 17"
         },
         {
-            "id": 7,
-            "name": "Xiaomi",
-            "logo": "Brands/xiaomi.png",
-            "description": "Xiaomi, Redmi & POCO Devices",
-            "models": [
-                {
-                    "id": 701,
-                    "name": "Xiaomi 14 Ultra",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Xiaomi 14",
-                    "parent_series": "Xiaomi 14"
-                },
-                {
-                    "id": 702,
-                    "name": "Xiaomi 14 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Xiaomi 14",
-                    "parent_series": "Xiaomi 14"
-                },
-                {
-                    "id": 703,
-                    "name": "Xiaomi 14",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Xiaomi 14",
-                    "parent_series": "Xiaomi 14"
-                },
-                {
-                    "id": 710,
-                    "name": "Redmi Note 13 Pro+",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Redmi Note 13",
-                    "parent_series": "Redmi Note 13"
-                },
-                {
-                    "id": 711,
-                    "name": "Redmi Note 13 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Redmi Note 13",
-                    "parent_series": "Redmi Note 13"
-                },
-                {
-                    "id": 712,
-                    "name": "Redmi Note 13",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Redmi Note 13",
-                    "parent_series": "Redmi Note 13"
-                },
-                {
-                    "id": 713,
-                    "name": "Redmi Note 12 Pro+",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Redmi Note 12",
-                    "parent_series": "Redmi Note 12"
-                },
-                {
-                    "id": 714,
-                    "name": "Redmi Note 12",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Redmi Note 12",
-                    "parent_series": "Redmi Note 12"
-                },
-                {
-                    "id": 730,
-                    "name": "POCO X6 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "POCO X6",
-                    "parent_series": "POCO X6"
-                },
-                {
-                    "id": 731,
-                    "name": "POCO X6",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "POCO X6",
-                    "parent_series": "POCO X6"
-                }
-            ]
+          "id": 140,
+          "name": "iPhone 16 Pro Max",
+          "image": "Brands/iphone_modals/apple-iphone-16-pro-max.jpg",
+          "series": "iPhone 16",
+          "parent_series": "iPhone 16"
         },
         {
-            "id": 8,
-            "name": "Oppo",
-            "logo": "Brands/oppo.png",
-            "description": "Oppo & Realme Devices",
-            "models": [
-                {
-                    "id": 801,
-                    "name": "Find X8 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Find X8",
-                    "parent_series": "Find X8"
-                },
-                {
-                    "id": 802,
-                    "name": "Find X8",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Find X8",
-                    "parent_series": "Find X8"
-                },
-                {
-                    "id": 810,
-                    "name": "Reno 12 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Reno 12",
-                    "parent_series": "Reno 12"
-                },
-                {
-                    "id": 811,
-                    "name": "Reno 12",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Reno 12",
-                    "parent_series": "Reno 12"
-                },
-                {
-                    "id": 820,
-                    "name": "A98 5G",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Oppo A",
-                    "parent_series": "Oppo A"
-                },
-                {
-                    "id": 901,
-                    "name": "Realme 12 Pro+",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Realme 12",
-                    "parent_series": "Realme 12"
-                },
-                {
-                    "id": 902,
-                    "name": "Realme 12 Pro",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Realme 12",
-                    "parent_series": "Realme 12"
-                },
-                {
-                    "id": 903,
-                    "name": "Realme 12",
-                    "image": "Brands/other_brand.jpg",
-                    "series": "Realme 12",
-                    "parent_series": "Realme 12"
-                }
-            ]
+          "id": 141,
+          "name": "iPhone 16 Pro",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 16",
+          "parent_series": "iPhone 16"
         },
         {
-            "id": 9,
-            "name": "iPad",
-            "logo": "Brands/apple.png",
-            "description": "Apple iPad Tablets",
-            "models": [
-                {
-                    "id": 1001,
-                    "name": "iPad Pro 13\" M4",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "iPad Pro",
-                    "parent_series": "iPad Pro"
-                },
-                {
-                    "id": 1002,
-                    "name": "iPad Pro 11\" M4",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro.jpg",
-                    "series": "iPad Pro",
-                    "parent_series": "iPad Pro"
-                },
-                {
-                    "id": 1003,
-                    "name": "iPad Pro 12.9\" M2",
-                    "image": "Brands/iphone_modals/apple-iphone-14-pro-max-.jpg",
-                    "series": "iPad Pro",
-                    "parent_series": "iPad Pro"
-                },
-                {
-                    "id": 1010,
-                    "name": "iPad Air 13\" M2",
-                    "image": "Brands/iphone_modals/apple-iphone-15-plus-.jpg",
-                    "series": "iPad Air",
-                    "parent_series": "iPad Air"
-                },
-                {
-                    "id": 1011,
-                    "name": "iPad Air 11\" M2",
-                    "image": "Brands/iphone_modals/apple-iphone-14-plus.jpg",
-                    "series": "iPad Air",
-                    "parent_series": "iPad Air"
-                },
-                {
-                    "id": 1020,
-                    "name": "iPad 10th Gen",
-                    "image": "Brands/iphone_modals/apple-iphone-14.jpg",
-                    "series": "iPad",
-                    "parent_series": "iPad"
-                },
-                {
-                    "id": 1021,
-                    "name": "iPad 9th Gen",
-                    "image": "Brands/iphone_modals/apple-iphone-13.jpg",
-                    "series": "iPad",
-                    "parent_series": "iPad"
-                },
-                {
-                    "id": 1030,
-                    "name": "iPad Mini 7",
-                    "image": "Brands/iphone_modals/apple-iphone-13-mini.jpg",
-                    "series": "iPad Mini",
-                    "parent_series": "iPad Mini"
-                },
-                {
-                    "id": 1031,
-                    "name": "iPad Mini 6",
-                    "image": "Brands/iphone_modals/apple-iphone-12-mini.jpg",
-                    "series": "iPad Mini",
-                    "parent_series": "iPad Mini"
-                }
-            ]
+          "id": 142,
+          "name": "iPhone 16 Plus",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 16",
+          "parent_series": "iPhone 16"
         },
         {
-            "id": 10,
-            "name": "MacBook",
-            "logo": "Brands/apple.png",
-            "description": "Apple MacBook Laptops",
-            "models": [
-                {
-                    "id": 1101,
-                    "name": "MacBook Pro 16\" M4 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
-                    "series": "MacBook Pro",
-                    "parent_series": "MacBook Pro"
-                },
-                {
-                    "id": 1102,
-                    "name": "MacBook Pro 14\" M4 Pro",
-                    "image": "Brands/iphone_modals/apple-iphone-15-pro.jpg",
-                    "series": "MacBook Pro",
-                    "parent_series": "MacBook Pro"
-                },
-                {
-                    "id": 1103,
-                    "name": "MacBook Pro 14\" M3",
-                    "image": "Brands/iphone_modals/apple-iphone-14-pro-max-.jpg",
-                    "series": "MacBook Pro",
-                    "parent_series": "MacBook Pro"
-                },
-                {
-                    "id": 1104,
-                    "name": "MacBook Air 15\" M3",
-                    "image": "Brands/iphone_modals/apple-iphone-15-plus-.jpg",
-                    "series": "MacBook Air",
-                    "parent_series": "MacBook Air"
-                },
-                {
-                    "id": 1105,
-                    "name": "MacBook Air 13\" M3",
-                    "image": "Brands/iphone_modals/apple-iphone-14-plus.jpg",
-                    "series": "MacBook Air",
-                    "parent_series": "MacBook Air"
-                },
-                {
-                    "id": 1106,
-                    "name": "MacBook Air 13\" M2",
-                    "image": "Brands/iphone_modals/apple-iphone-13.jpg",
-                    "series": "MacBook Air",
-                    "parent_series": "MacBook Air"
-                }
-            ]
+          "id": 143,
+          "name": "iPhone 16",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 16",
+          "parent_series": "iPhone 16"
         },
         {
-            "id": 5,
-            "name": "Others",
-            "logo": "Brands/other_brand.jpg",
-            "description": "Other Device Brands",
-            "models": []
+          "id": 144,
+          "name": "iPhone 16e",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 16",
+          "parent_series": "iPhone 16"
+        },
+        {
+          "id": 102,
+          "name": "iPhone 15 Pro Max",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "series": "iPhone 15",
+          "parent_series": "iPhone 15"
+        },
+        {
+          "id": 103,
+          "name": "iPhone 15 Pro",
+          "image": "Brands/iphone_modals/apple-iphone-15-pro.jpg",
+          "series": "iPhone 15",
+          "parent_series": "iPhone 15"
+        },
+        {
+          "id": 104,
+          "name": "iPhone 15 Plus",
+          "image": "Brands/iphone_modals/apple-iphone-15-plus-.jpg",
+          "series": "iPhone 15",
+          "parent_series": "iPhone 15"
+        },
+        {
+          "id": 105,
+          "name": "iPhone 15",
+          "image": "Brands/iphone_modals/apple-iphone-15.jpg",
+          "series": "iPhone 15",
+          "parent_series": "iPhone 15"
+        },
+        {
+          "id": 106,
+          "name": "iPhone 14 Pro Max",
+          "image": "Brands/iphone_modals/apple-iphone-14-pro-max-.jpg",
+          "series": "iPhone 14",
+          "parent_series": "iPhone 14"
+        },
+        {
+          "name": "iPhone 14 Pro",
+          "image": "Brands/iphone_modals/apple-iphone-14-pro.jpg"
+        },
+        {
+          "id": 108,
+          "name": "iPhone 14 Plus",
+          "image": "Brands/iphone_modals/apple-iphone-14-plus.jpg",
+          "series": "iPhone 14",
+          "parent_series": "iPhone 14"
+        },
+        {
+          "id": 109,
+          "name": "iPhone 14",
+          "image": "Brands/iphone_modals/apple-iphone-14.jpg",
+          "series": "iPhone 14",
+          "parent_series": "iPhone 14"
+        },
+        {
+          "id": 110,
+          "name": "iPhone 13 Pro Max",
+          "image": "Brands/iphone_modals/apple-iphone-13-pro-max.jpg",
+          "series": "iPhone 13",
+          "parent_series": "iPhone 13"
+        },
+        {
+          "id": 111,
+          "name": "iPhone 13 Pro",
+          "image": "Brands/iphone_modals/apple-iphone-13-pro.jpg",
+          "series": "iPhone 13",
+          "parent_series": "iPhone 13"
+        },
+        {
+          "id": 112,
+          "name": "iPhone 13",
+          "image": "Brands/iphone_modals/apple-iphone-13.jpg",
+          "series": "iPhone 13",
+          "parent_series": "iPhone 13"
+        },
+        {
+          "id": 113,
+          "name": "iPhone 13 Mini",
+          "image": "Brands/iphone_modals/apple-iphone-13-mini.jpg",
+          "series": "iPhone 13",
+          "parent_series": "iPhone 13"
+        },
+        {
+          "id": 114,
+          "name": "iPhone 12 Pro Max",
+          "image": "Brands/iphone_modals/apple-iphone-12-pro-max.jpg",
+          "series": "iPhone 12",
+          "parent_series": "iPhone 12"
+        },
+        {
+          "id": 115,
+          "name": "iPhone 12 Pro",
+          "image": "Brands/iphone_modals/apple-iphone-12-pro.jpg",
+          "series": "iPhone 12",
+          "parent_series": "iPhone 12"
+        },
+        {
+          "id": 116,
+          "name": "iPhone 12",
+          "image": "Brands/iphone_modals/apple-iphone-12.jpg",
+          "series": "iPhone 12",
+          "parent_series": "iPhone 12"
+        },
+        {
+          "id": 117,
+          "name": "iPhone 12 Mini",
+          "image": "Brands/iphone_modals/apple-iphone-12-mini.jpg",
+          "series": "iPhone 12",
+          "parent_series": "iPhone 12"
+        },
+        {
+          "id": 118,
+          "name": "iPhone 11 Pro Max",
+          "image": "Brands/iphone_modals/apple-iphone-11-pro max.jpg",
+          "series": "iPhone 11",
+          "parent_series": "iPhone 11"
+        },
+        {
+          "id": 119,
+          "name": "iPhone 11 Pro",
+          "image": "Brands/iphone_modals/apple-iphone-11-pro.jpg",
+          "series": "iPhone 11",
+          "parent_series": "iPhone 11"
+        },
+        {
+          "id": 120,
+          "name": "iPhone 11",
+          "image": "Brands/iphone_modals/apple-iphone-11.jpg",
+          "series": "iPhone 11",
+          "parent_series": "iPhone 11"
+        },
+        {
+          "id": 121,
+          "name": "iPhone XS Max",
+          "image": "Brands/iphone_modals/apple-iphone-xs-max.jpg",
+          "series": "iPhone XS",
+          "parent_series": "iPhone XS"
+        },
+        {
+          "id": 122,
+          "name": "iPhone XS",
+          "image": "Brands/iphone_modals/apple-iphone-xs.jpg",
+          "series": "iPhone XS",
+          "parent_series": "iPhone XS"
+        },
+        {
+          "id": 123,
+          "name": "iPhone XR",
+          "image": "Brands/iphone_modals/apple-iphone-xr.jpg",
+          "series": "iPhone XR",
+          "parent_series": "iPhone XR"
+        },
+        {
+          "id": 124,
+          "name": "iPhone X",
+          "image": "Brands/iphone_modals/apple-iphone-x.jpg",
+          "series": "iPhone X",
+          "parent_series": "iPhone X"
+        },
+        {
+          "id": 125,
+          "name": "iPhone 8 Plus",
+          "image": "Brands/iphone_modals/apple-iphone-8-plus.jpg",
+          "series": "iPhone 8",
+          "parent_series": "iPhone 8"
+        },
+        {
+          "id": 126,
+          "name": "iPhone 8",
+          "image": "Brands/iphone_modals/apple-iphone-8.jpg",
+          "series": "iPhone 8",
+          "parent_series": "iPhone 8"
+        },
+        {
+          "id": 127,
+          "name": "iPhone 7 Plus",
+          "image": "Brands/iphone_modals/apple-iphone-7-plus.jpg",
+          "series": "iPhone 7",
+          "parent_series": "iPhone 7"
+        },
+        {
+          "id": 128,
+          "name": "iPhone 7",
+          "image": "Brands/iphone_modals/apple-iphone-7.jpg",
+          "series": "iPhone 7",
+          "parent_series": "iPhone 7"
+        },
+        {
+          "id": 129,
+          "name": "iPhone 6S Plus",
+          "image": "Brands/iphone_modals/apple-iphone-6s-plus.jpg",
+          "series": "iPhone 6S",
+          "parent_series": "iPhone 6S"
+        },
+        {
+          "id": 130,
+          "name": "iPhone 6S",
+          "image": "Brands/iphone_modals/apple-iphone-6s1.jpg",
+          "series": "iPhone 6S",
+          "parent_series": "iPhone 6S"
+        },
+        {
+          "id": 131,
+          "name": "iPhone SE (2022)",
+          "image": "Brands/iphone_modals/apple-iphone-se-2022.jpg",
+          "series": "iPhone SE",
+          "parent_series": "iPhone SE"
+        },
+        {
+          "id": 132,
+          "name": "iPhone SE (3rd Gen)",
+          "image": "Brands/iphone_modals/apple-iphone-se-3rd gen.jpg",
+          "series": "iPhone SE",
+          "parent_series": "iPhone SE"
+        },
+        {
+          "id": 133,
+          "name": "iPhone SE",
+          "image": "Brands/iphone_modals/apple-iphone-se-.jpg",
+          "series": "iPhone SE",
+          "parent_series": "iPhone SE"
         }
-    ],
-    "repair_services": [
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Samsung",
+      "logo": "Brands/samsung.png",
+      "description": "Samsung Galaxy Devices",
+      "models": [
         {
-            "id": 1,
-            "name": "Screen Replacement",
-            "icon": "Brands/repair_Icons/broken.png",
-            "description": "Complete LCD/OLED screen replacement",
-            "price": 490,
-            "duration": "01 Hour(s)"
+          "id": 250,
+          "name": "Galaxy S25 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-ultra-5g.jpg",
+          "series": "Galaxy S25",
+          "parent_series": "Galaxy S25"
         },
         {
-            "id": 2,
-            "name": "Battery Replacement",
-            "icon": "Brands/repair_Icons/battry.png",
-            "description": "Original battery replacement",
-            "price": 290,
-            "duration": "01 Hour(s)"
+          "id": 251,
+          "name": "Galaxy S25+",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-plus-5g.jpg",
+          "series": "Galaxy S25",
+          "parent_series": "Galaxy S25"
         },
         {
-            "id": 3,
-            "name": "Charging Port Repair",
-            "icon": "Brands/repair_Icons/port_issue.png",
-            "description": "Fix charging port issues",
-            "price": 340,
-            "duration": "02 Day(s)"
+          "id": 252,
+          "name": "Galaxy S25",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
+          "series": "Galaxy S25",
+          "parent_series": "Galaxy S25"
         },
         {
-            "id": 4,
-            "name": "Camera Repair",
-            "icon": "Brands/repair_Icons/camera.png",
-            "description": "Front or rear camera repair",
-            "price": 250,
-            "duration": "01 Day(s)"
+          "id": 253,
+          "name": "Galaxy S25 Edge",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
+          "series": "Galaxy S25",
+          "parent_series": "Galaxy S25"
         },
         {
-            "id": 5,
-            "name": "Back Glass Replacement",
-            "icon": "Brands/repair_Icons/back_damaged.png",
-            "description": "Original back glass replacement",
-            "price": 290,
-            "duration": "01 Day(s)"
+          "id": 201,
+          "name": "Galaxy S24 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-ultra-5g.jpg",
+          "series": "Galaxy S24",
+          "parent_series": "Galaxy S24"
         },
         {
-            "id": 6,
-            "name": "Frame Repair",
-            "icon": "Brands/repair_Icons/frame_damaged.png",
-            "description": "Device frame repair and replacement",
-            "price": 200,
-            "duration": "02 Day(s)"
+          "id": 202,
+          "name": "Galaxy S24 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-plus-5g.jpg",
+          "series": "Galaxy S24",
+          "parent_series": "Galaxy S24"
         },
         {
-            "id": 7,
-            "name": "Software Support",
-            "icon": "Brands/repair_Icons/slow.png",
-            "description": "Software troubleshooting and fixes",
-            "price": 100,
-            "duration": "01 Day(s)"
+          "id": 203,
+          "name": "Galaxy S24",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
+          "series": "Galaxy S24",
+          "parent_series": "Galaxy S24"
         },
         {
-            "id": 8,
-            "name": "General Diagnosis",
-            "icon": "Brands/repair_Icons/Checkup.png",
-            "description": "Comprehensive device diagnosis",
-            "price": 100,
-            "duration": "02 Day(s)"
+          "id": 204,
+          "name": "Galaxy S23 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s23-ultra.jpg",
+          "series": "Galaxy S23",
+          "parent_series": "Galaxy S23"
         },
         {
-            "id": 9,
-            "name": "Speaker Repair",
-            "icon": "Brands/repair_Icons/speaker.png",
-            "description": "Speaker and audio system repair",
-            "price": 180,
-            "duration": "01 Hour(s)"
+          "id": 205,
+          "name": "Galaxy S23 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s23-plus-5g.jpg",
+          "series": "Galaxy S23",
+          "parent_series": "Galaxy S23"
         },
         {
-            "id": 10,
-            "name": "Microphone Repair",
-            "icon": "Brands/repair_Icons/connectivity.png",
-            "description": "Microphone replacement and repair",
-            "price": 150,
-            "duration": "01 Hour(s)"
+          "id": 206,
+          "name": "Galaxy S23",
+          "image": "Brands/samsung_modals/samsung-galaxy-s23.jpg",
+          "series": "Galaxy S23",
+          "parent_series": "Galaxy S23"
         },
         {
-            "id": 11,
-            "name": "Home Button Repair",
-            "icon": "Brands/repair_Icons/hardware.png",
-            "description": "Home button functionality repair",
-            "price": 120,
-            "duration": "01 Hour(s)"
+          "id": 207,
+          "name": "Galaxy S22 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s22-ultra-5g.jpg",
+          "series": "Galaxy S22",
+          "parent_series": "Galaxy S22"
         },
         {
-            "id": 12,
-            "name": "Overheating Repair",
-            "icon": "Brands/repair_Icons/heated.png",
-            "description": "Fix device overheating issues",
-            "price": 180,
-            "duration": "02 Day(s)"
+          "id": 208,
+          "name": "Galaxy S22 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s22-plus.jpg",
+          "series": "Galaxy S22",
+          "parent_series": "Galaxy S22"
         },
         {
-            "id": 13,
-            "name": "Screen Protector Installation",
-            "icon": "Brands/repair_Icons/protector.png",
-            "description": "High-quality screen protector installation",
-            "price": 50,
-            "duration": "30 Min(s)"
+          "id": 209,
+          "name": "Galaxy S22",
+          "image": "Brands/samsung_modals/samsung-galaxy-s22.jpg",
+          "series": "Galaxy S22",
+          "parent_series": "Galaxy S22"
         },
         {
-            "id": 14,
-            "name": "Device Unlock Service",
-            "icon": "Brands/repair_Icons/locked.png",
-            "description": "Remove device locks and restrictions",
-            "price": 120,
-            "duration": "01 Day(s)"
+          "id": 210,
+          "name": "Galaxy S21 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s21-ultra.jpg",
+          "series": "Galaxy S21",
+          "parent_series": "Galaxy S21"
         },
         {
-            "id": 15,
-            "name": "Water Damage Repair",
-            "icon": "Brands/repair_Icons/waterdaamage.png",
-            "description": "Water damage assessment and repair",
-            "price": 200,
-            "duration": "03 Day(s)"
+          "id": 211,
+          "name": "Galaxy S21 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s21-plus.jpg",
+          "series": "Galaxy S21",
+          "parent_series": "Galaxy S21"
         },
         {
-            "id": 16,
-            "name": "Data Recovery",
-            "icon": "Brands/repair_Icons/data_recovery.png",
-            "description": "Recover data from damaged devices",
-            "price": 300,
-            "duration": "02 Day(s)"
+          "id": 212,
+          "name": "Galaxy S21",
+          "image": "Brands/samsung_modals/samsung-galaxy-s21.jpg",
+          "series": "Galaxy S21",
+          "parent_series": "Galaxy S21"
         },
         {
-            "id": 17,
-            "name": "Power Button Repair",
-            "icon": "Brands/repair_Icons/power.png",
-            "description": "Power button replacement and repair",
-            "price": 140,
-            "duration": "01 Hour(s)"
+          "id": 213,
+          "name": "Galaxy S20 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s20-ultra.jpg",
+          "series": "Galaxy S20",
+          "parent_series": "Galaxy S20"
         },
         {
-            "id": 18,
-            "name": "Volume Button Repair",
-            "icon": "Brands/repair_Icons/hardware.png",
-            "description": "Volume button replacement and repair",
-            "price": 120,
-            "duration": "01 Hour(s)"
+          "id": 214,
+          "name": "Galaxy S20 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s20-plus.jpg",
+          "series": "Galaxy S20",
+          "parent_series": "Galaxy S20"
         },
         {
-            "id": 19,
-            "name": "SIM Card Tray Repair",
-            "icon": "Brands/repair_Icons/connectivity.png",
-            "description": "SIM card tray replacement and repair",
-            "price": 80,
-            "duration": "01 Hour(s)"
+          "id": 215,
+          "name": "Galaxy S20",
+          "image": "Brands/samsung_modals/samsung-galaxy-s20.jpg",
+          "series": "Galaxy S20",
+          "parent_series": "Galaxy S20"
         },
         {
-            "id": 20,
-            "name": "Device Recycling",
-            "icon": "Brands/repair_Icons/recycle.png",
-            "description": "Eco-friendly device disposal service",
-            "price": 0,
-            "duration": "01 Day(s)"
+          "id": 216,
+          "name": "Galaxy S10 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s10-plus.jpg",
+          "series": "Galaxy S10",
+          "parent_series": "Galaxy S10"
         },
         {
-            "id": 21,
-            "name": "Face ID / Biometric Sensor Repair",
-            "icon": "Brands/repair_Icons/Checkup.png",
-            "description": "Fix Face ID / Biometric recognition issues",
-            "price": 350,
-            "duration": "02 Day(s)"
+          "id": 217,
+          "name": "Galaxy S10",
+          "image": "Brands/samsung_modals/samsung-galaxy-s10.jpg",
+          "series": "Galaxy S10",
+          "parent_series": "Galaxy S10"
         },
         {
-            "id": 22,
-            "name": "Screen Replacement (Original OLED)",
-            "icon": "Brands/repair_Icons/broken.png",
-            "description": "Genuine original OLED screen replacement with TrueTone support",
-            "price": 799,
-            "duration": "01 Hour(s)"
+          "id": 218,
+          "name": "Galaxy S10e",
+          "image": "Brands/samsung_modals/samsung-galaxy-s10e.jpg",
+          "series": "Galaxy S10",
+          "parent_series": "Galaxy S10"
         },
         {
-            "id": 23,
-            "name": "Screen Replacement (Aftermarket High Copy)",
-            "icon": "Brands/repair_Icons/broken.png",
-            "description": "Premium aftermarket display replacement at an economical cost",
-            "price": 390,
-            "duration": "01 Hour(s)"
+          "id": 219,
+          "name": "Galaxy S10 5G",
+          "image": "Brands/samsung_modals/samsung-galaxy-s10-5g.jpg",
+          "series": "Galaxy S10",
+          "parent_series": "Galaxy S10"
         },
         {
-            "id": 24,
-            "name": "Back Camera Glass Repair",
-            "icon": "Brands/repair_Icons/camera.png",
-            "description": "Camera lens glass replacement without full module change",
-            "price": 150,
-            "duration": "01 Hour(s)"
+          "id": 220,
+          "name": "Galaxy S9 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s9-plus.jpg",
+          "series": "Galaxy S9",
+          "parent_series": "Galaxy S9"
         },
         {
-            "id": 25,
-            "name": "Front Camera Replacement",
-            "icon": "Brands/repair_Icons/camera.png",
-            "description": "Front selfie camera module repair and replacement",
-            "price": 180,
-            "duration": "01 Day(s)"
+          "id": 221,
+          "name": "Galaxy S9",
+          "image": "Brands/samsung_modals/samsung-galaxy-s9-.jpg",
+          "series": "Galaxy S9",
+          "parent_series": "Galaxy S9"
         },
         {
-            "id": 26,
-            "name": "Earpiece Speaker Repair",
-            "icon": "Brands/repair_Icons/speaker.png",
-            "description": "Top call receiver earpiece sound clarity fix",
-            "price": 150,
-            "duration": "01 Hour(s)"
+          "id": 222,
+          "name": "Galaxy S8 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s8-plus-.jpg",
+          "series": "Galaxy S8",
+          "parent_series": "Galaxy S8"
         },
         {
-            "id": 27,
-            "name": "Vibration Motor / Taptic Engine Repair",
-            "icon": "Brands/repair_Icons/hardware.png",
-            "description": "Haptic feedback and vibration motor replacement",
-            "price": 120,
-            "duration": "01 Hour(s)"
+          "id": 223,
+          "name": "Galaxy S8",
+          "image": "Brands/samsung_modals/samsung-galaxy-s8.jpg",
+          "series": "Galaxy S8",
+          "parent_series": "Galaxy S8"
         },
         {
-            "id": 28,
-            "name": "WiFi / Bluetooth Antenna Repair",
-            "icon": "Brands/repair_Icons/connectivity.png",
-            "description": "Fix weak signal or dropping WiFi / Bluetooth connectivity",
-            "price": 220,
-            "duration": "02 Day(s)"
+          "id": 224,
+          "name": "Galaxy S7 Edge",
+          "image": "Brands/samsung_modals/samsung-galaxy-s7-edge.jpg",
+          "series": "Galaxy S7",
+          "parent_series": "Galaxy S7"
         },
         {
-            "id": 29,
-            "name": "Signal / Network Issue Fix",
-            "icon": "Brands/repair_Icons/connectivity.png",
-            "description": "Baseband and cellular antenna repair for no-service errors",
-            "price": 250,
-            "duration": "02 Day(s)"
+          "id": 225,
+          "name": "Galaxy S7",
+          "image": "Brands/samsung_modals/samsung-galaxy-s7.jpg",
+          "series": "Galaxy S7",
+          "parent_series": "Galaxy S7"
         },
         {
-            "id": 30,
-            "name": "Dead Phone / No Power Diagnosis & Fix",
-            "icon": "Brands/repair_Icons/power.png",
-            "description": "Comprehensive troubleshooting for non-booting devices",
-            "price": 300,
-            "duration": "03 Day(s)"
+          "id": 226,
+          "name": "Galaxy S6 Edge Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s6-edge-plus.jpg",
+          "series": "Galaxy S6",
+          "parent_series": "Galaxy S6"
         },
         {
-            "id": 31,
-            "name": "Touchscreen Digitizer Repair",
-            "icon": "Brands/repair_Icons/broken.png",
-            "description": "Fix ghost touching or unresponsive touchscreen zones",
-            "price": 250,
-            "duration": "01 Day(s)"
+          "id": 227,
+          "name": "Galaxy S6 Edge",
+          "image": "Brands/samsung_modals/samsung-galaxy-s6-edge.jpg",
+          "series": "Galaxy S6",
+          "parent_series": "Galaxy S6"
         },
         {
-            "id": 32,
-            "name": "Foldable Hinge & Crease Mechanism Repair",
-            "icon": "Brands/repair_Icons/frame_damaged.png",
-            "description": "Repair stiff or damaged hinge for Z Fold, Flip and Mate X",
-            "price": 450,
-            "duration": "03 Day(s)"
+          "id": 228,
+          "name": "Galaxy S6",
+          "image": "Brands/samsung_modals/samsung-galaxy-s6.jpg",
+          "series": "Galaxy S6",
+          "parent_series": "Galaxy S6"
         },
         {
-            "id": 33,
-            "name": "iCloud / Account Consultation & Unlock",
-            "icon": "Brands/repair_Icons/locked.png",
-            "description": "Device access assistance and account troubleshooting",
-            "price": 200,
-            "duration": "01 Day(s)"
+          "id": 229,
+          "name": "Galaxy Note 20 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-note20-ultra.jpg",
+          "series": "Galaxy Note 20",
+          "parent_series": "Galaxy Note 20"
         },
         {
-            "id": 34,
-            "name": "FRP / Google Account Reset Assistance",
-            "icon": "Brands/repair_Icons/locked.png",
-            "description": "Factory Reset Protection lock removal assistance",
-            "price": 150,
-            "duration": "01 Day(s)"
+          "id": 230,
+          "name": "Galaxy Note 20",
+          "image": "Brands/samsung_modals/samsung-galaxy-note20.jpg",
+          "series": "Galaxy Note 20",
+          "parent_series": "Galaxy Note 20"
         },
         {
-            "id": 35,
-            "name": "Keyboard Replacement (MacBook / Laptop)",
-            "icon": "Brands/repair_Icons/hardware.png",
-            "description": "Complete keyboard key replacement and backlit fix",
-            "price": 650,
-            "duration": "03 Day(s)"
+          "id": 231,
+          "name": "Galaxy Note 10 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-note10-plus.jpg",
+          "series": "Galaxy Note 10",
+          "parent_series": "Galaxy Note 10"
         },
         {
-            "id": 36,
-            "name": "Trackpad Repair (MacBook / Laptop)",
-            "icon": "Brands/repair_Icons/hardware.png",
-            "description": "Force touch trackpad sensor and click mechanism repair",
-            "price": 450,
-            "duration": "02 Day(s)"
+          "id": 232,
+          "name": "Galaxy Note 10",
+          "image": "Brands/samsung_modals/samsung-galaxy-note10.jpg",
+          "series": "Galaxy Note 10",
+          "parent_series": "Galaxy Note 10"
         },
         {
-            "id": 37,
-            "name": "Logic Board / Motherboard Micro-soldering",
-            "icon": "Brands/repair_Icons/hardware.png",
-            "description": "Advanced IC level micro-soldering and power management chip fix",
-            "price": 800,
-            "duration": "05 Day(s)"
+          "id": 233,
+          "name": "Galaxy Note 9",
+          "image": "Brands/samsung_modals/samsung-galaxy-note9.jpg",
+          "series": "Galaxy Note 9",
+          "parent_series": "Galaxy Note 9"
         },
         {
-            "id": 38,
-            "name": "Liquid Damage Ultrasonic Cleaning",
-            "icon": "Brands/repair_Icons/waterdaamage.png",
-            "description": "Deep motherboard ultrasonic bath and corrosion removal",
-            "price": 180,
-            "duration": "02 Day(s)"
+          "id": 234,
+          "name": "Galaxy Note 8",
+          "image": "Brands/samsung_modals/samsung-galaxy-note-8.jpg",
+          "series": "Galaxy Note 8",
+          "parent_series": "Galaxy Note 8"
         },
         {
-            "id": 39,
-            "name": "S-Pen / Stylus Replacement & Sensor Fix",
-            "icon": "Brands/repair_Icons/hardware.png",
-            "description": "Samsung Galaxy S-Pen replacement and digitizer coil check",
-            "price": 150,
-            "duration": "01 Day(s)"
+          "id": 270,
+          "name": "Galaxy Z Fold 6",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-fold5-5g.jpg",
+          "series": "Galaxy Z Fold",
+          "parent_series": "Galaxy Z Fold"
         },
         {
-            "id": 40,
-            "name": "Proximity & Ambient Light Sensor Repair",
-            "icon": "Brands/repair_Icons/Checkup.png",
-            "description": "Fix screen not dimming during phone calls or auto-brightness",
-            "price": 180,
-            "duration": "01 Day(s)"
+          "id": 271,
+          "name": "Galaxy Z Flip 6",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-flip5-5g.jpg",
+          "series": "Galaxy Z Flip",
+          "parent_series": "Galaxy Z Flip"
+        },
+        {
+          "id": 235,
+          "name": "Galaxy Z Fold 5",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-fold5-5g.jpg",
+          "series": "Galaxy Z Fold",
+          "parent_series": "Galaxy Z Fold"
+        },
+        {
+          "id": 236,
+          "name": "Galaxy Z Fold 4",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-fold4.jpg",
+          "series": "Galaxy Z Fold",
+          "parent_series": "Galaxy Z Fold"
+        },
+        {
+          "id": 237,
+          "name": "Galaxy Z Fold 3",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-fold3.jpg",
+          "series": "Galaxy Z Fold",
+          "parent_series": "Galaxy Z Fold"
+        },
+        {
+          "id": 238,
+          "name": "Galaxy Z Fold 2",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-fold2-5g.jpg",
+          "series": "Galaxy Z Fold",
+          "parent_series": "Galaxy Z Fold"
+        },
+        {
+          "id": 239,
+          "name": "Galaxy Z Flip 5",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-flip5-5g.jpg",
+          "series": "Galaxy Z Flip",
+          "parent_series": "Galaxy Z Flip"
+        },
+        {
+          "id": 240,
+          "name": "Galaxy Z Flip 4",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-flip4.jpg",
+          "series": "Galaxy Z Flip",
+          "parent_series": "Galaxy Z Flip"
+        },
+        {
+          "id": 241,
+          "name": "Galaxy Z Flip 3",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-flip3.jpg",
+          "series": "Galaxy Z Flip",
+          "parent_series": "Galaxy Z Flip"
+        },
+        {
+          "id": 242,
+          "name": "Galaxy Z Flip",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-flip.jpg",
+          "series": "Galaxy Z Flip",
+          "parent_series": "Galaxy Z Flip"
+        },
+        {
+          "id": 260,
+          "name": "Galaxy A55 5G",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
+          "series": "Galaxy A",
+          "parent_series": "Galaxy A"
+        },
+        {
+          "id": 261,
+          "name": "Galaxy A54 5G",
+          "image": "Brands/samsung_modals/samsung-galaxy-s23.jpg",
+          "series": "Galaxy A",
+          "parent_series": "Galaxy A"
+        },
+        {
+          "id": 262,
+          "name": "Galaxy A35 5G",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-5g.jpg",
+          "series": "Galaxy A",
+          "parent_series": "Galaxy A"
+        },
+        {
+          "id": 263,
+          "name": "Galaxy A25 5G",
+          "image": "Brands/samsung_modals/samsung-galaxy-s23.jpg",
+          "series": "Galaxy A",
+          "parent_series": "Galaxy A"
+        },
+        {
+          "id": 264,
+          "name": "Galaxy A15 5G",
+          "image": "Brands/samsung_modals/samsung-galaxy-s22.jpg",
+          "series": "Galaxy A",
+          "parent_series": "Galaxy A"
+        },
+        {
+          "id": 265,
+          "name": "Galaxy A15",
+          "image": "Brands/samsung_modals/samsung-galaxy-s22.jpg",
+          "series": "Galaxy A",
+          "parent_series": "Galaxy A"
+        },
+        {
+          "id": 266,
+          "name": "Galaxy A05s",
+          "image": "Brands/samsung_modals/samsung-galaxy-s21.jpg",
+          "series": "Galaxy A",
+          "parent_series": "Galaxy A"
+        },
+        {
+          "id": 2090,
+          "name": "Samsung Galaxy S26 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s26-ultra.jpg",
+          "series": "Galaxy S26",
+          "parent_series": "Galaxy S26"
+        },
+        {
+          "id": 2091,
+          "name": "Samsung Galaxy Z Fold 6",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-fold-6.jpg",
+          "series": "Galaxy Z",
+          "parent_series": "Galaxy Z"
+        },
+        {
+          "id": 2092,
+          "name": "Samsung Galaxy S25 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s25-ultra.jpg",
+          "series": "Galaxy S25",
+          "parent_series": "Galaxy S25"
+        },
+        {
+          "id": 2093,
+          "name": "Samsung Galaxy S24 Ultra",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-ultra.jpg",
+          "series": "Galaxy S24",
+          "parent_series": "Galaxy S24"
+        },
+        {
+          "id": 2094,
+          "name": "Samsung Galaxy S26 Plus",
+          "image": "Brands/samsung_modals/samsung-galaxy-s26-plus.jpg",
+          "series": "Galaxy S26",
+          "parent_series": "Galaxy S26"
+        },
+        {
+          "id": 2095,
+          "name": "Samsung Galaxy Z Fold 5",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-fold-5.jpg",
+          "series": "Galaxy Z",
+          "parent_series": "Galaxy Z"
+        },
+        {
+          "id": 2096,
+          "name": "Samsung Galaxy Z Flip 6",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-flip-6.jpg",
+          "series": "Galaxy Z",
+          "parent_series": "Galaxy Z"
+        },
+        {
+          "id": 2097,
+          "name": "Samsung Galaxy Z Flip 5",
+          "image": "Brands/samsung_modals/samsung-galaxy-z-flip-5.jpg",
+          "series": "Galaxy Z",
+          "parent_series": "Galaxy Z"
+        },
+        {
+          "id": 2098,
+          "name": "Samsung Galaxy S26",
+          "image": "Brands/samsung_modals/samsung-galaxy-s26.jpg",
+          "series": "Galaxy S26",
+          "parent_series": "Galaxy S26"
+        },
+        {
+          "id": 2099,
+          "name": "Samsung Galaxy S25",
+          "image": "Brands/samsung_modals/samsung-galaxy-s25.jpg",
+          "series": "Galaxy S25",
+          "parent_series": "Galaxy S25"
+        },
+        {
+          "id": 2100,
+          "name": "Samsung Galaxy S24",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24.jpg",
+          "series": "Galaxy S24",
+          "parent_series": "Galaxy S24"
+        },
+        {
+          "id": 2101,
+          "name": "Samsung Galaxy S25 FE",
+          "image": "Brands/samsung_modals/samsung-galaxy-s25-fe.jpg",
+          "series": "Galaxy S25",
+          "parent_series": "Galaxy S25"
+        },
+        {
+          "id": 2102,
+          "name": "Samsung Galaxy A57",
+          "image": "Brands/samsung_modals/samsung-galaxy-a57.jpg",
+          "series": "Galaxy A57",
+          "parent_series": "Galaxy A57"
+        },
+        {
+          "id": 2103,
+          "name": "Samsung Galaxy S24 FE",
+          "image": "Brands/samsung_modals/samsung-galaxy-s24-fe.jpg",
+          "series": "Galaxy S24",
+          "parent_series": "Galaxy S24"
+        },
+        {
+          "id": 2104,
+          "name": "Samsung Galaxy S23 FE",
+          "image": "Brands/samsung_modals/samsung-galaxy-s23-fe.jpg",
+          "series": "Galaxy S23",
+          "parent_series": "Galaxy S23"
         }
-    ],
-    "metadata": {
-        "version": "2.0.0",
-        "last_updated": "2026-08-04",
-        "total_brands": 10,
-        "total_models": 178,
-        "total_repair_services": 40
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Google Pixel",
+      "logo": "Brands/googlepixel.png",
+      "description": "Google Pixel Devices",
+      "models": [
+        {
+          "id": 301,
+          "name": "Pixel 9 Pro Fold",
+          "image": "Brands/google_modals/google-pixel-9-pro-fold.jpg",
+          "series": "Pixel 9",
+          "parent_series": "Pixel 9"
+        },
+        {
+          "id": 302,
+          "name": "Pixel 9 Pro XL",
+          "image": "Brands/google_modals/google-pixel-9-pro-xl-.jpg",
+          "series": "Pixel 9",
+          "parent_series": "Pixel 9"
+        },
+        {
+          "id": 303,
+          "name": "Pixel 9 Pro",
+          "image": "Brands/google_modals/google-pixel-9-pro-.jpg",
+          "series": "Pixel 9",
+          "parent_series": "Pixel 9"
+        },
+        {
+          "id": 304,
+          "name": "Pixel 9",
+          "image": "Brands/google_modals/google-pixel-9-.jpg",
+          "series": "Pixel 9",
+          "parent_series": "Pixel 9"
+        },
+        {
+          "id": 305,
+          "name": "Pixel 9a",
+          "image": "Brands/google_modals/google-pixel-9a.jpg",
+          "series": "Pixel 9",
+          "parent_series": "Pixel 9"
+        },
+        {
+          "id": 306,
+          "name": "Pixel 8 Pro",
+          "image": "Brands/google_modals/google-pixel-8-pro.jpg",
+          "series": "Pixel 8",
+          "parent_series": "Pixel 8"
+        },
+        {
+          "id": 307,
+          "name": "Pixel 8",
+          "image": "Brands/google_modals/google-pixel-8.jpg",
+          "series": "Pixel 8",
+          "parent_series": "Pixel 8"
+        },
+        {
+          "id": 308,
+          "name": "Pixel 8a",
+          "image": "Brands/google_modals/google-pixel-8a.jpg",
+          "series": "Pixel 8",
+          "parent_series": "Pixel 8"
+        },
+        {
+          "id": 309,
+          "name": "Pixel 7 Pro",
+          "image": "Brands/google_modals/google-pixel7-pro.jpg",
+          "series": "Pixel 7",
+          "parent_series": "Pixel 7"
+        },
+        {
+          "id": 310,
+          "name": "Pixel 7",
+          "image": "Brands/google_modals/google-pixel7.jpg",
+          "series": "Pixel 7",
+          "parent_series": "Pixel 7"
+        },
+        {
+          "id": 311,
+          "name": "Pixel 7a",
+          "image": "Brands/google_modals/google-pixel-7a.jpg",
+          "series": "Pixel 7",
+          "parent_series": "Pixel 7"
+        },
+        {
+          "id": 312,
+          "name": "Pixel 6 Pro",
+          "image": "Brands/google_modals/google-pixel-6-pro.jpg",
+          "series": "Pixel 6",
+          "parent_series": "Pixel 6"
+        },
+        {
+          "id": 313,
+          "name": "Pixel 6",
+          "image": "Brands/google_modals/google-pixel-6.jpg",
+          "series": "Pixel 6",
+          "parent_series": "Pixel 6"
+        },
+        {
+          "id": 314,
+          "name": "Pixel 6a",
+          "image": "Brands/google_modals/google-pixel-6a.jpg",
+          "series": "Pixel 6",
+          "parent_series": "Pixel 6"
+        },
+        {
+          "id": 315,
+          "name": "Pixel 5",
+          "image": "Brands/google_modals/google-pixel-5.jpg",
+          "series": "Pixel 5",
+          "parent_series": "Pixel 5"
+        },
+        {
+          "id": 316,
+          "name": "Pixel 5a",
+          "image": "Brands/google_modals/google-pixel-5a.jpg",
+          "series": "Pixel 5",
+          "parent_series": "Pixel 5"
+        },
+        {
+          "id": 317,
+          "name": "Pixel 4 XL",
+          "image": "Brands/google_modals/google-pixel-4XL.jpg",
+          "series": "Pixel 4",
+          "parent_series": "Pixel 4"
+        },
+        {
+          "id": 318,
+          "name": "Pixel 4",
+          "image": "Brands/google_modals/google-pixel-4.jpg",
+          "series": "Pixel 4",
+          "parent_series": "Pixel 4"
+        },
+        {
+          "id": 319,
+          "name": "Pixel 4a",
+          "image": "Brands/google_modals/google-pixel-4a.jpg",
+          "series": "Pixel 4",
+          "parent_series": "Pixel 4"
+        },
+        {
+          "id": 320,
+          "name": "Pixel 4a 5G",
+          "image": "Brands/google_modals/google-pixel-4a-5g.jpg",
+          "series": "Pixel 4",
+          "parent_series": "Pixel 4"
+        },
+        {
+          "id": 321,
+          "name": "Pixel 3 XL",
+          "image": "Brands/google_modals/google-pixel-3xl-.jpg",
+          "series": "Pixel 3",
+          "parent_series": "Pixel 3"
+        },
+        {
+          "id": 322,
+          "name": "Pixel 3",
+          "image": "Brands/google_modals/google-pixel-3-.jpg",
+          "series": "Pixel 3",
+          "parent_series": "Pixel 3"
+        },
+        {
+          "id": 323,
+          "name": "Pixel 3a XL",
+          "image": "Brands/google_modals/google-pixel-3a-xl-.jpg",
+          "series": "Pixel 3",
+          "parent_series": "Pixel 3"
+        },
+        {
+          "id": 324,
+          "name": "Pixel 3a",
+          "image": "Brands/google_modals/google-pixel-3a.jpg",
+          "series": "Pixel 3",
+          "parent_series": "Pixel 3"
+        },
+        {
+          "id": 325,
+          "name": "Pixel 2",
+          "image": "Brands/google_modals/google-pixel-2.jpg",
+          "series": "Pixel 2",
+          "parent_series": "Pixel 2"
+        },
+        {
+          "id": 326,
+          "name": "Pixel XL 2",
+          "image": "Brands/google_modals/google-pixel-xl2-.jpg",
+          "series": "Pixel 2",
+          "parent_series": "Pixel 2"
+        },
+        {
+          "id": 327,
+          "name": "Pixel XL",
+          "image": "Brands/google_modals/google-pixel-xl.jpg",
+          "series": "Pixel 1",
+          "parent_series": "Pixel 1"
+        },
+        {
+          "id": 328,
+          "name": "Pixel",
+          "image": "Brands/google_modals/google-pixel.jpg",
+          "series": "Pixel 1",
+          "parent_series": "Pixel 1"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "OnePlus",
+      "logo": "Brands/oneplus.png",
+      "description": "OnePlus Devices",
+      "models": [
+        {
+          "id": 401,
+          "name": "OnePlus 12",
+          "image": "Brands/oneplus_modals/oneplus-12.jpg",
+          "series": "OnePlus 12",
+          "parent_series": "OnePlus 12"
+        },
+        {
+          "id": 402,
+          "name": "OnePlus 12R",
+          "image": "Brands/oneplus_modals/oneplus-12r.jpg",
+          "series": "OnePlus 12",
+          "parent_series": "OnePlus 12"
+        },
+        {
+          "id": 403,
+          "name": "OnePlus 11",
+          "image": "Brands/oneplus_modals/oneplus-11.jpg",
+          "series": "OnePlus 11",
+          "parent_series": "OnePlus 11"
+        },
+        {
+          "id": 404,
+          "name": "OnePlus 10 Pro",
+          "image": "Brands/oneplus_modals/oneplus-10-pro.jpg",
+          "series": "OnePlus 10",
+          "parent_series": "OnePlus 10"
+        },
+        {
+          "id": 405,
+          "name": "OnePlus 10T",
+          "image": "Brands/oneplus_modals/oneplus-10t.jpg",
+          "series": "OnePlus 10",
+          "parent_series": "OnePlus 10"
+        },
+        {
+          "id": 406,
+          "name": "OnePlus 9 Pro",
+          "image": "Brands/oneplus_modals/oneplus-9-pro-.jpg",
+          "series": "OnePlus 9",
+          "parent_series": "OnePlus 9"
+        },
+        {
+          "id": 407,
+          "name": "OnePlus 9",
+          "image": "Brands/oneplus_modals/oneplus-9-.jpg",
+          "series": "OnePlus 9",
+          "parent_series": "OnePlus 9"
+        },
+        {
+          "id": 408,
+          "name": "OnePlus 9R",
+          "image": "Brands/oneplus_modals/oneplus-9r.jpg",
+          "series": "OnePlus 9",
+          "parent_series": "OnePlus 9"
+        },
+        {
+          "id": 409,
+          "name": "OnePlus 8 Pro",
+          "image": "Brands/oneplus_modals/oneplus-8-pro.jpg",
+          "series": "OnePlus 8",
+          "parent_series": "OnePlus 8"
+        },
+        {
+          "id": 410,
+          "name": "OnePlus 8",
+          "image": "Brands/oneplus_modals/oneplus-8.jpg",
+          "series": "OnePlus 8",
+          "parent_series": "OnePlus 8"
+        },
+        {
+          "id": 411,
+          "name": "OnePlus 8T",
+          "image": "Brands/oneplus_modals/oneplus-8t.jpg",
+          "series": "OnePlus 8",
+          "parent_series": "OnePlus 8"
+        },
+        {
+          "id": 412,
+          "name": "OnePlus 7T Pro",
+          "image": "Brands/oneplus_modals/oneplus-7t-pro.jpg",
+          "series": "OnePlus 7",
+          "parent_series": "OnePlus 7"
+        },
+        {
+          "id": 413,
+          "name": "OnePlus 7T",
+          "image": "Brands/oneplus_modals/oneplus-7t-.jpg",
+          "series": "OnePlus 7",
+          "parent_series": "OnePlus 7"
+        },
+        {
+          "id": 414,
+          "name": "OnePlus 7 Pro",
+          "image": "Brands/oneplus_modals/oneplus-7-pro.jpg",
+          "series": "OnePlus 7",
+          "parent_series": "OnePlus 7"
+        },
+        {
+          "id": 415,
+          "name": "OnePlus 7",
+          "image": "Brands/oneplus_modals/oneplus-7.jpg",
+          "series": "OnePlus 7",
+          "parent_series": "OnePlus 7"
+        },
+        {
+          "id": 416,
+          "name": "OnePlus 6T",
+          "image": "Brands/oneplus_modals/oneplus-6t.jpg",
+          "series": "OnePlus 6",
+          "parent_series": "OnePlus 6"
+        },
+        {
+          "id": 417,
+          "name": "OnePlus 6",
+          "image": "Brands/oneplus_modals/oneplus-6.jpg",
+          "series": "OnePlus 6",
+          "parent_series": "OnePlus 6"
+        },
+        {
+          "id": 418,
+          "name": "OnePlus 5T",
+          "image": "Brands/oneplus_modals/oneplus-5t.jpg",
+          "series": "OnePlus 5",
+          "parent_series": "OnePlus 5"
+        },
+        {
+          "id": 419,
+          "name": "OnePlus 3T",
+          "image": "Brands/oneplus_modals/oneplus-3t.jpg",
+          "series": "OnePlus 3",
+          "parent_series": "OnePlus 3"
+        },
+        {
+          "id": 420,
+          "name": "OnePlus X",
+          "image": "Brands/oneplus_modals/oneplus-x.jpg",
+          "series": "OnePlus X",
+          "parent_series": "OnePlus X"
+        },
+        {
+          "id": 421,
+          "name": "OnePlus Nord CE3",
+          "image": "Brands/oneplus_modals/oneplus-nord-ce3.jpg",
+          "series": "OnePlus Nord",
+          "parent_series": "OnePlus Nord"
+        },
+        {
+          "id": 422,
+          "name": "OnePlus Nord 2T",
+          "image": "Brands/oneplus_modals/oneplus-nord-2t.jpg",
+          "series": "OnePlus Nord",
+          "parent_series": "OnePlus Nord"
+        },
+        {
+          "id": 423,
+          "name": "OnePlus Ace 2",
+          "image": "Brands/oneplus_modals/oneplus-ace2.jpg",
+          "series": "OnePlus Ace",
+          "parent_series": "OnePlus Ace"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Huawei",
+      "logo": "Brands/huawei.png",
+      "description": "Huawei Smartphones & Devices",
+      "models": [
+        {
+          "id": 601,
+          "name": "Mate 60 RS",
+          "image": "Brands/huawei_modals/huawei-mate-60.jpg",
+          "series": "Mate 60",
+          "parent_series": "Mate 60"
+        },
+        {
+          "id": 602,
+          "name": "Mate 60 Pro+",
+          "image": "Brands/huawei_modals/huawei-mate-60.jpg",
+          "series": "Mate 60",
+          "parent_series": "Mate 60"
+        },
+        {
+          "id": 603,
+          "name": "Mate 60 Pro",
+          "image": "Brands/huawei_modals/huawei-mate-60.jpg",
+          "series": "Mate 60",
+          "parent_series": "Mate 60"
+        },
+        {
+          "id": 604,
+          "name": "Mate 60",
+          "image": "Brands/huawei_modals/huawei-mate-60.jpg",
+          "series": "Mate 60",
+          "parent_series": "Mate 60"
+        },
+        {
+          "id": 605,
+          "name": "Mate 50 Pro",
+          "image": "Brands/huawei_modals/huawei-mate-50.jpg",
+          "series": "Mate 50",
+          "parent_series": "Mate 50"
+        },
+        {
+          "id": 610,
+          "name": "Pura 70 Ultra",
+          "image": "Brands/huawei_modals/huawei-pura-70.jpg",
+          "series": "Pura 70",
+          "parent_series": "Pura 70"
+        },
+        {
+          "id": 611,
+          "name": "Pura 70 Pro+",
+          "image": "Brands/huawei_modals/huawei-pura-70.jpg",
+          "series": "Pura 70",
+          "parent_series": "Pura 70"
+        },
+        {
+          "id": 612,
+          "name": "Pura 70 Pro",
+          "image": "Brands/huawei_modals/huawei-pura-70.jpg",
+          "series": "Pura 70",
+          "parent_series": "Pura 70"
+        },
+        {
+          "id": 613,
+          "name": "Pura 70",
+          "image": "Brands/huawei_modals/huawei-pura-70.jpg",
+          "series": "Pura 70",
+          "parent_series": "Pura 70"
+        },
+        {
+          "id": 614,
+          "name": "P60 Pro",
+          "image": "Brands/huawei_modals/p60-pro.jpg",
+          "series": "P60",
+          "parent_series": "P60"
+        },
+        {
+          "id": 615,
+          "name": "P60",
+          "image": "Brands/huawei_modals/p60.jpg",
+          "series": "P60",
+          "parent_series": "P60"
+        },
+        {
+          "id": 616,
+          "name": "P50 Pro",
+          "image": "Brands/huawei_modals/huawei-p50.jpg",
+          "series": "P50",
+          "parent_series": "P50"
+        },
+        {
+          "id": 620,
+          "name": "Nova 12 Pro",
+          "image": "Brands/huawei_modals/huawei-nova-12.jpg",
+          "series": "Nova",
+          "parent_series": "Nova"
+        },
+        {
+          "id": 621,
+          "name": "Nova 12",
+          "image": "Brands/huawei_modals/huawei-nova-12.jpg",
+          "series": "Nova",
+          "parent_series": "Nova"
+        },
+        {
+          "id": 630,
+          "name": "Mate X5",
+          "image": "Brands/huawei_modals/huawei-mate-x.jpg",
+          "series": "Mate X",
+          "parent_series": "Mate X"
+        },
+        {
+          "id": 631,
+          "name": "Mate X3",
+          "image": "Brands/huawei_modals/huawei-mate-x.jpg",
+          "series": "Mate X",
+          "parent_series": "Mate X"
+        },
+        {
+          "id": 2065,
+          "name": "Huawei P30 Pro",
+          "image": "Brands/huawei_modals/huawei-p30-pro.jpg",
+          "series": "Huawei P30",
+          "parent_series": "Huawei P30"
+        },
+        {
+          "id": 2066,
+          "name": "Huawei Mate 20 Pro",
+          "image": "Brands/huawei_modals/huawei-mate-20-pro.jpg",
+          "series": "Mate 20",
+          "parent_series": "Mate 20"
+        },
+        {
+          "id": 2067,
+          "name": "Huawei Nova 9",
+          "image": "Brands/huawei_modals/huawei-nova-9.jpg",
+          "series": "Nova 9",
+          "parent_series": "Nova 9"
+        },
+        {
+          "id": 2068,
+          "name": "Huawei P20 Pro",
+          "image": "Brands/huawei_modals/huawei-p20-pro.jpg",
+          "series": "Huawei P20",
+          "parent_series": "Huawei P20"
+        },
+        {
+          "id": 2069,
+          "name": "Huawei Nova 8 Pro",
+          "image": "Brands/huawei_modals/huawei-nova-8-pro.jpg",
+          "series": "Nova 8",
+          "parent_series": "Nova 8"
+        },
+        {
+          "id": 2070,
+          "name": "Huawei P30",
+          "image": "Brands/huawei_modals/huawei-p30.jpg",
+          "series": "Huawei P30",
+          "parent_series": "Huawei P30"
+        },
+        {
+          "id": 2071,
+          "name": "Huawei Y9a",
+          "image": "Brands/huawei_modals/huawei-y9a.jpg",
+          "series": "Huawei Y9a",
+          "parent_series": "Huawei Y9a"
+        },
+        {
+          "id": 2072,
+          "name": "Huawei Nova 7i",
+          "image": "Brands/huawei_modals/huawei-nova-7i.jpg",
+          "series": "Nova 7i",
+          "parent_series": "Nova 7i"
+        },
+        {
+          "id": 2073,
+          "name": "Huawei Y9s 2019",
+          "image": "Brands/huawei_modals/huawei-y9s-2019.jpg",
+          "series": "Huawei Y9s",
+          "parent_series": "Huawei Y9s"
+        },
+        {
+          "id": 2074,
+          "name": "Huawei P30 Lite",
+          "image": "Brands/huawei_modals/huawei-p30-lite.jpg",
+          "series": "Huawei P30",
+          "parent_series": "Huawei P30"
+        },
+        {
+          "id": 2075,
+          "name": "Huawei Nova 3i",
+          "image": "Brands/huawei_modals/huawei-nova-3i.jpg",
+          "series": "Nova 3i",
+          "parent_series": "Nova 3i"
+        },
+        {
+          "id": 2076,
+          "name": "Huawei Y7a",
+          "image": "Brands/huawei_modals/huawei-y7a.jpg",
+          "series": "Huawei Y7a",
+          "parent_series": "Huawei Y7a"
+        },
+        {
+          "id": 2077,
+          "name": "Huawei Y9 Prime 2019",
+          "image": "Brands/huawei_modals/huawei-y9-prime-2019.jpg",
+          "series": "Huawei Y9",
+          "parent_series": "Huawei Y9"
+        },
+        {
+          "id": 2078,
+          "name": "Huawei Y8p",
+          "image": "Brands/huawei_modals/huawei-y8p.jpg",
+          "series": "Huawei Y8p",
+          "parent_series": "Huawei Y8p"
+        },
+        {
+          "id": 2079,
+          "name": "Huawei Watch GT",
+          "image": "Brands/huawei_modals/huawei-watch-gt.jpg",
+          "series": "Huawei Watch",
+          "parent_series": "Huawei Watch"
+        },
+        {
+          "id": 2080,
+          "name": "Huawei Y7p",
+          "image": "Brands/huawei_modals/huawei-y7p.jpg",
+          "series": "Huawei Y7p",
+          "parent_series": "Huawei Y7p"
+        },
+        {
+          "id": 2081,
+          "name": "Huawei MediaPad T3 10",
+          "image": "Brands/huawei_modals/huawei-mediapad-t3-10.jpg",
+          "series": "Huawei MediaPad",
+          "parent_series": "Huawei MediaPad"
+        },
+        {
+          "id": 2082,
+          "name": "Huawei Y7 Prime 2019 SE",
+          "image": "Brands/huawei_modals/huawei-y7-prime-2019-se.jpg",
+          "series": "Huawei Y7",
+          "parent_series": "Huawei Y7"
+        },
+        {
+          "id": 2083,
+          "name": "Huawei Y7 Prime 2019",
+          "image": "Brands/huawei_modals/huawei-y7-prime-2019.jpg",
+          "series": "Huawei Y7",
+          "parent_series": "Huawei Y7"
+        },
+        {
+          "id": 2084,
+          "name": "Huawei Watch Fit",
+          "image": "Brands/huawei_modals/huawei-watch-fit.jpg",
+          "series": "Huawei Watch",
+          "parent_series": "Huawei Watch"
+        },
+        {
+          "id": 2085,
+          "name": "Huawei Y6p",
+          "image": "Brands/huawei_modals/huawei-y6p.jpg",
+          "series": "Huawei Y6p",
+          "parent_series": "Huawei Y6p"
+        },
+        {
+          "id": 2086,
+          "name": "Huawei Y6s",
+          "image": "Brands/huawei_modals/huawei-y6s.jpg",
+          "series": "Huawei Y6s",
+          "parent_series": "Huawei Y6s"
+        },
+        {
+          "id": 2087,
+          "name": "Huawei Y6 Prime 2019",
+          "image": "Brands/huawei_modals/huawei-y6-prime-2019.jpg",
+          "series": "Huawei Y6",
+          "parent_series": "Huawei Y6"
+        },
+        {
+          "id": 2088,
+          "name": "Huawei MediaPad T3 7",
+          "image": "Brands/huawei_modals/huawei-mediapad-t3-7.jpg",
+          "series": "Huawei MediaPad",
+          "parent_series": "Huawei MediaPad"
+        },
+        {
+          "id": 2089,
+          "name": "Huawei Y5p",
+          "image": "Brands/huawei_modals/huawei-y5p.jpg",
+          "series": "Huawei Y5p",
+          "parent_series": "Huawei Y5p"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Xiaomi",
+      "logo": "Brands/xiaomi.png",
+      "description": "Xiaomi, Redmi & POCO Devices",
+      "models": [
+        {
+          "id": 701,
+          "name": "Xiaomi 14 Ultra",
+          "image": "Brands/xiaomi_modals/xiaomi-14-ultra.jpg",
+          "series": "Xiaomi 14",
+          "parent_series": "Xiaomi 14"
+        },
+        {
+          "id": 702,
+          "name": "Xiaomi 14 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-14-pro.jpg",
+          "series": "Xiaomi 14",
+          "parent_series": "Xiaomi 14"
+        },
+        {
+          "id": 703,
+          "name": "Xiaomi 14",
+          "image": "Brands/xiaomi_modals/xiaomi-14.jpg",
+          "series": "Xiaomi 14",
+          "parent_series": "Xiaomi 14"
+        },
+        {
+          "id": 710,
+          "name": "Redmi Note 13 Pro+",
+          "image": "Brands/xiaomi_modals/redmi-note-13-pro-.jpg",
+          "series": "Redmi Note 13",
+          "parent_series": "Redmi Note 13"
+        },
+        {
+          "id": 711,
+          "name": "Redmi Note 13 Pro",
+          "image": "Brands/xiaomi_modals/redmi-note-13-pro.jpg",
+          "series": "Redmi Note 13",
+          "parent_series": "Redmi Note 13"
+        },
+        {
+          "id": 712,
+          "name": "Redmi Note 13",
+          "image": "Brands/xiaomi_modals/redmi-note-13.jpg",
+          "series": "Redmi Note 13",
+          "parent_series": "Redmi Note 13"
+        },
+        {
+          "id": 713,
+          "name": "Redmi Note 12 Pro+",
+          "image": "Brands/xiaomi_modals/redmi-note-12-pro-.jpg",
+          "series": "Redmi Note 12",
+          "parent_series": "Redmi Note 12"
+        },
+        {
+          "id": 714,
+          "name": "Redmi Note 12",
+          "image": "Brands/xiaomi_modals/redmi-note-12.jpg",
+          "series": "Redmi Note 12",
+          "parent_series": "Redmi Note 12"
+        },
+        {
+          "id": 730,
+          "name": "POCO X6 Pro",
+          "image": "Brands/xiaomi_modals/poco-x6-pro.jpg",
+          "series": "POCO X6",
+          "parent_series": "POCO X6"
+        },
+        {
+          "id": 731,
+          "name": "POCO X6",
+          "image": "Brands/xiaomi_modals/poco-x6.jpg",
+          "series": "POCO X6",
+          "parent_series": "POCO X6"
+        },
+        {
+          "id": 2000,
+          "name": "Xiaomi 17 Ultra",
+          "image": "Brands/xiaomi_modals/xiaomi-17-ultra.jpg",
+          "series": "Xiaomi 17",
+          "parent_series": "Xiaomi 17"
+        },
+        {
+          "id": 2001,
+          "name": "Xiaomi 15 Ultra",
+          "image": "Brands/xiaomi_modals/xiaomi-15-ultra.jpg",
+          "series": "Xiaomi 15",
+          "parent_series": "Xiaomi 15"
+        },
+        {
+          "id": 2002,
+          "name": "Xiaomi 17",
+          "image": "Brands/xiaomi_modals/xiaomi-17.jpg",
+          "series": "Xiaomi 17",
+          "parent_series": "Xiaomi 17"
+        },
+        {
+          "id": 2003,
+          "name": "Xiaomi 17T Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-17t-pro.jpg",
+          "series": "Xiaomi 17T",
+          "parent_series": "Xiaomi 17T"
+        },
+        {
+          "id": 2004,
+          "name": "Xiaomi 15",
+          "image": "Brands/xiaomi_modals/xiaomi-15.jpg",
+          "series": "Xiaomi 15",
+          "parent_series": "Xiaomi 15"
+        },
+        {
+          "id": 2005,
+          "name": "Xiaomi Poco F7 Ultra",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-f7-ultra.jpg",
+          "series": "Poco F7",
+          "parent_series": "Poco F7"
+        },
+        {
+          "id": 2006,
+          "name": "Xiaomi 17T",
+          "image": "Brands/xiaomi_modals/xiaomi-17t.jpg",
+          "series": "Xiaomi 17T",
+          "parent_series": "Xiaomi 17T"
+        },
+        {
+          "id": 2007,
+          "name": "Xiaomi 15T Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-15t-pro.jpg",
+          "series": "Xiaomi 15T",
+          "parent_series": "Xiaomi 15T"
+        },
+        {
+          "id": 2008,
+          "name": "Xiaomi 14T Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-14t-pro.jpg",
+          "series": "Xiaomi 14T",
+          "parent_series": "Xiaomi 14T"
+        },
+        {
+          "id": 2009,
+          "name": "Xiaomi Poco F7 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-f7-pro.jpg",
+          "series": "Poco F7",
+          "parent_series": "Poco F7"
+        },
+        {
+          "id": 2010,
+          "name": "Xiaomi 14T",
+          "image": "Brands/xiaomi_modals/xiaomi-14t.jpg",
+          "series": "Xiaomi 14T",
+          "parent_series": "Xiaomi 14T"
+        },
+        {
+          "id": 2011,
+          "name": "Xiaomi Redmi Note 15 Pro Plus",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-15-pro-plus.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2012,
+          "name": "Xiaomi 15T",
+          "image": "Brands/xiaomi_modals/xiaomi-15t.jpg",
+          "series": "Xiaomi 15T",
+          "parent_series": "Xiaomi 15T"
+        },
+        {
+          "id": 2013,
+          "name": "Xiaomi Poco F6 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-f6-pro.jpg",
+          "series": "Poco F6",
+          "parent_series": "Poco F6"
+        },
+        {
+          "id": 2014,
+          "name": "Xiaomi Redmi Note 14 Pro Plus",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-14-pro-plus.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2015,
+          "name": "Xiaomi Redmi Note 13 Pro Plus",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-13-pro-plus.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2016,
+          "name": "Xiaomi Poco X7 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-x7-pro.jpg",
+          "series": "Poco X7",
+          "parent_series": "Poco X7"
+        },
+        {
+          "id": 2017,
+          "name": "Xiaomi Poco F6",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-f6.jpg",
+          "series": "Poco F6",
+          "parent_series": "Poco F6"
+        },
+        {
+          "id": 2018,
+          "name": "Xiaomi Poco X6 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-x6-pro.jpg",
+          "series": "Poco X6",
+          "parent_series": "Poco X6"
+        },
+        {
+          "id": 2019,
+          "name": "Xiaomi Redmi Note 15 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-15-pro.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2020,
+          "name": "Xiaomi Redmi Note 14 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-14-pro.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2021,
+          "name": "Xiaomi Poco M6 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-m6-pro.jpg",
+          "series": "Poco M6",
+          "parent_series": "Poco M6"
+        },
+        {
+          "id": 2022,
+          "name": "Xiaomi Redmi Note 13 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-13-pro.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2023,
+          "name": "Xiaomi Redmi Note 15",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-15.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2024,
+          "name": "Xiaomi Redmi Note 12",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-12.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2025,
+          "name": "Xiaomi Redmi Note 14",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-14.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2026,
+          "name": "Xiaomi Redmi 15",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-15.jpg",
+          "series": "Redmi 15",
+          "parent_series": "Redmi 15"
+        },
+        {
+          "id": 2027,
+          "name": "Xiaomi Redmi Note 13",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-note-13.jpg",
+          "series": "Redmi Note",
+          "parent_series": "Redmi Note"
+        },
+        {
+          "id": 2028,
+          "name": "Xiaomi Redmi 15C",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-15c.jpg",
+          "series": "Redmi 15C",
+          "parent_series": "Redmi 15C"
+        },
+        {
+          "id": 2029,
+          "name": "Xiaomi Poco C85",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-c85.jpg",
+          "series": "Poco C85",
+          "parent_series": "Poco C85"
+        },
+        {
+          "id": 2030,
+          "name": "Xiaomi Poco C65",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-c65.jpg",
+          "series": "Poco C65",
+          "parent_series": "Poco C65"
+        },
+        {
+          "id": 2031,
+          "name": "Xiaomi Redmi A7 Pro",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-a7-pro.jpg",
+          "series": "Redmi A7",
+          "parent_series": "Redmi A7"
+        },
+        {
+          "id": 2032,
+          "name": "Xiaomi Redmi 13",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-13.jpg",
+          "series": "Redmi 13",
+          "parent_series": "Redmi 13"
+        },
+        {
+          "id": 2033,
+          "name": "Xiaomi Redmi A5",
+          "image": "Brands/xiaomi_modals/xiaomi-redmi-a5.jpg",
+          "series": "Redmi A5",
+          "parent_series": "Redmi A5"
+        },
+        {
+          "id": 2034,
+          "name": "Xiaomi Poco C75",
+          "image": "Brands/xiaomi_modals/xiaomi-poco-c75.jpg",
+          "series": "Poco C75",
+          "parent_series": "Poco C75"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Oppo",
+      "logo": "Brands/oppo.png",
+      "description": "Oppo & Realme Devices",
+      "models": [
+        {
+          "id": 801,
+          "name": "Find X8 Pro",
+          "image": "Brands/oppo_modals/find-x8-pro.jpg",
+          "series": "Find X8",
+          "parent_series": "Find X8"
+        },
+        {
+          "id": 802,
+          "name": "Find X8",
+          "image": "Brands/oppo_modals/find-x8.jpg",
+          "series": "Find X8",
+          "parent_series": "Find X8"
+        },
+        {
+          "id": 810,
+          "name": "Reno 12 Pro",
+          "image": "Brands/oppo_modals/reno-12-pro.jpg",
+          "series": "Reno 12",
+          "parent_series": "Reno 12"
+        },
+        {
+          "id": 811,
+          "name": "Reno 12",
+          "image": "Brands/oppo_modals/reno-12.jpg",
+          "series": "Reno 12",
+          "parent_series": "Reno 12"
+        },
+        {
+          "id": 820,
+          "name": "A98 5G",
+          "image": "Brands/oppo_modals/oppo-a98.jpg",
+          "series": "Oppo A",
+          "parent_series": "Oppo A"
+        },
+        {
+          "name": "Find X7 Ultra",
+          "image": "Brands/oppo_modals/find-x8.jpg"
+        },
+        {
+          "name": "Reno 10 Pro+",
+          "image": "Brands/oppo_modals/oppo-reno-11.jpg"
+        },
+        {
+          "name": "Oppo A78 4G",
+          "image": "Brands/oppo_modals/oppo-a60.jpg"
+        },
+        {
+          "id": 2035,
+          "name": "Oppo Reno 15 Pro",
+          "image": "Brands/oppo_modals/oppo-reno-15-pro.jpg",
+          "series": "Reno 15",
+          "parent_series": "Reno 15"
+        },
+        {
+          "id": 2036,
+          "name": "Oppo Reno 14 Pro",
+          "image": "Brands/oppo_modals/oppo-reno-14-pro.jpg",
+          "series": "Reno 14",
+          "parent_series": "Reno 14"
+        },
+        {
+          "id": 2037,
+          "name": "Oppo Reno 13 Pro",
+          "image": "Brands/oppo_modals/oppo-reno-13-pro.jpg",
+          "series": "Reno 13",
+          "parent_series": "Reno 13"
+        },
+        {
+          "id": 2038,
+          "name": "Oppo Reno 16",
+          "image": "Brands/oppo_modals/oppo-reno-16.jpg",
+          "series": "Reno 16",
+          "parent_series": "Reno 16"
+        },
+        {
+          "id": 2039,
+          "name": "Oppo Reno 15",
+          "image": "Brands/oppo_modals/oppo-reno-15.jpg",
+          "series": "Reno 15",
+          "parent_series": "Reno 15"
+        },
+        {
+          "id": 2040,
+          "name": "Oppo Reno 12",
+          "image": "Brands/oppo_modals/oppo-reno-12.jpg",
+          "series": "Reno 12",
+          "parent_series": "Reno 12"
+        },
+        {
+          "id": 2041,
+          "name": "Oppo Reno 14",
+          "image": "Brands/oppo_modals/oppo-reno-14.jpg",
+          "series": "Reno 14",
+          "parent_series": "Reno 14"
+        },
+        {
+          "id": 2042,
+          "name": "Oppo Reno 16F",
+          "image": "Brands/oppo_modals/oppo-reno-16f.jpg",
+          "series": "Reno 16F",
+          "parent_series": "Reno 16F"
+        },
+        {
+          "id": 2043,
+          "name": "Oppo Reno 13",
+          "image": "Brands/oppo_modals/oppo-reno-13.jpg",
+          "series": "Reno 13",
+          "parent_series": "Reno 13"
+        },
+        {
+          "id": 2044,
+          "name": "Oppo Reno 15F",
+          "image": "Brands/oppo_modals/oppo-reno-15f.jpg",
+          "series": "Reno 15F",
+          "parent_series": "Reno 15F"
+        },
+        {
+          "id": 2045,
+          "name": "Oppo A6s Pro",
+          "image": "Brands/oppo_modals/oppo-a6s-pro.jpg",
+          "series": "Oppo A6s",
+          "parent_series": "Oppo A6s"
+        },
+        {
+          "id": 2046,
+          "name": "Oppo Reno 14F",
+          "image": "Brands/oppo_modals/oppo-reno-14f.jpg",
+          "series": "Reno 14F",
+          "parent_series": "Reno 14F"
+        },
+        {
+          "id": 2047,
+          "name": "Oppo A6 Pro",
+          "image": "Brands/oppo_modals/oppo-a6-pro.jpg",
+          "series": "Oppo A6",
+          "parent_series": "Oppo A6"
+        },
+        {
+          "id": 2048,
+          "name": "Oppo A6",
+          "image": "Brands/oppo_modals/oppo-a6.jpg",
+          "series": "Oppo A6",
+          "parent_series": "Oppo A6"
+        },
+        {
+          "id": 2049,
+          "name": "Oppo A6s",
+          "image": "Brands/oppo_modals/oppo-a6s.jpg",
+          "series": "Oppo A6s",
+          "parent_series": "Oppo A6s"
+        },
+        {
+          "id": 2050,
+          "name": "Oppo Reno 12F 5G",
+          "image": "Brands/oppo_modals/oppo-reno-12f-5g.jpg",
+          "series": "Reno 12F",
+          "parent_series": "Reno 12F"
+        },
+        {
+          "id": 2051,
+          "name": "Oppo Reno 13F",
+          "image": "Brands/oppo_modals/oppo-reno-13f.jpg",
+          "series": "Reno 13F",
+          "parent_series": "Reno 13F"
+        },
+        {
+          "id": 2052,
+          "name": "Oppo A6k",
+          "image": "Brands/oppo_modals/oppo-a6k.jpg",
+          "series": "Oppo A6k",
+          "parent_series": "Oppo A6k"
+        },
+        {
+          "id": 2053,
+          "name": "Oppo A5 Pro",
+          "image": "Brands/oppo_modals/oppo-a5-pro.jpg",
+          "series": "Oppo A5",
+          "parent_series": "Oppo A5"
+        },
+        {
+          "id": 2054,
+          "name": "Oppo Reno 12F",
+          "image": "Brands/oppo_modals/oppo-reno-12f.jpg",
+          "series": "Reno 12F",
+          "parent_series": "Reno 12F"
+        },
+        {
+          "id": 2055,
+          "name": "Oppo A6c",
+          "image": "Brands/oppo_modals/oppo-a6c.jpg",
+          "series": "Oppo A6c",
+          "parent_series": "Oppo A6c"
+        },
+        {
+          "id": 2056,
+          "name": "Oppo A5",
+          "image": "Brands/oppo_modals/oppo-a5.jpg",
+          "series": "Oppo A5",
+          "parent_series": "Oppo A5"
+        },
+        {
+          "id": 2057,
+          "name": "Oppo A60",
+          "image": "Brands/oppo_modals/oppo-a60.jpg",
+          "series": "Oppo A60",
+          "parent_series": "Oppo A60"
+        },
+        {
+          "id": 2058,
+          "name": "Oppo A6x",
+          "image": "Brands/oppo_modals/oppo-a6x.jpg",
+          "series": "Oppo A6x",
+          "parent_series": "Oppo A6x"
+        },
+        {
+          "id": 2059,
+          "name": "Oppo A3",
+          "image": "Brands/oppo_modals/oppo-a3.jpg",
+          "series": "Oppo A3",
+          "parent_series": "Oppo A3"
+        },
+        {
+          "id": 2060,
+          "name": "Oppo A5i",
+          "image": "Brands/oppo_modals/oppo-a5i.jpg",
+          "series": "Oppo A5i",
+          "parent_series": "Oppo A5i"
+        },
+        {
+          "id": 2061,
+          "name": "Oppo A18",
+          "image": "Brands/oppo_modals/oppo-a18.jpg",
+          "series": "Oppo A18",
+          "parent_series": "Oppo A18"
+        },
+        {
+          "id": 2062,
+          "name": "Oppo A5x",
+          "image": "Brands/oppo_modals/oppo-a5x.jpg",
+          "series": "Oppo A5x",
+          "parent_series": "Oppo A5x"
+        },
+        {
+          "id": 2063,
+          "name": "Oppo A3x",
+          "image": "Brands/oppo_modals/oppo-a3x.jpg",
+          "series": "Oppo A3x",
+          "parent_series": "Oppo A3x"
+        },
+        {
+          "id": 2064,
+          "name": "Oppo Reno 11",
+          "image": "Brands/oppo_modals/oppo-reno-11.jpg",
+          "series": "Reno 11",
+          "parent_series": "Reno 11"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "iPad",
+      "logo": "Brands/apple.png",
+      "description": "Apple iPad Tablets",
+      "models": [
+        {
+          "name": "iPad Pro 13\" M4",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 11\" M4",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 12.9\" 6th Gen (M2)",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 11\" 4th Gen (M2)",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 12.9\" 5th Gen (M1)",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 11\" 3rd Gen (M1)",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 12.9\" 4th Gen",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 11\" 2nd Gen",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 12.9\" 3rd Gen",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 11\" 1st Gen",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 10.5\"",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Pro 9.7\"",
+          "image": "Brands/ipad_modals/ipad-pro.jpg"
+        },
+        {
+          "name": "iPad Air 13\" M2",
+          "image": "Brands/ipad_modals/ipad-air.jpg"
+        },
+        {
+          "name": "iPad Air 11\" M2",
+          "image": "Brands/ipad_modals/ipad-air.jpg"
+        },
+        {
+          "name": "iPad Air 5th Gen (M1)",
+          "image": "Brands/ipad_modals/ipad-air.jpg"
+        },
+        {
+          "name": "iPad Air 4th Gen",
+          "image": "Brands/ipad_modals/ipad-air.jpg"
+        },
+        {
+          "name": "iPad Air 3rd Gen",
+          "image": "Brands/ipad_modals/ipad-air.jpg"
+        },
+        {
+          "name": "iPad Air 2",
+          "image": "Brands/ipad_modals/ipad-air.jpg"
+        },
+        {
+          "name": "iPad 10th Gen (10.9\")",
+          "image": "Brands/ipad_modals/ipad-10th-gen.png"
+        },
+        {
+          "name": "iPad 9th Gen (10.2\")",
+          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+        },
+        {
+          "name": "iPad 8th Gen (10.2\")",
+          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+        },
+        {
+          "name": "iPad 7th Gen (10.2\")",
+          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+        },
+        {
+          "name": "iPad 6th Gen (9.7\")",
+          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+        },
+        {
+          "name": "iPad 5th Gen (9.7\")",
+          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+        },
+        {
+          "name": "iPad Mini 7 (A17 Pro)",
+          "image": "Brands/ipad_modals/ipad-mini.png"
+        },
+        {
+          "name": "iPad Mini 6",
+          "image": "Brands/ipad_modals/ipad-mini.png"
+        },
+        {
+          "name": "iPad Mini 5",
+          "image": "Brands/ipad_modals/ipad-mini.png"
+        },
+        {
+          "name": "iPad Mini 4",
+          "image": "Brands/ipad_modals/ipad-mini.png"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "MacBook",
+      "logo": "Brands/apple.png",
+      "description": "Apple MacBook Laptops",
+      "models": [
+        {
+          "name": "MacBook Pro 16\" M4 Pro / Max",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 14\" M4 Pro / Max",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 16\" M3 Pro / Max",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 14\" M3",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 16\" M2 Pro / Max",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 14\" M2 Pro / Max",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 16\" M1 Pro / Max",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 14\" M1 Pro / Max",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 13\" M2",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 13\" M1",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 13\" (Intel Retina)",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 15\" (Intel Retina)",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Pro 16\" (Intel 2019)",
+          "image": "Brands/macbook_modals/macbook-pro.jpg"
+        },
+        {
+          "name": "MacBook Air 15\" M3",
+          "image": "Brands/macbook_modals/macbook-air.jpg"
+        },
+        {
+          "name": "MacBook Air 13\" M3",
+          "image": "Brands/macbook_modals/macbook-air.jpg"
+        },
+        {
+          "name": "MacBook Air 15\" M2",
+          "image": "Brands/macbook_modals/macbook-air.jpg"
+        },
+        {
+          "name": "MacBook Air 13\" M2",
+          "image": "Brands/macbook_modals/macbook-air.jpg"
+        },
+        {
+          "name": "MacBook Air 13\" M1",
+          "image": "Brands/macbook_modals/macbook-air.jpg"
+        },
+        {
+          "name": "MacBook Air 13\" (Intel Retina)",
+          "image": "Brands/macbook_modals/macbook-air.jpg"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Vivo",
+      "logo": "Brands/vivo.png",
+      "description": "Vivo Mobile Devices",
+      "models": [
+        {
+          "id": 2105,
+          "name": "Vivo X Fold5",
+          "image": "Brands/vivo_modals/vivo-x-fold5.jpg",
+          "series": "Vivo X",
+          "parent_series": "Vivo X"
+        },
+        {
+          "id": 2106,
+          "name": "Vivo X300 Pro",
+          "image": "Brands/vivo_modals/vivo-x300-pro.jpg",
+          "series": "Vivo X300",
+          "parent_series": "Vivo X300"
+        },
+        {
+          "id": 2107,
+          "name": "Vivo X200 Pro",
+          "image": "Brands/vivo_modals/vivo-x200-pro.jpg",
+          "series": "Vivo X200",
+          "parent_series": "Vivo X200"
+        },
+        {
+          "id": 2108,
+          "name": "Vivo X300 FE",
+          "image": "Brands/vivo_modals/vivo-x300-fe.jpg",
+          "series": "Vivo X300",
+          "parent_series": "Vivo X300"
+        },
+        {
+          "id": 2109,
+          "name": "Vivo X200 FE",
+          "image": "Brands/vivo_modals/vivo-x200-fe.jpg",
+          "series": "Vivo X200",
+          "parent_series": "Vivo X200"
+        },
+        {
+          "id": 2110,
+          "name": "Vivo V70",
+          "image": "Brands/vivo_modals/vivo-v70.jpg",
+          "series": "Vivo V70",
+          "parent_series": "Vivo V70"
+        },
+        {
+          "id": 2111,
+          "name": "Vivo V60",
+          "image": "Brands/vivo_modals/vivo-v60.jpg",
+          "series": "Vivo V60",
+          "parent_series": "Vivo V60"
+        },
+        {
+          "id": 2112,
+          "name": "Vivo V70 FE",
+          "image": "Brands/vivo_modals/vivo-v70-fe.jpg",
+          "series": "Vivo V70",
+          "parent_series": "Vivo V70"
+        },
+        {
+          "id": 2113,
+          "name": "Vivo V50",
+          "image": "Brands/vivo_modals/vivo-v50.jpg",
+          "series": "Vivo V50",
+          "parent_series": "Vivo V50"
+        },
+        {
+          "id": 2114,
+          "name": "Vivo V80 Lite",
+          "image": "Brands/vivo_modals/vivo-v80-lite.jpg",
+          "series": "Vivo V80",
+          "parent_series": "Vivo V80"
+        },
+        {
+          "id": 2115,
+          "name": "Vivo V40",
+          "image": "Brands/vivo_modals/vivo-v40.jpg",
+          "series": "Vivo V40",
+          "parent_series": "Vivo V40"
+        },
+        {
+          "id": 2116,
+          "name": "Vivo Y500",
+          "image": "Brands/vivo_modals/vivo-y500.jpg",
+          "series": "Vivo Y500",
+          "parent_series": "Vivo Y500"
+        },
+        {
+          "id": 2117,
+          "name": "Vivo V40e",
+          "image": "Brands/vivo_modals/vivo-v40e.jpg",
+          "series": "Vivo V40e",
+          "parent_series": "Vivo V40e"
+        },
+        {
+          "id": 2118,
+          "name": "Vivo V30e",
+          "image": "Brands/vivo_modals/vivo-v30e.jpg",
+          "series": "Vivo V30e",
+          "parent_series": "Vivo V30e"
+        },
+        {
+          "id": 2119,
+          "name": "Vivo Y31d",
+          "image": "Brands/vivo_modals/vivo-y31d.jpg",
+          "series": "Vivo Y31d",
+          "parent_series": "Vivo Y31d"
+        },
+        {
+          "id": 2120,
+          "name": "Vivo V60 Lite 5G",
+          "image": "Brands/vivo_modals/vivo-v60-lite-5g.jpg",
+          "series": "Vivo V60",
+          "parent_series": "Vivo V60"
+        },
+        {
+          "id": 2121,
+          "name": "Vivo Y73",
+          "image": "Brands/vivo_modals/vivo-y73.jpg",
+          "series": "Vivo Y73",
+          "parent_series": "Vivo Y73"
+        },
+        {
+          "id": 2122,
+          "name": "Vivo V50 Lite 5G",
+          "image": "Brands/vivo_modals/vivo-v50-lite-5g.jpg",
+          "series": "Vivo V50",
+          "parent_series": "Vivo V50"
+        },
+        {
+          "id": 2123,
+          "name": "Vivo V60 Lite",
+          "image": "Brands/vivo_modals/vivo-v60-lite.jpg",
+          "series": "Vivo V60",
+          "parent_series": "Vivo V60"
+        },
+        {
+          "id": 2124,
+          "name": "Vivo V50 Lite",
+          "image": "Brands/vivo_modals/vivo-v50-lite.jpg",
+          "series": "Vivo V50",
+          "parent_series": "Vivo V50"
+        },
+        {
+          "id": 2125,
+          "name": "Vivo Y400",
+          "image": "Brands/vivo_modals/vivo-y400.jpg",
+          "series": "Vivo Y400",
+          "parent_series": "Vivo Y400"
+        },
+        {
+          "id": 2126,
+          "name": "Vivo Y11d",
+          "image": "Brands/vivo_modals/vivo-y11d.jpg",
+          "series": "Vivo Y11d",
+          "parent_series": "Vivo Y11d"
+        },
+        {
+          "id": 2127,
+          "name": "Vivo Y200",
+          "image": "Brands/vivo_modals/vivo-y200.jpg",
+          "series": "Vivo Y200",
+          "parent_series": "Vivo Y200"
+        },
+        {
+          "id": 2128,
+          "name": "Vivo Y100",
+          "image": "Brands/vivo_modals/vivo-y100.jpg",
+          "series": "Vivo Y100",
+          "parent_series": "Vivo Y100"
+        },
+        {
+          "id": 2129,
+          "name": "Vivo Y29",
+          "image": "Brands/vivo_modals/vivo-y29.jpg",
+          "series": "Vivo Y29",
+          "parent_series": "Vivo Y29"
+        },
+        {
+          "id": 2130,
+          "name": "Vivo Y21d",
+          "image": "Brands/vivo_modals/vivo-y21d.jpg",
+          "series": "Vivo Y21d",
+          "parent_series": "Vivo Y21d"
+        },
+        {
+          "id": 2131,
+          "name": "Vivo Y05",
+          "image": "Brands/vivo_modals/vivo-y05.jpg",
+          "series": "Vivo Y05",
+          "parent_series": "Vivo Y05"
+        },
+        {
+          "id": 2132,
+          "name": "Vivo Y28",
+          "image": "Brands/vivo_modals/vivo-y28.jpg",
+          "series": "Vivo Y28",
+          "parent_series": "Vivo Y28"
+        },
+        {
+          "id": 2133,
+          "name": "Vivo Y19s Pro",
+          "image": "Brands/vivo_modals/vivo-y19s-pro.jpg",
+          "series": "Vivo Y19s",
+          "parent_series": "Vivo Y19s"
+        },
+        {
+          "id": 2134,
+          "name": "Vivo Y18",
+          "image": "Brands/vivo_modals/vivo-y18.jpg",
+          "series": "Vivo Y18",
+          "parent_series": "Vivo Y18"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Realme",
+      "logo": "Brands/realme.png",
+      "description": "Realme Smartphones",
+      "models": [
+        {
+          "id": 2135,
+          "name": "Realme GT 7 Dream Edition",
+          "image": "Brands/realme_modals/realme-gt-7-dream-edition.jpg",
+          "series": "Realme GT",
+          "parent_series": "Realme GT"
+        },
+        {
+          "id": 2136,
+          "name": "Realme 16 Pro Plus",
+          "image": "Brands/realme_modals/realme-16-pro-plus.jpg",
+          "series": "Realme 16",
+          "parent_series": "Realme 16"
+        },
+        {
+          "id": 2137,
+          "name": "Realme GT 7",
+          "image": "Brands/realme_modals/realme-gt-7.jpg",
+          "series": "Realme GT",
+          "parent_series": "Realme GT"
+        },
+        {
+          "id": 2138,
+          "name": "Realme GT 7T",
+          "image": "Brands/realme_modals/realme-gt-7t.jpg",
+          "series": "Realme GT",
+          "parent_series": "Realme GT"
+        },
+        {
+          "id": 2139,
+          "name": "Realme 16 Pro",
+          "image": "Brands/realme_modals/realme-16-pro.jpg",
+          "series": "Realme 16",
+          "parent_series": "Realme 16"
+        },
+        {
+          "id": 2140,
+          "name": "Realme 15 Pro",
+          "image": "Brands/realme_modals/realme-15-pro.jpg",
+          "series": "Realme 15",
+          "parent_series": "Realme 15"
+        },
+        {
+          "id": 2141,
+          "name": "Realme 16",
+          "image": "Brands/realme_modals/realme-16.jpg",
+          "series": "Realme 16",
+          "parent_series": "Realme 16"
+        },
+        {
+          "id": 2142,
+          "name": "Realme 15",
+          "image": "Brands/realme_modals/realme-15.jpg",
+          "series": "Realme 15",
+          "parent_series": "Realme 15"
+        },
+        {
+          "id": 2143,
+          "name": "Realme 14",
+          "image": "Brands/realme_modals/realme-14.jpg",
+          "series": "Realme 14",
+          "parent_series": "Realme 14"
+        },
+        {
+          "id": 2144,
+          "name": "Realme C100",
+          "image": "Brands/realme_modals/realme-c100.jpg",
+          "series": "Realme C100",
+          "parent_series": "Realme C100"
+        },
+        {
+          "id": 2145,
+          "name": "Realme 13 Plus",
+          "image": "Brands/realme_modals/realme-13-plus.jpg",
+          "series": "Realme 13",
+          "parent_series": "Realme 13"
+        },
+        {
+          "id": 2146,
+          "name": "Realme 15T",
+          "image": "Brands/realme_modals/realme-15t.jpg",
+          "series": "Realme 15T",
+          "parent_series": "Realme 15T"
+        },
+        {
+          "id": 2147,
+          "name": "Realme 14T",
+          "image": "Brands/realme_modals/realme-14t.jpg",
+          "series": "Realme 14T",
+          "parent_series": "Realme 14T"
+        },
+        {
+          "id": 2148,
+          "name": "Realme C100x",
+          "image": "Brands/realme_modals/realme-c100x.jpg",
+          "series": "Realme C100x",
+          "parent_series": "Realme C100x"
+        },
+        {
+          "id": 2149,
+          "name": "Realme C85",
+          "image": "Brands/realme_modals/realme-c85.jpg",
+          "series": "Realme C85",
+          "parent_series": "Realme C85"
+        },
+        {
+          "id": 2150,
+          "name": "Realme C85 Pro",
+          "image": "Brands/realme_modals/realme-c85-pro.jpg",
+          "series": "Realme C85",
+          "parent_series": "Realme C85"
+        },
+        {
+          "id": 2151,
+          "name": "Realme C100i",
+          "image": "Brands/realme_modals/realme-c100i.jpg",
+          "series": "Realme C100i",
+          "parent_series": "Realme C100i"
+        },
+        {
+          "id": 2152,
+          "name": "Realme C75x",
+          "image": "Brands/realme_modals/realme-c75x.jpg",
+          "series": "Realme C75x",
+          "parent_series": "Realme C75x"
+        },
+        {
+          "id": 2153,
+          "name": "Realme C75",
+          "image": "Brands/realme_modals/realme-c75.jpg",
+          "series": "Realme C75",
+          "parent_series": "Realme C75"
+        },
+        {
+          "id": 2154,
+          "name": "Realme C71",
+          "image": "Brands/realme_modals/realme-c71.jpg",
+          "series": "Realme C71",
+          "parent_series": "Realme C71"
+        },
+        {
+          "id": 2155,
+          "name": "Realme Note 70",
+          "image": "Brands/realme_modals/realme-note-70.jpg",
+          "series": "Note 70",
+          "parent_series": "Note 70"
+        },
+        {
+          "id": 2156,
+          "name": "Realme C65",
+          "image": "Brands/realme_modals/realme-c65.jpg",
+          "series": "Realme C65",
+          "parent_series": "Realme C65"
+        },
+        {
+          "id": 2157,
+          "name": "Realme C63",
+          "image": "Brands/realme_modals/realme-c63.jpg",
+          "series": "Realme C63",
+          "parent_series": "Realme C63"
+        },
+        {
+          "id": 2158,
+          "name": "Realme Note 60x",
+          "image": "Brands/realme_modals/realme-note-60x.jpg",
+          "series": "Note 60x",
+          "parent_series": "Note 60x"
+        },
+        {
+          "id": 2159,
+          "name": "Realme C61",
+          "image": "Brands/realme_modals/realme-c61.jpg",
+          "series": "Realme C61",
+          "parent_series": "Realme C61"
+        },
+        {
+          "id": 2160,
+          "name": "Realme Note 60",
+          "image": "Brands/realme_modals/realme-note-60.jpg",
+          "series": "Note 60",
+          "parent_series": "Note 60"
+        },
+        {
+          "id": 2161,
+          "name": "Realme Note 50",
+          "image": "Brands/realme_modals/realme-note-50.jpg",
+          "series": "Note 50",
+          "parent_series": "Note 50"
+        },
+        {
+          "id": 2162,
+          "name": "Realme GT 6",
+          "image": "Brands/realme_modals/realme-gt-6.jpg",
+          "series": "Realme GT",
+          "parent_series": "Realme GT"
+        },
+        {
+          "id": 2163,
+          "name": "Realme 12 Plus",
+          "image": "Brands/realme_modals/realme-12-plus.jpg",
+          "series": "Realme 12",
+          "parent_series": "Realme 12"
+        },
+        {
+          "id": 2164,
+          "name": "Realme C67",
+          "image": "Brands/realme_modals/realme-c67.jpg",
+          "series": "Realme C67",
+          "parent_series": "Realme C67"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Infinix",
+      "logo": "Brands/infinix.png",
+      "description": "Infinix Mobile Devices",
+      "models": [
+        {
+          "id": 2165,
+          "name": "Infinix Zero Flip",
+          "image": "Brands/infinix_modals/infinix-zero-flip.jpg",
+          "series": "Zero Flip",
+          "parent_series": "Zero Flip"
+        },
+        {
+          "id": 2166,
+          "name": "Infinix GT 50 Pro",
+          "image": "Brands/infinix_modals/infinix-gt-50-pro.jpg",
+          "series": "Infinix GT",
+          "parent_series": "Infinix GT"
+        },
+        {
+          "id": 2167,
+          "name": "Infinix GT 30 Pro",
+          "image": "Brands/infinix_modals/infinix-gt-30-pro.jpg",
+          "series": "Infinix GT",
+          "parent_series": "Infinix GT"
+        },
+        {
+          "id": 2168,
+          "name": "Infinix Note 60 Pro",
+          "image": "Brands/infinix_modals/infinix-note-60-pro.jpg",
+          "series": "Note 60",
+          "parent_series": "Note 60"
+        },
+        {
+          "id": 2169,
+          "name": "Infinix Note 50 Pro Plus",
+          "image": "Brands/infinix_modals/infinix-note-50-pro-plus.jpg",
+          "series": "Note 50",
+          "parent_series": "Note 50"
+        },
+        {
+          "id": 2170,
+          "name": "Infinix Note 60",
+          "image": "Brands/infinix_modals/infinix-note-60.jpg",
+          "series": "Note 60",
+          "parent_series": "Note 60"
+        },
+        {
+          "id": 2171,
+          "name": "Infinix Zero 30 5G",
+          "image": "Brands/infinix_modals/infinix-zero-30-5g.jpg",
+          "series": "Zero 30",
+          "parent_series": "Zero 30"
+        },
+        {
+          "id": 2172,
+          "name": "Infinix GT 20 Pro",
+          "image": "Brands/infinix_modals/infinix-gt-20-pro.jpg",
+          "series": "Infinix GT",
+          "parent_series": "Infinix GT"
+        },
+        {
+          "id": 2173,
+          "name": "Infinix Note Edge",
+          "image": "Brands/infinix_modals/infinix-note-edge.jpg",
+          "series": "Note Edge",
+          "parent_series": "Note Edge"
+        },
+        {
+          "id": 2174,
+          "name": "Infinix Zero 40 5G",
+          "image": "Brands/infinix_modals/infinix-zero-40-5g.jpg",
+          "series": "Zero 40",
+          "parent_series": "Zero 40"
+        },
+        {
+          "id": 2175,
+          "name": "Infinix Note 50 Pro",
+          "image": "Brands/infinix_modals/infinix-note-50-pro.jpg",
+          "series": "Note 50",
+          "parent_series": "Note 50"
+        },
+        {
+          "id": 2176,
+          "name": "Infinix Hot 70 Pro",
+          "image": "Brands/infinix_modals/infinix-hot-70-pro.jpg",
+          "series": "Hot 70",
+          "parent_series": "Hot 70"
+        },
+        {
+          "id": 2177,
+          "name": "Infinix Hot 60 Pro",
+          "image": "Brands/infinix_modals/infinix-hot-60-pro.jpg",
+          "series": "Hot 60",
+          "parent_series": "Hot 60"
+        },
+        {
+          "id": 2178,
+          "name": "Infinix Hot 60 Pro Plus",
+          "image": "Brands/infinix_modals/infinix-hot-60-pro-plus.jpg",
+          "series": "Hot 60",
+          "parent_series": "Hot 60"
+        },
+        {
+          "id": 2179,
+          "name": "Infinix Note 40 Pro",
+          "image": "Brands/infinix_modals/infinix-note-40-pro.jpg",
+          "series": "Note 40",
+          "parent_series": "Note 40"
+        },
+        {
+          "id": 2180,
+          "name": "Infinix Note 50",
+          "image": "Brands/infinix_modals/infinix-note-50.jpg",
+          "series": "Note 50",
+          "parent_series": "Note 50"
+        },
+        {
+          "id": 2181,
+          "name": "Infinix Zero 30",
+          "image": "Brands/infinix_modals/infinix-zero-30.jpg",
+          "series": "Zero 30",
+          "parent_series": "Zero 30"
+        },
+        {
+          "id": 2182,
+          "name": "Infinix Hot 70",
+          "image": "Brands/infinix_modals/infinix-hot-70.jpg",
+          "series": "Hot 70",
+          "parent_series": "Hot 70"
+        },
+        {
+          "id": 2183,
+          "name": "Infinix Zero 40",
+          "image": "Brands/infinix_modals/infinix-zero-40.jpg",
+          "series": "Zero 40",
+          "parent_series": "Zero 40"
+        },
+        {
+          "id": 2184,
+          "name": "Infinix Hot 60i",
+          "image": "Brands/infinix_modals/infinix-hot-60i.jpg",
+          "series": "Hot 60i",
+          "parent_series": "Hot 60i"
+        },
+        {
+          "id": 2185,
+          "name": "Infinix Hot 50 Pro Plus",
+          "image": "Brands/infinix_modals/infinix-hot-50-pro-plus.jpg",
+          "series": "Hot 50",
+          "parent_series": "Hot 50"
+        },
+        {
+          "id": 2186,
+          "name": "Infinix Note 40",
+          "image": "Brands/infinix_modals/infinix-note-40.jpg",
+          "series": "Note 40",
+          "parent_series": "Note 40"
+        },
+        {
+          "id": 2187,
+          "name": "Infinix Smart 20",
+          "image": "Brands/infinix_modals/infinix-smart-20.jpg",
+          "series": "Smart 20",
+          "parent_series": "Smart 20"
+        },
+        {
+          "id": 2188,
+          "name": "Infinix Hot 40 Pro",
+          "image": "Brands/infinix_modals/infinix-hot-40-pro.jpg",
+          "series": "Hot 40",
+          "parent_series": "Hot 40"
+        },
+        {
+          "id": 2189,
+          "name": "Infinix Hot 50 Pro",
+          "image": "Brands/infinix_modals/infinix-hot-50-pro.jpg",
+          "series": "Hot 50",
+          "parent_series": "Hot 50"
+        },
+        {
+          "id": 2190,
+          "name": "Infinix Hot 50",
+          "image": "Brands/infinix_modals/infinix-hot-50.jpg",
+          "series": "Hot 50",
+          "parent_series": "Hot 50"
+        },
+        {
+          "id": 2191,
+          "name": "Infinix Hot 40",
+          "image": "Brands/infinix_modals/infinix-hot-40.jpg",
+          "series": "Hot 40",
+          "parent_series": "Hot 40"
+        },
+        {
+          "id": 2192,
+          "name": "Infinix Smart 10 Plus",
+          "image": "Brands/infinix_modals/infinix-smart-10-plus.jpg",
+          "series": "Smart 10",
+          "parent_series": "Smart 10"
+        },
+        {
+          "id": 2193,
+          "name": "Infinix Smart 10",
+          "image": "Brands/infinix_modals/infinix-smart-10.jpg",
+          "series": "Smart 10",
+          "parent_series": "Smart 10"
+        },
+        {
+          "id": 2194,
+          "name": "Infinix Hot 40i",
+          "image": "Brands/infinix_modals/infinix-hot-40i.jpg",
+          "series": "Hot 40i",
+          "parent_series": "Hot 40i"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Tecno",
+      "logo": "Brands/tecno.png",
+      "description": "Tecno Mobile Devices",
+      "models": [
+        {
+          "id": 2195,
+          "name": "Tecno Phantom V Fold 2",
+          "image": "Brands/tecno_modals/tecno-phantom-v-fold-2.jpg",
+          "series": "Phantom V",
+          "parent_series": "Phantom V"
+        },
+        {
+          "id": 2196,
+          "name": "Tecno Phantom V2 Flip",
+          "image": "Brands/tecno_modals/tecno-phantom-v2-flip.jpg",
+          "series": "Phantom V2",
+          "parent_series": "Phantom V2"
+        },
+        {
+          "id": 2197,
+          "name": "Tecno Camon 30 Premier",
+          "image": "Brands/tecno_modals/tecno-camon-30-premier.jpg",
+          "series": "Camon 30",
+          "parent_series": "Camon 30"
+        },
+        {
+          "id": 2198,
+          "name": "Tecno Camon 50 Ultra",
+          "image": "Brands/tecno_modals/tecno-camon-50-ultra.jpg",
+          "series": "Camon 50",
+          "parent_series": "Camon 50"
+        },
+        {
+          "id": 2199,
+          "name": "Tecno Camon 40 Premier",
+          "image": "Brands/tecno_modals/tecno-camon-40-premier.jpg",
+          "series": "Camon 40",
+          "parent_series": "Camon 40"
+        },
+        {
+          "id": 2200,
+          "name": "Tecno Camon 50 Pro",
+          "image": "Brands/tecno_modals/tecno-camon-50-pro.jpg",
+          "series": "Camon 50",
+          "parent_series": "Camon 50"
+        },
+        {
+          "id": 2201,
+          "name": "Tecno Camon 50",
+          "image": "Brands/tecno_modals/tecno-camon-50.jpg",
+          "series": "Camon 50",
+          "parent_series": "Camon 50"
+        },
+        {
+          "id": 2202,
+          "name": "Tecno Camon 30 Pro",
+          "image": "Brands/tecno_modals/tecno-camon-30-pro.jpg",
+          "series": "Camon 30",
+          "parent_series": "Camon 30"
+        },
+        {
+          "id": 2203,
+          "name": "Tecno Spark 40 Pro Plus",
+          "image": "Brands/tecno_modals/tecno-spark-40-pro-plus.jpg",
+          "series": "Spark 40",
+          "parent_series": "Spark 40"
+        },
+        {
+          "id": 2204,
+          "name": "Tecno Spark 40 Pro",
+          "image": "Brands/tecno_modals/tecno-spark-40-pro.jpg",
+          "series": "Spark 40",
+          "parent_series": "Spark 40"
+        },
+        {
+          "id": 2205,
+          "name": "Tecno Camon 40 Pro",
+          "image": "Brands/tecno_modals/tecno-camon-40-pro.jpg",
+          "series": "Camon 40",
+          "parent_series": "Camon 40"
+        },
+        {
+          "id": 2206,
+          "name": "Tecno Camon 30",
+          "image": "Brands/tecno_modals/tecno-camon-30.jpg",
+          "series": "Camon 30",
+          "parent_series": "Camon 30"
+        },
+        {
+          "id": 2207,
+          "name": "Tecno Spark 50",
+          "image": "Brands/tecno_modals/tecno-spark-50.jpg",
+          "series": "Spark 50",
+          "parent_series": "Spark 50"
+        },
+        {
+          "id": 2208,
+          "name": "Tecno Camon 30 LOEWE",
+          "image": "Brands/tecno_modals/tecno-camon-30-loewe.jpg",
+          "series": "Camon 30",
+          "parent_series": "Camon 30"
+        },
+        {
+          "id": 2209,
+          "name": "Tecno Camon 40",
+          "image": "Brands/tecno_modals/tecno-camon-40.jpg",
+          "series": "Camon 40",
+          "parent_series": "Camon 40"
+        },
+        {
+          "id": 2210,
+          "name": "Tecno Camon 30s",
+          "image": "Brands/tecno_modals/tecno-camon-30s.jpg",
+          "series": "Camon 30s",
+          "parent_series": "Camon 30s"
+        },
+        {
+          "id": 2211,
+          "name": "Tecno Spark Go 3",
+          "image": "Brands/tecno_modals/tecno-spark-go-3.jpg",
+          "series": "Spark Go",
+          "parent_series": "Spark Go"
+        },
+        {
+          "id": 2212,
+          "name": "Tecno Spark 40",
+          "image": "Brands/tecno_modals/tecno-spark-40.jpg",
+          "series": "Spark 40",
+          "parent_series": "Spark 40"
+        },
+        {
+          "id": 2213,
+          "name": "Tecno Spark 30",
+          "image": "Brands/tecno_modals/tecno-spark-30.jpg",
+          "series": "Spark 30",
+          "parent_series": "Spark 30"
+        },
+        {
+          "id": 2214,
+          "name": "Tecno Spark 30 Pro",
+          "image": "Brands/tecno_modals/tecno-spark-30-pro.jpg",
+          "series": "Spark 30",
+          "parent_series": "Spark 30"
+        },
+        {
+          "id": 2215,
+          "name": "Tecno Spark 20",
+          "image": "Brands/tecno_modals/tecno-spark-20.jpg",
+          "series": "Spark 20",
+          "parent_series": "Spark 20"
+        },
+        {
+          "id": 2216,
+          "name": "Tecno Spark 30C",
+          "image": "Brands/tecno_modals/tecno-spark-30c.jpg",
+          "series": "Spark 30C",
+          "parent_series": "Spark 30C"
+        },
+        {
+          "id": 2217,
+          "name": "Tecno Spark 40C",
+          "image": "Brands/tecno_modals/tecno-spark-40c.jpg",
+          "series": "Spark 40C",
+          "parent_series": "Spark 40C"
+        },
+        {
+          "id": 2218,
+          "name": "Tecno Spark Go 2",
+          "image": "Brands/tecno_modals/tecno-spark-go-2.jpg",
+          "series": "Spark Go",
+          "parent_series": "Spark Go"
+        },
+        {
+          "id": 2219,
+          "name": "Tecno Spark Go 1",
+          "image": "Brands/tecno_modals/tecno-spark-go-1.jpg",
+          "series": "Spark Go",
+          "parent_series": "Spark Go"
+        },
+        {
+          "id": 2220,
+          "name": "Tecno Phantom V Flip",
+          "image": "Brands/tecno_modals/tecno-phantom-v-flip.jpg",
+          "series": "Phantom V",
+          "parent_series": "Phantom V"
+        },
+        {
+          "id": 2221,
+          "name": "Tecno Spark 20 Pro Plus",
+          "image": "Brands/tecno_modals/tecno-spark-20-pro-plus.jpg",
+          "series": "Spark 20",
+          "parent_series": "Spark 20"
+        },
+        {
+          "id": 2222,
+          "name": "Tecno Pova 5 Pro",
+          "image": "Brands/tecno_modals/tecno-pova-5-pro.jpg",
+          "series": "Pova 5",
+          "parent_series": "Pova 5"
+        },
+        {
+          "id": 2223,
+          "name": "Tecno Spark 20 Pro",
+          "image": "Brands/tecno_modals/tecno-spark-20-pro.jpg",
+          "series": "Spark 20",
+          "parent_series": "Spark 20"
+        },
+        {
+          "id": 2224,
+          "name": "Tecno Spark 10 Pro",
+          "image": "Brands/tecno_modals/tecno-spark-10-pro.jpg",
+          "series": "Spark 10",
+          "parent_series": "Spark 10"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Honor",
+      "logo": "Brands/honor.png",
+      "description": "Honor Smartphones",
+      "models": [
+        {
+          "id": 2225,
+          "name": "Honor X9d",
+          "image": "Brands/honor_modals/honor-x9d.jpg",
+          "series": "Honor X9d",
+          "parent_series": "Honor X9d"
+        },
+        {
+          "id": 2226,
+          "name": "Honor X9a",
+          "image": "Brands/honor_modals/honor-x9a.jpg",
+          "series": "Honor X9a",
+          "parent_series": "Honor X9a"
+        },
+        {
+          "id": 2227,
+          "name": "Honor X9b",
+          "image": "Brands/honor_modals/honor-x9b.jpg",
+          "series": "Honor X9b",
+          "parent_series": "Honor X9b"
+        },
+        {
+          "id": 2228,
+          "name": "Honor X9c",
+          "image": "Brands/honor_modals/honor-x9c.jpg",
+          "series": "Honor X9c",
+          "parent_series": "Honor X9c"
+        },
+        {
+          "id": 2229,
+          "name": "Honor X8d",
+          "image": "Brands/honor_modals/honor-x8d.jpg",
+          "series": "Honor X8d",
+          "parent_series": "Honor X8d"
+        },
+        {
+          "id": 2230,
+          "name": "Honor X8b",
+          "image": "Brands/honor_modals/honor-x8b.jpg",
+          "series": "Honor X8b",
+          "parent_series": "Honor X8b"
+        },
+        {
+          "id": 2231,
+          "name": "Honor X7b",
+          "image": "Brands/honor_modals/honor-x7b.jpg",
+          "series": "Honor X7b",
+          "parent_series": "Honor X7b"
+        },
+        {
+          "id": 2232,
+          "name": "Honor X6C",
+          "image": "Brands/honor_modals/honor-x6c.jpg",
+          "series": "Honor X6C",
+          "parent_series": "Honor X6C"
+        },
+        {
+          "id": 2233,
+          "name": "Honor X7C",
+          "image": "Brands/honor_modals/honor-x7c.jpg",
+          "series": "Honor X7C",
+          "parent_series": "Honor X7C"
+        },
+        {
+          "id": 2234,
+          "name": "Honor X5c Plus",
+          "image": "Brands/honor_modals/honor-x5c-plus.jpg",
+          "series": "Honor X5c",
+          "parent_series": "Honor X5c"
+        },
+        {
+          "id": 2235,
+          "name": "Honor X5c",
+          "image": "Brands/honor_modals/honor-x5c.jpg",
+          "series": "Honor X5c",
+          "parent_series": "Honor X5c"
+        },
+        {
+          "id": 2236,
+          "name": "Honor X5b Plus",
+          "image": "Brands/honor_modals/honor-x5b-plus.jpg",
+          "series": "Honor X5b",
+          "parent_series": "Honor X5b"
+        },
+        {
+          "id": 2237,
+          "name": "Honor Play 10",
+          "image": "Brands/honor_modals/honor-play-10.jpg",
+          "series": "Honor Play",
+          "parent_series": "Honor Play"
+        },
+        {
+          "id": 2238,
+          "name": "Honor 90",
+          "image": "Brands/honor_modals/honor-90.jpg",
+          "series": "Honor 90",
+          "parent_series": "Honor 90"
+        },
+        {
+          "id": 2239,
+          "name": "Honor 90 Lite",
+          "image": "Brands/honor_modals/honor-90-lite.jpg",
+          "series": "Honor 90",
+          "parent_series": "Honor 90"
+        },
+        {
+          "id": 2240,
+          "name": "Honor X6",
+          "image": "Brands/honor_modals/honor-x6.jpg",
+          "series": "Honor X6",
+          "parent_series": "Honor X6"
+        },
+        {
+          "id": 2241,
+          "name": "Honor X6a",
+          "image": "Brands/honor_modals/honor-x6a.jpg",
+          "series": "Honor X6a",
+          "parent_series": "Honor X6a"
+        },
+        {
+          "id": 2242,
+          "name": "Honor X5 Plus",
+          "image": "Brands/honor_modals/honor-x5-plus.jpg",
+          "series": "Honor X5",
+          "parent_series": "Honor X5"
+        },
+        {
+          "id": 2243,
+          "name": "Honor X5",
+          "image": "Brands/honor_modals/honor-x5.jpg",
+          "series": "Honor X5",
+          "parent_series": "Honor X5"
+        },
+        {
+          "id": 2244,
+          "name": "Honor 20 Pro",
+          "image": "Brands/honor_modals/honor-20-pro.jpg",
+          "series": "Honor 20",
+          "parent_series": "Honor 20"
+        },
+        {
+          "id": 2245,
+          "name": "Honor 9X Lite",
+          "image": "Brands/honor_modals/honor-9x-lite.jpg",
+          "series": "Honor 9X",
+          "parent_series": "Honor 9X"
+        },
+        {
+          "id": 2246,
+          "name": "Honor 9",
+          "image": "Brands/honor_modals/honor-9.jpg",
+          "series": "Honor 9",
+          "parent_series": "Honor 9"
+        },
+        {
+          "id": 2247,
+          "name": "Honor 10",
+          "image": "Brands/honor_modals/honor-10.jpg",
+          "series": "Honor 10",
+          "parent_series": "Honor 10"
+        },
+        {
+          "id": 2248,
+          "name": "Honor 10 Lite",
+          "image": "Brands/honor_modals/honor-10-lite.jpg",
+          "series": "Honor 10",
+          "parent_series": "Honor 10"
+        },
+        {
+          "id": 2249,
+          "name": "Honor 10i",
+          "image": "Brands/honor_modals/honor-10i.jpg",
+          "series": "Honor 10i",
+          "parent_series": "Honor 10i"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Motorola",
+      "logo": "Brands/motorola.png",
+      "description": "Motorola Smartphones",
+      "models": [
+        {
+          "id": 2250,
+          "name": "Motorola Moto One Macro",
+          "image": "Brands/motorola_modals/motorola-moto-one-macro.jpg",
+          "series": "Moto One",
+          "parent_series": "Moto One"
+        },
+        {
+          "id": 2251,
+          "name": "Motorola Moto E6",
+          "image": "Brands/motorola_modals/motorola-moto-e6.jpg",
+          "series": "Moto E6",
+          "parent_series": "Moto E6"
+        },
+        {
+          "id": 2252,
+          "name": "Motorola Moto E6 Plus",
+          "image": "Brands/motorola_modals/motorola-moto-e6-plus.jpg",
+          "series": "Moto E6",
+          "parent_series": "Moto E6"
+        },
+        {
+          "id": 2253,
+          "name": "Motorola RIZR Z8",
+          "image": "Brands/motorola_modals/motorola-rizr-z8.jpg",
+          "series": "Motorola RIZR",
+          "parent_series": "Motorola RIZR"
+        },
+        {
+          "id": 2254,
+          "name": "Motorola W230",
+          "image": "Brands/motorola_modals/motorola-w230.jpg",
+          "series": "Motorola W230",
+          "parent_series": "Motorola W230"
+        },
+        {
+          "id": 2255,
+          "name": "Motorola RAZR2 V8 Luxury Edition",
+          "image": "Brands/motorola_modals/motorola-razr2-v8-luxury-edition.jpg",
+          "series": "Motorola RAZR2",
+          "parent_series": "Motorola RAZR2"
+        },
+        {
+          "id": 2256,
+          "name": "Motorola Moto M",
+          "image": "Brands/motorola_modals/motorola-moto-m.jpg",
+          "series": "Moto M",
+          "parent_series": "Moto M"
+        },
+        {
+          "id": 2257,
+          "name": "Motorola W180",
+          "image": "Brands/motorola_modals/motorola-w180.jpg",
+          "series": "Motorola W180",
+          "parent_series": "Motorola W180"
+        },
+        {
+          "id": 2258,
+          "name": "Motorola Moto G5S Plus",
+          "image": "Brands/motorola_modals/motorola-moto-g5s-plus.jpg",
+          "series": "Moto G5S",
+          "parent_series": "Moto G5S"
+        },
+        {
+          "id": 2259,
+          "name": "Motorola Moto E3 Power",
+          "image": "Brands/motorola_modals/motorola-moto-e3-power.jpg",
+          "series": "Moto E3",
+          "parent_series": "Moto E3"
+        },
+        {
+          "id": 2260,
+          "name": "Motorola C118",
+          "image": "Brands/motorola_modals/motorola-c118.jpg",
+          "series": "Motorola C118",
+          "parent_series": "Motorola C118"
+        },
+        {
+          "id": 2261,
+          "name": "Motorola C168",
+          "image": "Brands/motorola_modals/motorola-c168.jpg",
+          "series": "Motorola C168",
+          "parent_series": "Motorola C168"
+        },
+        {
+          "id": 2262,
+          "name": "Motorola L6",
+          "image": "Brands/motorola_modals/motorola-l6.jpg",
+          "series": "Motorola L6",
+          "parent_series": "Motorola L6"
+        },
+        {
+          "id": 2263,
+          "name": "Motorola Moto E5 Plus",
+          "image": "Brands/motorola_modals/motorola-moto-e5-plus.jpg",
+          "series": "Moto E5",
+          "parent_series": "Moto E5"
+        },
+        {
+          "id": 2264,
+          "name": "Motorola V3i",
+          "image": "Brands/motorola_modals/motorola-razr-v3.png",
+          "series": "Motorola V3i",
+          "parent_series": "Motorola V3i"
+        },
+        {
+          "id": 2265,
+          "name": "Motorola Moto G5 Plus",
+          "image": "Brands/motorola_modals/motorola-moto-g5-plus.jpg",
+          "series": "Moto G5",
+          "parent_series": "Moto G5"
+        },
+        {
+          "id": 2266,
+          "name": "Motorola Moto X Style",
+          "image": "Brands/motorola_modals/motorola-moto-x-style.jpg",
+          "series": "Moto X",
+          "parent_series": "Moto X"
+        },
+        {
+          "id": 2267,
+          "name": "Motorola KRAZR K1",
+          "image": "Brands/motorola_modals/motorola-razr-v3.png",
+          "series": "Motorola KRAZR",
+          "parent_series": "Motorola KRAZR"
+        },
+        {
+          "id": 2268,
+          "name": "Motorola V3 Pink",
+          "image": "Brands/motorola_modals/motorola-razr-v3.png",
+          "series": "Motorola V3",
+          "parent_series": "Motorola V3"
+        },
+        {
+          "id": 2269,
+          "name": "Motorola Moto X Force",
+          "image": "Brands/motorola_modals/motorola-moto-x-force.jpg",
+          "series": "Moto X",
+          "parent_series": "Moto X"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Nokia",
+      "logo": "Brands/nokia.png",
+      "description": "Nokia Smartphones",
+      "models": [
+        {
+          "id": 2270,
+          "name": "Nokia X20",
+          "image": "Brands/nokia_modals/nokia-x20.jpg",
+          "series": "Nokia X20",
+          "parent_series": "Nokia X20"
+        },
+        {
+          "id": 2271,
+          "name": "Nokia X10",
+          "image": "Brands/nokia_modals/nokia-x10.jpg",
+          "series": "Nokia X10",
+          "parent_series": "Nokia X10"
+        },
+        {
+          "id": 2272,
+          "name": "Nokia C31",
+          "image": "Brands/nokia_modals/nokia-c31.jpg",
+          "series": "Nokia C31",
+          "parent_series": "Nokia C31"
+        },
+        {
+          "id": 2273,
+          "name": "Nokia G21",
+          "image": "Brands/nokia_modals/nokia-g21.jpg",
+          "series": "Nokia G21",
+          "parent_series": "Nokia G21"
+        },
+        {
+          "id": 2274,
+          "name": "Nokia 5.4",
+          "image": "Brands/nokia_modals/nokia-5-4.jpg",
+          "series": "Nokia 5.4",
+          "parent_series": "Nokia 5.4"
+        },
+        {
+          "id": 2275,
+          "name": "Nokia 6.2",
+          "image": "Brands/nokia_modals/nokia-6-2.jpg",
+          "series": "Nokia 6.2",
+          "parent_series": "Nokia 6.2"
+        },
+        {
+          "id": 2276,
+          "name": "Nokia 5.3",
+          "image": "Brands/nokia_modals/nokia-5-3.jpg",
+          "series": "Nokia 5.3",
+          "parent_series": "Nokia 5.3"
+        },
+        {
+          "id": 2277,
+          "name": "Nokia G20",
+          "image": "Brands/nokia_modals/nokia-g20.jpg",
+          "series": "Nokia G20",
+          "parent_series": "Nokia G20"
+        },
+        {
+          "id": 2278,
+          "name": "Nokia 3.4",
+          "image": "Brands/nokia_modals/nokia-3-4.jpg",
+          "series": "Nokia 3.4",
+          "parent_series": "Nokia 3.4"
+        },
+        {
+          "id": 2279,
+          "name": "Nokia G10",
+          "image": "Brands/nokia_modals/nokia-g10.jpg",
+          "series": "Nokia G10",
+          "parent_series": "Nokia G10"
+        },
+        {
+          "id": 2280,
+          "name": "Nokia 2.4",
+          "image": "Brands/nokia_modals/nokia-2-4.jpg",
+          "series": "Nokia 2.4",
+          "parent_series": "Nokia 2.4"
+        },
+        {
+          "id": 2281,
+          "name": "Nokia 5710 Xpress Audio",
+          "image": "Brands/nokia_modals/nokia-5710-xpress-audio.jpg",
+          "series": "Nokia 5710",
+          "parent_series": "Nokia 5710"
+        },
+        {
+          "id": 2282,
+          "name": "Nokia 2660 Flip",
+          "image": "Brands/nokia_modals/nokia-2660-flip.jpg",
+          "series": "Nokia 2660",
+          "parent_series": "Nokia 2660"
+        },
+        {
+          "id": 2283,
+          "name": "Nokia C21",
+          "image": "Brands/nokia_modals/nokia-c21.jpg",
+          "series": "Nokia C21",
+          "parent_series": "Nokia C21"
+        },
+        {
+          "id": 2284,
+          "name": "Nokia 2.3",
+          "image": "Brands/nokia_modals/nokia-2-3.jpg",
+          "series": "Nokia 2.3",
+          "parent_series": "Nokia 2.3"
+        },
+        {
+          "id": 2285,
+          "name": "Nokia 2720 Flip",
+          "image": "Brands/nokia_modals/nokia-2720-flip.jpg",
+          "series": "Nokia 2720",
+          "parent_series": "Nokia 2720"
+        },
+        {
+          "id": 2286,
+          "name": "Nokia C20",
+          "image": "Brands/nokia_modals/nokia-c20.jpg",
+          "series": "Nokia C20",
+          "parent_series": "Nokia C20"
+        },
+        {
+          "id": 2287,
+          "name": "Nokia 230",
+          "image": "Brands/nokia_modals/nokia-230.jpg",
+          "series": "Nokia 230",
+          "parent_series": "Nokia 230"
+        },
+        {
+          "id": 2288,
+          "name": "Nokia 6310 2021",
+          "image": "Brands/nokia_modals/nokia-6310-2021.jpg",
+          "series": "Nokia 6310",
+          "parent_series": "Nokia 6310"
+        },
+        {
+          "id": 2289,
+          "name": "Nokia 5310 2020",
+          "image": "Brands/nokia_modals/nokia-5310-2020.jpg",
+          "series": "Nokia 5310",
+          "parent_series": "Nokia 5310"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Nothing",
+      "description": "Nothing & CMF Smartphones",
+      "logo": "Brands/nothing.png",
+      "models": [
+        {
+          "name": "Nothing Phone (2)",
+          "image": "Brands/nothing_modals/nothing-phone-2.jpg"
+        },
+        {
+          "name": "Nothing Phone (2a)",
+          "image": "Brands/nothing_modals/nothing-phone-2a.jpg"
+        },
+        {
+          "name": "Nothing Phone (1)",
+          "image": "Brands/nothing_modals/nothing-phone-1.png"
+        },
+        {
+          "name": "Nothing Phone (3)",
+          "image": "Brands/nothing_modals/nothing-phone-3.jpg"
+        },
+        {
+          "name": "CMF Phone 1",
+          "image": "Brands/nothing_modals/nothing-cmf-phone-1.jpg"
+        },
+        {
+          "name": "CMF Phone 2 Pro",
+          "image": "Brands/nothing_modals/nothing-cmf-phone-2-pro.jpg"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Others",
+      "logo": "Brands/other_brand.jpg",
+      "description": "Other Device Brands",
+      "models": []
     }
+  ],
+  "repair_services": [
+    {
+      "id": 1,
+      "name": "Screen Replacement",
+      "icon": "Brands/repair_Icons/broken.png",
+      "description": "Complete LCD/OLED screen replacement",
+      "price": 490,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 2,
+      "name": "Battery Replacement",
+      "icon": "Brands/repair_Icons/battry.png",
+      "description": "Original battery replacement",
+      "price": 290,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 3,
+      "name": "Charging Port Repair",
+      "icon": "Brands/repair_Icons/port_issue.png",
+      "description": "Fix charging port issues",
+      "price": 340,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 4,
+      "name": "Camera Repair",
+      "icon": "Brands/repair_Icons/camera.png",
+      "description": "Front or rear camera repair",
+      "price": 250,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 5,
+      "name": "Back Glass Replacement",
+      "icon": "Brands/repair_Icons/back_damaged.png",
+      "description": "Original back glass replacement",
+      "price": 290,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 6,
+      "name": "Frame Repair",
+      "icon": "Brands/repair_Icons/frame_damaged.png",
+      "description": "Device frame repair and replacement",
+      "price": 200,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 7,
+      "name": "Software Support",
+      "icon": "Brands/repair_Icons/slow.png",
+      "description": "Software troubleshooting and fixes",
+      "price": 100,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 8,
+      "name": "General Diagnosis",
+      "icon": "Brands/repair_Icons/Checkup.png",
+      "description": "Comprehensive device diagnosis",
+      "price": 100,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 9,
+      "name": "Speaker Repair",
+      "icon": "Brands/repair_Icons/speaker.png",
+      "description": "Speaker and audio system repair",
+      "price": 180,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 10,
+      "name": "Microphone Repair",
+      "icon": "Brands/repair_Icons/connectivity.png",
+      "description": "Microphone replacement and repair",
+      "price": 150,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 11,
+      "name": "Home Button Repair",
+      "icon": "Brands/repair_Icons/hardware.png",
+      "description": "Home button functionality repair",
+      "price": 120,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 12,
+      "name": "Overheating Repair",
+      "icon": "Brands/repair_Icons/heated.png",
+      "description": "Fix device overheating issues",
+      "price": 180,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 13,
+      "name": "Screen Protector Installation",
+      "icon": "Brands/repair_Icons/protector.png",
+      "description": "High-quality screen protector installation",
+      "price": 50,
+      "duration": "30 Min(s)"
+    },
+    {
+      "id": 14,
+      "name": "Device Unlock Service",
+      "icon": "Brands/repair_Icons/locked.png",
+      "description": "Remove device locks and restrictions",
+      "price": 120,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 15,
+      "name": "Water Damage Repair",
+      "icon": "Brands/repair_Icons/waterdaamage.png",
+      "description": "Water damage assessment and repair",
+      "price": 200,
+      "duration": "03 Day(s)"
+    },
+    {
+      "id": 16,
+      "name": "Data Recovery",
+      "icon": "Brands/repair_Icons/data_recovery.png",
+      "description": "Recover data from damaged devices",
+      "price": 300,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 17,
+      "name": "Power Button Repair",
+      "icon": "Brands/repair_Icons/power.png",
+      "description": "Power button replacement and repair",
+      "price": 140,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 18,
+      "name": "Volume Button Repair",
+      "icon": "Brands/repair_Icons/hardware.png",
+      "description": "Volume button replacement and repair",
+      "price": 120,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 19,
+      "name": "SIM Card Tray Repair",
+      "icon": "Brands/repair_Icons/connectivity.png",
+      "description": "SIM card tray replacement and repair",
+      "price": 80,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 20,
+      "name": "Device Recycling",
+      "icon": "Brands/repair_Icons/recycle.png",
+      "description": "Eco-friendly device disposal service",
+      "price": 0,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 21,
+      "name": "Face ID / Biometric Sensor Repair",
+      "icon": "Brands/repair_Icons/Checkup.png",
+      "description": "Fix Face ID / Biometric recognition issues",
+      "price": 350,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 22,
+      "name": "Screen Replacement (Original OLED)",
+      "icon": "Brands/repair_Icons/broken.png",
+      "description": "Genuine original OLED screen replacement with TrueTone support",
+      "price": 799,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 23,
+      "name": "Screen Replacement (Aftermarket High Copy)",
+      "icon": "Brands/repair_Icons/broken.png",
+      "description": "Premium aftermarket display replacement at an economical cost",
+      "price": 390,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 24,
+      "name": "Back Camera Glass Repair",
+      "icon": "Brands/repair_Icons/camera.png",
+      "description": "Camera lens glass replacement without full module change",
+      "price": 150,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 25,
+      "name": "Front Camera Replacement",
+      "icon": "Brands/repair_Icons/camera.png",
+      "description": "Front selfie camera module repair and replacement",
+      "price": 180,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 26,
+      "name": "Earpiece Speaker Repair",
+      "icon": "Brands/repair_Icons/speaker.png",
+      "description": "Top call receiver earpiece sound clarity fix",
+      "price": 150,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 27,
+      "name": "Vibration Motor / Taptic Engine Repair",
+      "icon": "Brands/repair_Icons/hardware.png",
+      "description": "Haptic feedback and vibration motor replacement",
+      "price": 120,
+      "duration": "01 Hour(s)"
+    },
+    {
+      "id": 28,
+      "name": "WiFi / Bluetooth Antenna Repair",
+      "icon": "Brands/repair_Icons/connectivity.png",
+      "description": "Fix weak signal or dropping WiFi / Bluetooth connectivity",
+      "price": 220,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 29,
+      "name": "Signal / Network Issue Fix",
+      "icon": "Brands/repair_Icons/connectivity.png",
+      "description": "Baseband and cellular antenna repair for no-service errors",
+      "price": 250,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 30,
+      "name": "Dead Phone / No Power Diagnosis & Fix",
+      "icon": "Brands/repair_Icons/power.png",
+      "description": "Comprehensive troubleshooting for non-booting devices",
+      "price": 300,
+      "duration": "03 Day(s)"
+    },
+    {
+      "id": 31,
+      "name": "Touchscreen Digitizer Repair",
+      "icon": "Brands/repair_Icons/broken.png",
+      "description": "Fix ghost touching or unresponsive touchscreen zones",
+      "price": 250,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 32,
+      "name": "Foldable Hinge & Crease Mechanism Repair",
+      "icon": "Brands/repair_Icons/frame_damaged.png",
+      "description": "Repair stiff or damaged hinge for Z Fold, Flip and Mate X",
+      "price": 450,
+      "duration": "03 Day(s)"
+    },
+    {
+      "id": 33,
+      "name": "iCloud / Account Consultation & Unlock",
+      "icon": "Brands/repair_Icons/locked.png",
+      "description": "Device access assistance and account troubleshooting",
+      "price": 200,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 34,
+      "name": "FRP / Google Account Reset Assistance",
+      "icon": "Brands/repair_Icons/locked.png",
+      "description": "Factory Reset Protection lock removal assistance",
+      "price": 150,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 35,
+      "name": "Keyboard Replacement (MacBook / Laptop)",
+      "icon": "Brands/repair_Icons/hardware.png",
+      "description": "Complete keyboard key replacement and backlit fix",
+      "price": 650,
+      "duration": "03 Day(s)"
+    },
+    {
+      "id": 36,
+      "name": "Trackpad Repair (MacBook / Laptop)",
+      "icon": "Brands/repair_Icons/hardware.png",
+      "description": "Force touch trackpad sensor and click mechanism repair",
+      "price": 450,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 37,
+      "name": "Logic Board / Motherboard Micro-soldering",
+      "icon": "Brands/repair_Icons/hardware.png",
+      "description": "Advanced IC level micro-soldering and power management chip fix",
+      "price": 800,
+      "duration": "05 Day(s)"
+    },
+    {
+      "id": 38,
+      "name": "Liquid Damage Ultrasonic Cleaning",
+      "icon": "Brands/repair_Icons/waterdaamage.png",
+      "description": "Deep motherboard ultrasonic bath and corrosion removal",
+      "price": 180,
+      "duration": "02 Day(s)"
+    },
+    {
+      "id": 39,
+      "name": "S-Pen / Stylus Replacement & Sensor Fix",
+      "icon": "Brands/repair_Icons/hardware.png",
+      "description": "Samsung Galaxy S-Pen replacement and digitizer coil check",
+      "price": 150,
+      "duration": "01 Day(s)"
+    },
+    {
+      "id": 40,
+      "name": "Proximity & Ambient Light Sensor Repair",
+      "icon": "Brands/repair_Icons/Checkup.png",
+      "description": "Fix screen not dimming during phone calls or auto-brightness",
+      "price": 180,
+      "duration": "01 Day(s)"
+    }
+  ],
+  "metadata": {
+    "version": "2.0.0",
+    "last_updated": "2026-08-04",
+    "total_brands": 10,
+    "total_models": 178,
+    "total_repair_services": 40
+  }
 }

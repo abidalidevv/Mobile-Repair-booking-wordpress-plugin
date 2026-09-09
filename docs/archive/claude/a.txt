@@ -1,0 +1,38 @@
+PHP installed. Now let's lint the codebase properly.Repo clone kar ke pura code, JSON data, aur DB schema check kar liya. Zip bhejne ki zaroorat nahi thi, GitHub link kaafi tha. Ab seedha bata deta hoon — yeh sirf "thoda finishing" nahi hai, do **critical architectural bugs** hain jo aap ka pura business logic tor rahe hain.
+
+**Sabse bara bug:** Admin panel mein aap jo bhi price ya model change karte hain, wo customer ko kabhi nazar nahi aata — kyunke admin pages DB tables mein likhte hain, aur customer-facing form ek alag JSON file (`brands_models_data.json`) se data leta hai. Yeh dono ek dusre se connect hi nahi hain. Yehi wajah hai "price confusion" ki — asal mein har brand/model ke liye ek hi flat price show ho raha hai (per-model pricing matrix DB mein maujood hai, admin tools se edit bhi hoti hai, lekin frontend use hi nahi karta).
+
+Dusra bara bug: **Payment processing fake hai** — Stripe/PayPal ke liye jo functions hain, wo bina kisi gateway ko call kiye seedha "success" return kar dete hain.
+
+Teesra: 196 mein se 70 device images galat/duplicate hain — jaise sab "iPhone 17" variants pe iPhone 15 Pro Max ki photo lagi hui hai.
+
+Chautha: multilingual ke liye code mein zero i18n hai — koi `__()`/`_e()` function kahin use nahi hua, sab strings hardcoded English hain.
+
+Maine ek detailed MD file bana di hai jis mein:
+- Har bug ka exact file/line evidence
+- Security issues (SSL verification disabled, debug files jo live site par expose ho sakti hain)
+- Aap ke 4 naye requirements (device images, country-wise pricing, multi-payment, multilingual) ka realistic plan — including UAE mein Stripe ab officially available hai (2023 se), lekin Saudi/Mada ke liye Telr/PayTabs chahiye ho ga
+- Priority list: Must Have / Should Have / Nice to Have / Do Not Build Yet
+
+Batao kahan se shuru karain — mera recommendation hai pehle pricing bug fix karain (#1 Must Have), phir catalog disconnect (#2), phir images (ek script se 1 ghante mein fix ho jayega). In teeno ke baad hi Stripe integration ki taraf jayen. Bolo to main seedha #1 ka actual code likhna shuru kar deta hoon.
+
+
+Do baatein hain — pehle seedha jawab, phir dono cheezein ek dusri se related hain isliye combined solution deta hoon.
+
+## 1. Competitor images utha kar lagana — nahi kar sakta
+
+Yeh copyright infringement hoga — competitor sites ya Google se product/device photos utha kar apne commercial plugin mein bechna legally risky hai (device renders bhi manufacturer-owned hote hain). Main is mein madad nahi kar sakta. Lekin jo maine pehli MD file mein likha tha wahi asal professional solution hai: **har model ki apni unique photo ki zaroorat hi nahi** — competitors bhi 3,000+ models ke liye alag-alag real photo nahi rakhte, series-level generic image kaafi hoti hai (customer bas confirm karta hai "haan yeh mera model hai", glamour shot nahi dekhta). Isay MD2 mein detail se likh raha hoon.
+
+## 2. Pricing combinations ka asal masla — yeh sabse important sawal hai
+
+Aap ka andesha sahi hai: 196 models × 40 repairs = **7,840 combinations**. Har ek ko manually price dena ناممکن hai. Iska sahi professional solution ek hi cheez hai: **Tier-based pricing with cascading override** — yehi system hai jo RepairPlugin/RepairBuddy jaise tools use karte hain.
+
+Concept simple hai:
+- Har model ko ek **Price Tier** assign hoti hai (Economy / Mid-Range / Flagship / Premium). Yeh price ka category hai, image ka nahi.
+- Aap sirf **40 repairs × 4 tiers = 160 prices** set karte hain (ek grid screen par) — yeh aap ka base pricing hai, done.
+- Sirf jahan koi specific model tier ke normal price se different ho (kabhi kabhi), wahan **ek chhota sa override** add karo — baqi sab tier ka price inherit karta hai.
+- Chahen to country-level override bhi upar isi system pe add ho jata hai.
+
+Isse 7,840 manual entries → **160 base prices + handful of exceptions** ban jati hain. Models ko tier assign karna bhi automate ho sakta hai (naam pattern se — "Pro Max/Ultra" = Flagship, "SE/Lite" = Economy — script se auto-tag, phir aap sirf review karo).
+
+Detailed engineering spec (tables, resolution logic, admin screens, migration steps, aur competitor feature-gap list) neeche wali MD file mein hai — yeh Antigravity ko directly dene ke qabil hai.
