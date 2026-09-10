@@ -113,7 +113,8 @@
         },
         {
           "name": "iPhone 14 Pro",
-          "image": "Brands/iphone_modals/apple-iphone-14-pro.jpg"
+          "image": "Brands/iphone_modals/apple-iphone-14-pro.jpg",
+          "id": 2290
         },
         {
           "id": 108,
@@ -1831,15 +1832,18 @@
         },
         {
           "name": "Find X7 Ultra",
-          "image": "Brands/oppo_modals/find-x8.jpg"
+          "image": "Brands/oppo_modals/find-x8.jpg",
+          "id": 2291
         },
         {
           "name": "Reno 10 Pro+",
-          "image": "Brands/oppo_modals/oppo-reno-11.jpg"
+          "image": "Brands/oppo_modals/oppo-reno-11.jpg",
+          "id": 2292
         },
         {
           "name": "Oppo A78 4G",
-          "image": "Brands/oppo_modals/oppo-a60.jpg"
+          "image": "Brands/oppo_modals/oppo-a60.jpg",
+          "id": 2293
         },
         {
           "id": 2035,
@@ -2061,115 +2065,143 @@
       "models": [
         {
           "name": "iPad Pro 13\" M4",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2294
         },
         {
           "name": "iPad Pro 11\" M4",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2295
         },
         {
           "name": "iPad Pro 12.9\" 6th Gen (M2)",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2296
         },
         {
           "name": "iPad Pro 11\" 4th Gen (M2)",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2297
         },
         {
           "name": "iPad Pro 12.9\" 5th Gen (M1)",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2298
         },
         {
           "name": "iPad Pro 11\" 3rd Gen (M1)",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2299
         },
         {
           "name": "iPad Pro 12.9\" 4th Gen",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2300
         },
         {
           "name": "iPad Pro 11\" 2nd Gen",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2301
         },
         {
           "name": "iPad Pro 12.9\" 3rd Gen",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2302
         },
         {
           "name": "iPad Pro 11\" 1st Gen",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2303
         },
         {
           "name": "iPad Pro 10.5\"",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2304
         },
         {
           "name": "iPad Pro 9.7\"",
-          "image": "Brands/ipad_modals/ipad-pro.jpg"
+          "image": "Brands/ipad_modals/ipad-pro.jpg",
+          "id": 2305
         },
         {
           "name": "iPad Air 13\" M2",
-          "image": "Brands/ipad_modals/ipad-air.jpg"
+          "image": "Brands/ipad_modals/ipad-air.jpg",
+          "id": 2306
         },
         {
           "name": "iPad Air 11\" M2",
-          "image": "Brands/ipad_modals/ipad-air.jpg"
+          "image": "Brands/ipad_modals/ipad-air.jpg",
+          "id": 2307
         },
         {
           "name": "iPad Air 5th Gen (M1)",
-          "image": "Brands/ipad_modals/ipad-air.jpg"
+          "image": "Brands/ipad_modals/ipad-air.jpg",
+          "id": 2308
         },
         {
           "name": "iPad Air 4th Gen",
-          "image": "Brands/ipad_modals/ipad-air.jpg"
+          "image": "Brands/ipad_modals/ipad-air.jpg",
+          "id": 2309
         },
         {
           "name": "iPad Air 3rd Gen",
-          "image": "Brands/ipad_modals/ipad-air.jpg"
+          "image": "Brands/ipad_modals/ipad-air.jpg",
+          "id": 2310
         },
         {
           "name": "iPad Air 2",
-          "image": "Brands/ipad_modals/ipad-air.jpg"
+          "image": "Brands/ipad_modals/ipad-air.jpg",
+          "id": 2311
         },
         {
           "name": "iPad 10th Gen (10.9\")",
-          "image": "Brands/ipad_modals/ipad-10th-gen.png"
+          "image": "Brands/ipad_modals/ipad-10th-gen.png",
+          "id": 2312
         },
         {
           "name": "iPad 9th Gen (10.2\")",
-          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+          "image": "Brands/ipad_modals/ipad-9th-gen.png",
+          "id": 2313
         },
         {
           "name": "iPad 8th Gen (10.2\")",
-          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+          "image": "Brands/ipad_modals/ipad-9th-gen.png",
+          "id": 2314
         },
         {
           "name": "iPad 7th Gen (10.2\")",
-          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+          "image": "Brands/ipad_modals/ipad-9th-gen.png",
+          "id": 2315
         },
         {
           "name": "iPad 6th Gen (9.7\")",
-          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+          "image": "Brands/ipad_modals/ipad-9th-gen.png",
+          "id": 2316
         },
         {
           "name": "iPad 5th Gen (9.7\")",
-          "image": "Brands/ipad_modals/ipad-9th-gen.png"
+          "image": "Brands/ipad_modals/ipad-9th-gen.png",
+          "id": 2317
         },
         {
           "name": "iPad Mini 7 (A17 Pro)",
-          "image": "Brands/ipad_modals/ipad-mini.png"
+          "image": "Brands/ipad_modals/ipad-mini.png",
+          "id": 2318
         },
         {
           "name": "iPad Mini 6",
-          "image": "Brands/ipad_modals/ipad-mini.png"
+          "image": "Brands/ipad_modals/ipad-mini.png",
+          "id": 2319
         },
         {
           "name": "iPad Mini 5",
-          "image": "Brands/ipad_modals/ipad-mini.png"
+          "image": "Brands/ipad_modals/ipad-mini.png",
+          "id": 2320
         },
         {
           "name": "iPad Mini 4",
-          "image": "Brands/ipad_modals/ipad-mini.png"
+          "image": "Brands/ipad_modals/ipad-mini.png",
+          "id": 2321
         }
       ]
     },
@@ -2181,79 +2213,98 @@
       "models": [
         {
           "name": "MacBook Pro 16\" M4 Pro / Max",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2322
         },
         {
           "name": "MacBook Pro 14\" M4 Pro / Max",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2323
         },
         {
           "name": "MacBook Pro 16\" M3 Pro / Max",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2324
         },
         {
           "name": "MacBook Pro 14\" M3",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2325
         },
         {
           "name": "MacBook Pro 16\" M2 Pro / Max",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2326
         },
         {
           "name": "MacBook Pro 14\" M2 Pro / Max",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2327
         },
         {
           "name": "MacBook Pro 16\" M1 Pro / Max",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2328
         },
         {
           "name": "MacBook Pro 14\" M1 Pro / Max",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2329
         },
         {
           "name": "MacBook Pro 13\" M2",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2330
         },
         {
           "name": "MacBook Pro 13\" M1",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2331
         },
         {
           "name": "MacBook Pro 13\" (Intel Retina)",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2332
         },
         {
           "name": "MacBook Pro 15\" (Intel Retina)",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2333
         },
         {
           "name": "MacBook Pro 16\" (Intel 2019)",
-          "image": "Brands/macbook_modals/macbook-pro.jpg"
+          "image": "Brands/macbook_modals/macbook-pro.jpg",
+          "id": 2334
         },
         {
           "name": "MacBook Air 15\" M3",
-          "image": "Brands/macbook_modals/macbook-air.jpg"
+          "image": "Brands/macbook_modals/macbook-air.jpg",
+          "id": 2335
         },
         {
           "name": "MacBook Air 13\" M3",
-          "image": "Brands/macbook_modals/macbook-air.jpg"
+          "image": "Brands/macbook_modals/macbook-air.jpg",
+          "id": 2336
         },
         {
           "name": "MacBook Air 15\" M2",
-          "image": "Brands/macbook_modals/macbook-air.jpg"
+          "image": "Brands/macbook_modals/macbook-air.jpg",
+          "id": 2337
         },
         {
           "name": "MacBook Air 13\" M2",
-          "image": "Brands/macbook_modals/macbook-air.jpg"
+          "image": "Brands/macbook_modals/macbook-air.jpg",
+          "id": 2338
         },
         {
           "name": "MacBook Air 13\" M1",
-          "image": "Brands/macbook_modals/macbook-air.jpg"
+          "image": "Brands/macbook_modals/macbook-air.jpg",
+          "id": 2339
         },
         {
           "name": "MacBook Air 13\" (Intel Retina)",
-          "image": "Brands/macbook_modals/macbook-air.jpg"
+          "image": "Brands/macbook_modals/macbook-air.jpg",
+          "id": 2340
         }
       ]
     },
@@ -3616,27 +3667,33 @@
       "models": [
         {
           "name": "Nothing Phone (2)",
-          "image": "Brands/nothing_modals/nothing-phone-2.jpg"
+          "image": "Brands/nothing_modals/nothing-phone-2.jpg",
+          "id": 2341
         },
         {
           "name": "Nothing Phone (2a)",
-          "image": "Brands/nothing_modals/nothing-phone-2a.jpg"
+          "image": "Brands/nothing_modals/nothing-phone-2a.jpg",
+          "id": 2342
         },
         {
           "name": "Nothing Phone (1)",
-          "image": "Brands/nothing_modals/nothing-phone-1.png"
+          "image": "Brands/nothing_modals/nothing-phone-1.png",
+          "id": 2343
         },
         {
           "name": "Nothing Phone (3)",
-          "image": "Brands/nothing_modals/nothing-phone-3.jpg"
+          "image": "Brands/nothing_modals/nothing-phone-3.jpg",
+          "id": 2344
         },
         {
           "name": "CMF Phone 1",
-          "image": "Brands/nothing_modals/nothing-cmf-phone-1.jpg"
+          "image": "Brands/nothing_modals/nothing-cmf-phone-1.jpg",
+          "id": 2345
         },
         {
           "name": "CMF Phone 2 Pro",
-          "image": "Brands/nothing_modals/nothing-cmf-phone-2-pro.jpg"
+          "image": "Brands/nothing_modals/nothing-cmf-phone-2-pro.jpg",
+          "id": 2346
         }
       ]
     },

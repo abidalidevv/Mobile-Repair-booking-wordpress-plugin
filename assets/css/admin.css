@@ -488,3 +488,376 @@
     font-size: 12px;
     color: var(--rbf-muted);
 }
+/* ==========================================================================
+   Brands Management Grid & Cards
+   ========================================================================== */
+.rbf-brands-container {
+    max-width: 1400px;
+    margin: 20px 20px 40px 0;
+}
+
+.rbf-add-brand-section,
+.rbf-add-model-section,
+.rbf-add-repair-section {
+    margin-bottom: 24px;
+}
+
+.rbf-brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.rbf-brand-card {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-radius: var(--rbf-radius);
+    padding: 24px;
+    box-shadow: var(--rbf-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.rbf-brand-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--rbf-shadow);
+    border-color: var(--rbf-primary);
+}
+
+.rbf-brand-logo {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid #f1f5f9;
+}
+
+.rbf-brand-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.rbf-brand-details h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--rbf-dark);
+}
+
+.rbf-brand-description {
+    font-size: 13px;
+    color: var(--rbf-muted);
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+}
+
+.rbf-brand-stats {
+    margin-bottom: 16px;
+}
+
+.rbf-models-count {
+    background: var(--rbf-primary-light);
+    color: var(--rbf-primary);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.rbf-brand-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    width: 100%;
+    justify-content: center;
+}
+
+.rbf-brand-actions .button,
+.rbf-model-actions .button,
+.rbf-repair-actions .button {
+    flex: 1;
+    max-width: 120px;
+    text-align: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   Models Management Section & Grid
+   ========================================================================== */
+.rbf-models-container {
+    max-width: 1400px;
+    margin: 20px 20px 40px 0;
+}
+
+.rbf-brand-section {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-radius: var(--rbf-radius);
+    margin-bottom: 28px;
+    box-shadow: var(--rbf-shadow-sm);
+    overflow: hidden;
+}
+
+.rbf-brand-header {
+    background: linear-gradient(135deg, #05413a 0%, #017c36 100%);
+    color: #ffffff;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rbf-brand-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.rbf-brand-logo-small {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 3px;
+}
+
+.rbf-brand-header h2 {
+    color: #ffffff !important;
+    margin: 0 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+}
+
+.rbf-model-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 20px;
+}
+
+.rbf-models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+    padding: 22px;
+    background: #f8fafc;
+}
+
+.rbf-model-card {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.rbf-model-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rbf-shadow);
+    border-color: var(--rbf-primary);
+}
+
+.rbf-model-image {
+    width: 100px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.rbf-model-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.rbf-model-card:hover .rbf-model-image img {
+    transform: scale(1.05);
+}
+
+.rbf-model-details {
+    margin-bottom: 14px;
+    flex-grow: 1;
+}
+
+.rbf-model-details h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--rbf-dark);
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+}
+
+.rbf-model-parent,
+.rbf-model-series {
+    font-size: 12px;
+    color: var(--rbf-muted);
+    margin: 2px 0;
+}
+
+.rbf-model-actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    margin-top: auto;
+}
+
+/* ==========================================================================
+   Repairs Management Grid & Cards
+   ========================================================================== */
+.rbf-repairs-container {
+    max-width: 1400px;
+    margin: 20px 20px 40px 0;
+}
+
+.rbf-repairs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.rbf-repair-card {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-radius: var(--rbf-radius);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: var(--rbf-shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.rbf-repair-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rbf-shadow);
+    border-color: var(--rbf-primary);
+}
+
+.rbf-repair-icon {
+    width: 68px;
+    height: 68px;
+    background: var(--rbf-primary-light);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    padding: 12px;
+}
+
+.rbf-repair-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.rbf-repair-details {
+    flex-grow: 1;
+    margin-bottom: 16px;
+}
+
+.rbf-repair-details h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--rbf-dark);
+    margin: 0 0 6px 0;
+}
+
+.rbf-repair-description {
+    font-size: 12.5px;
+    color: var(--rbf-muted);
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.rbf-repair-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--rbf-primary);
+    background: var(--rbf-primary-light);
+    padding: 3px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 4px 0;
+}
+
+.rbf-repair-duration {
+    font-size: 12px;
+    color: var(--rbf-slate);
+    margin: 4px 0 0 0;
+}
+
+.rbf-repair-actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    margin-top: auto;
+}
+
+/* ==========================================================================
+   Admin Universal Modal & Dialogs
+   ========================================================================== */
+.rbf-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.rbf-modal-content {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    width: 520px;
+    max-width: 92vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--rbf-border);
+}
+
+.rbf-modal-content h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--rbf-dark);
+}
+
+.rbf-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rbf-border);
+}

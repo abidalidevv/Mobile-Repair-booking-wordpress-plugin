@@ -999,18 +999,12 @@ class RepairBookingForm {
      * Enqueue admin scripts and styles
      */
     public function enqueue_admin_scripts($hook) {
-        // Enqueue for all repair-booking admin pages
-        if (strpos($hook, 'repair-booking') !== false || 
-            strpos($hook, 'repair-booking-dashboard') !== false ||
-            strpos($hook, 'repair-booking-brands') !== false || 
-            strpos($hook, 'repair-booking-models') !== false || 
-            strpos($hook, 'repair-booking-repairs') !== false || 
-            strpos($hook, 'repair-booking-bookings') !== false ||
-            strpos($hook, 'repair-booking-payments') !== false ||
-            strpos($hook, 'repair-booking-about') !== false ||
-            strpos($hook, 'repair-booking-prices') !== false) {
-            
-            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '1.1.0');
+        // Enqueue for all repair-booking admin pages (robust check for hook or query param)
+        $is_rbf = (isset($_GET['page']) && strpos($_GET['page'], 'repair-booking') !== false) || 
+                  (is_string($hook) && strpos($hook, 'repair-booking') !== false);
+                  
+        if ($is_rbf) {
+            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.2');
             wp_enqueue_media(); // For image uploads
             
             // Enqueue jQuery for admin pages
@@ -1351,28 +1345,34 @@ class RepairBookingForm {
         echo '<div class="rbf-brands-grid">';
         
         foreach ($brands as $brand) {
-            echo '<div class="rbf-brand-card" data-brand-id="' . esc_attr($brand['id']) . '">';
+            $brand_id = isset($brand['id']) ? $brand['id'] : 0;
+            $brand_name = isset($brand['name']) ? $brand['name'] : '';
+            $brand_desc = isset($brand['description']) ? $brand['description'] : '';
+            $brand_logo = isset($brand['logo']) ? $brand['logo'] : 'Brands/other_brand.jpg';
+            $models_list = isset($brand['models']) && is_array($brand['models']) ? $brand['models'] : array();
+
+            echo '<div class="rbf-brand-card" data-brand-id="' . esc_attr($brand_id) . '">';
             
             // Brand Logo and Image - Made bigger
             echo '<div class="rbf-brand-logo">';
-            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $brand['logo']) . '" alt="' . esc_attr($brand['name']) . '">';
+            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $brand_logo) . '" alt="' . esc_attr($brand_name) . '">';
             echo '</div>';
             
             // Brand Details
             echo '<div class="rbf-brand-details">';
-            echo '<h3>' . esc_html($brand['name']) . '</h3>';
-            if (isset($brand['description'])) {
-                echo '<p class="rbf-brand-description">' . esc_html($brand['description']) . '</p>';
+            echo '<h3>' . esc_html($brand_name) . '</h3>';
+            if (!empty($brand_desc)) {
+                echo '<p class="rbf-brand-description">' . esc_html($brand_desc) . '</p>';
             }
             echo '<div class="rbf-brand-stats">';
-            echo '<span class="rbf-models-count">' . count($brand['models']) . ' Models</span>';
+            echo '<span class="rbf-models-count">' . count($models_list) . ' Models</span>';
             echo '</div>';
             echo '</div>';
             
             // Brand Actions
             echo '<div class="rbf-brand-actions">';
-                            echo '<button class="button edit-brand" data-brand-id="' . esc_attr($brand['id']) . '" data-brand-name="' . esc_attr($brand['name']) . '" data-brand-description="' . esc_attr($brand['description']) . '">Edit</button>';
-                          echo '<button class="button delete-brand" data-brand-id="' . esc_attr($brand['id']) . '" data-brand-name="' . esc_attr($brand['name']) . '">Delete</button>';
+            echo '<button class="button edit-brand" data-brand-id="' . esc_attr($brand_id) . '" data-brand-name="' . esc_attr($brand_name) . '" data-brand-description="' . esc_attr($brand_desc) . '">Edit</button>';
+            echo '<button class="button delete-brand" data-brand-id="' . esc_attr($brand_id) . '" data-brand-name="' . esc_attr($brand_name) . '">Delete</button>';
             echo '</div>';
             
             echo '</div>'; // Close brand card
@@ -1804,22 +1804,28 @@ class RepairBookingForm {
             echo '<div class="rbf-models-grid">';
             
             foreach ($brand['models'] as $model) {
-                echo '<div class="rbf-model-card" data-model-id="' . esc_attr($model['id']) . '">';
+                $model_id = isset($model['id']) ? $model['id'] : (isset($model['name']) ? sanitize_title($model['name']) : '0');
+                $model_name = isset($model['name']) ? $model['name'] : '';
+                $model_img = isset($model['image']) ? $model['image'] : 'Brands/other_brand.jpg';
+                $brand_id = isset($brand['id']) ? $brand['id'] : '0';
+                $brand_name = isset($brand['name']) ? $brand['name'] : '';
+
+                echo '<div class="rbf-model-card" data-model-id="' . esc_attr($model_id) . '">';
                 echo '<div class="rbf-model-image">';
-                echo '<img src="' . esc_url(RBF_PLUGIN_URL . $model['image']) . '" alt="' . esc_attr($model['name']) . '">';
+                echo '<img src="' . esc_url(RBF_PLUGIN_URL . $model_img) . '" alt="' . esc_attr($model_name) . '">';
                 echo '</div>';
                 
                 echo '<div class="rbf-model-details">';
-                echo '<h3>' . esc_html($model['name']) . '</h3>';
-                echo '<p class="rbf-model-parent">Parent: ' . esc_html($brand['name']) . '</p>';
+                echo '<h3>' . esc_html($model_name) . '</h3>';
+                echo '<p class="rbf-model-parent">Parent: ' . esc_html($brand_name) . '</p>';
                 if (isset($model['series'])) {
                     echo '<p class="rbf-model-series">Series: ' . esc_html($model['series']) . '</p>';
                 }
                 echo '</div>';
                 
                 echo '<div class="rbf-model-actions">';
-                echo '<button class="button edit-model" data-model-id="' . esc_attr($model['id']) . '" data-model-name="' . esc_attr($model['name']) . '" data-parent-brand="' . esc_attr($brand['name']) . '" data-parent-brand-id="' . esc_attr($brand['id']) . '">Edit</button>';
-                echo '<button class="button delete-model" data-model-id="' . esc_attr($model['id']) . '" data-model-name="' . esc_attr($model['name']) . '">Delete</button>';
+                echo '<button class="button edit-model" data-model-id="' . esc_attr($model_id) . '" data-model-name="' . esc_attr($model_name) . '" data-parent-brand="' . esc_attr($brand_name) . '" data-parent-brand-id="' . esc_attr($brand_id) . '">Edit</button>';
+                echo '<button class="button delete-model" data-model-id="' . esc_attr($model_id) . '" data-model-name="' . esc_attr($model_name) . '">Delete</button>';
                 echo '</div>';
                 echo '</div>';
             }
@@ -6027,9 +6033,19 @@ class RepairBookingForm {
                                 <input type="checkbox" name="auto_fetch_rates" value="1" <?php checked($auto_fetch, 1); ?>>
                                 Enable automatic live exchange rates sync (Refreshes every 12 hours from open exchange API)
                             </label>
-                            <?php if ($last_updated): ?>
+                            <?php 
+                            $display_rates_date = '';
+                            if (!empty($last_updated)) {
+                                if (is_numeric($last_updated)) {
+                                    $display_rates_date = date('Y-m-d H:i:s', (int)$last_updated);
+                                } else {
+                                    $display_rates_date = esc_html($last_updated);
+                                }
+                            }
+                            ?>
+                            <?php if (!empty($display_rates_date)): ?>
                                 <p class="description" style="color: #017c36;">
-                                    ✓ Rates last fetched: <?php echo date('Y-m-d H:i:s', $last_updated); ?>
+                                    ✓ Rates last fetched: <?php echo $display_rates_date; ?>
                                 </p>
                             <?php endif; ?>
                         </td>
