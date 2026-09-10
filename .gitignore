@@ -16,3 +16,5 @@ desktop.ini
 
 # Temporary / logs
 *.log
+# Archives
+*.zip

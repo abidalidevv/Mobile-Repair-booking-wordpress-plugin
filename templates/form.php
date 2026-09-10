@@ -476,7 +476,7 @@ $store_hours = get_option('rbf_store_working_hours', 'Daily: 9:00 AM - 10:00 PM'
                     <a href="#" id="rbf-whatsapp-chat-btn" target="_blank" class="rbf-btn-wa-direct">
                         💬 Chat with Technician on WhatsApp
                     </a>
-                    <button type="button" class="rbf-btn-secondary rbf-print-receipt" onclick="window.print()">
+                    <button type="button" class="rbf-btn-secondary rbf-print-receipt" onclick="rbfPrintReceipt()">
                         🧾 Print Invoice / Receipt
                     </button>
                     <button type="button" class="rbf-btn-secondary" onclick="location.reload()">

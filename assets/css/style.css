@@ -1281,3 +1281,76 @@
         grid-template-columns: 1fr !important;
     }
 }
+
+/* ==========================================================================
+   Comprehensive @media print: Hide Website Menus, Headers & Footers
+   ========================================================================== */
+@media print {
+    /* Hide all website theme elements outside the booking confirmation */
+    header,
+    nav,
+    footer,
+    aside,
+    #header,
+    #footer,
+    #site-header,
+    #site-navigation,
+    .site-header,
+    .site-footer,
+    .main-navigation,
+    .elementor-location-header,
+    .elementor-location-footer,
+    .ast-site-header,
+    .ast-site-footer,
+    #wpadminbar,
+    .rbf-top-bar,
+    .rbf-progress-bar,
+    .rbf-step:not(.rbf-step-success),
+    .rbf-success-actions,
+    .rbf-btn-wa-direct,
+    .rbf-print-receipt,
+    .rbf-loading {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    body {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #efix-repair-form-wrapper {
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    #efix-repair-form-wrapper .rbf-container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 10px 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    #efix-repair-form-wrapper .rbf-step-success {
+        display: block !important;
+        padding: 15px 0 !important;
+    }
+
+    #efix-repair-form-wrapper .rbf-booking-id-card {
+        border: 2px dashed #017c36 !important;
+        background: #f8fafc !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        margin: 15px auto !important;
+    }
+
+    #efix-repair-form-wrapper .rbf-confirmation-details {
+        margin-top: 15px !important;
+    }
+}

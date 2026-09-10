@@ -611,6 +611,30 @@
                         }
                         $('#rbf-whatsapp-chat-btn').attr('href', waUrl);
 
+                        // Save completed booking state for print receipt
+                        const serviceTypeLabel = $('input[name="service_type"]:checked').closest('.rbf-radio-label').find('strong').text().trim() || 'Pickup & Delivery';
+                        state.completedBooking = {
+                            bookingId: bookingId,
+                            name: name,
+                            phone: fullPhone,
+                            email: email,
+                            brand: state.selectedBrand,
+                            model: state.selectedModel,
+                            imei: $('#device-imei').val().trim(),
+                            serviceType: serviceTypeLabel,
+                            serviceDate: $('#service-date').val() || '',
+                            serviceTime: $('#service-time option:selected').text() || '',
+                            address: [$('#address').val(), $('#street-building').val(), $('#emirate').val()].filter(Boolean).join(', '),
+                            repairs: state.cart.slice(),
+                            subtotal: subtotalAed,
+                            vat: vatAed,
+                            total: totalAed,
+                            formattedSubtotal: formatPrice(subtotalAed),
+                            formattedVat: formatPrice(vatAed),
+                            formattedTotal: formatPrice(totalAed),
+                            dateFormatted: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                        };
+
                         // Confirmation details table
                         const detailsHtml = `
                             <div class="rbf-booking-id-card" style="text-align: left; margin-top: 20px;">
@@ -618,7 +642,7 @@
                                 <p><strong>Phone:</strong> ${fullPhone}</p>
                                 <p><strong>Device:</strong> ${state.selectedBrand} - ${state.selectedModel}</p>
                                 <p><strong>Repairs:</strong> ${state.cart.map(c => c.name).join(', ')}</p>
-                                <p><strong>Total Cost:</strong> ${formatPrice(subtotalAed)} (VAT incl.)</p>
+                                <p><strong>Total Cost:</strong> ${formatPrice(totalAed)} (VAT incl.)</p>
                             </div>
                         `;
                         $('#confirmation-details').html(detailsHtml);
@@ -659,5 +683,194 @@
             $('#rbf-loading').fadeOut(150);
         }
     }
+
+    /**
+     * Dedicated Print Receipt Function
+     * Prints clean confirmation receipt WITHOUT website header/menus/footer
+     */
+    window.rbfPrintReceipt = function() {
+        const b = state.completedBooking || {
+            bookingId: $('#booking-id').text().trim() || 'eFIX-BOOKING',
+            name: $('#customer-name').val() || 'Customer',
+            phone: ($('#country-code').val() || '+971') + ' ' + ($('#customer-phone').val() || ''),
+            email: $('#customer-email').val() || '',
+            brand: state.selectedBrand || 'Device',
+            model: state.selectedModel || '',
+            imei: $('#device-imei').val() || '',
+            serviceType: $('input[name="service_type"]:checked').closest('.rbf-radio-label').find('strong').text().trim() || 'Service Center',
+            serviceDate: $('#service-date').val() || '',
+            serviceTime: $('#service-time option:selected').text() || '',
+            address: [$('#address').val(), $('#street-building').val(), $('#emirate').val()].filter(Boolean).join(', '),
+            repairs: state.cart.slice(),
+            formattedSubtotal: $('#cart-subtotal').text() || 'AED 0.00',
+            formattedVat: $('#cart-vat').text() || 'AED 0.00',
+            formattedTotal: $('#cart-total-amount').text() || 'AED 0.00',
+            dateFormatted: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        };
+
+        const siteName = rbfData.site_name || 'eFix Repair Services';
+        const sitePhone = rbfData.site_phone || '+971 50 123 4567';
+        const siteAddress = rbfData.site_address || 'Dubai, United Arab Emirates';
+        const vatNumber = rbfData.vat_number || 'VAT No: 123456789012345';
+        const repairsList = (b.repairs && b.repairs.length > 0) 
+            ? b.repairs.map(r => r.name).join(', ') 
+            : 'Device Inspection & Repair';
+
+        let repairsRowsHtml = '';
+        if (b.repairs && b.repairs.length > 0) {
+            b.repairs.forEach(function(r) {
+                repairsRowsHtml += `
+                    <tr>
+                        <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9;"><strong>${r.name}</strong><br><small style="color: #64748b;">${r.duration || '01-02 Hours'}</small></td>
+                        <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9; text-align: right; font-weight: 700; color: #017c36;">${formatPrice(r.price)}</td>
+                    </tr>
+                `;
+            });
+        } else {
+            repairsRowsHtml = `
+                <tr>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9;">Device Repair Services</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9; text-align: right; font-weight: 700; color: #017c36;">${b.formattedTotal}</td>
+                </tr>
+            `;
+        }
+
+        const receiptHtml = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Repair Receipt - ${b.bookingId}</title>
+    <style>
+        @page { size: auto; margin: 12mm 15mm; }
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        body { font-family: 'Segoe UI', Arial, -apple-system, sans-serif; color: #0f172a; background: #ffffff; margin: 0; padding: 15px; font-size: 13px; line-height: 1.5; }
+        .receipt-box { max-width: 650px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; padding: 28px; background: #ffffff; }
+        .receipt-header { text-align: center; border-bottom: 2px solid #017c36; padding-bottom: 16px; margin-bottom: 20px; }
+        .store-brand { font-size: 24px; font-weight: 800; color: #017c36; margin: 0 0 4px; }
+        .store-meta { font-size: 11px; color: #64748b; margin: 2px 0; }
+        .status-check { width: 52px; height: 52px; border-radius: 50%; background: #e8f7ee; border: 2px solid #017c36; color: #017c36; font-size: 26px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+        .confirmed-title { font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 4px; text-align: center; }
+        .confirmed-subtitle { font-size: 12px; color: #64748b; text-align: center; margin: 0 0 16px; }
+        .tracking-card { border: 2px dashed #017c36; border-radius: 10px; padding: 14px 20px; text-align: center; background: #f8fafc; margin-bottom: 20px; }
+        .tracking-label { font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 1.5px; text-transform: uppercase; }
+        .tracking-val { font-size: 26px; font-weight: 800; color: #017c36; margin-top: 3px; letter-spacing: 1px; }
+        .details-card { border: 2px dashed #017c36; border-radius: 10px; padding: 18px 20px; background: #ffffff; margin-bottom: 20px; }
+        .details-card p { margin: 6px 0; font-size: 13px; line-height: 1.5; color: #1e293b; }
+        .details-card strong { color: #0f172a; width: 100px; display: inline-block; }
+        .table-wrap { margin-top: 15px; }
+        .table-wrap table { width: 100%; border-collapse: collapse; }
+        .table-wrap th { background: #f8fafc; color: #475569; font-size: 12px; font-weight: 700; text-align: left; padding: 8px 12px; border-bottom: 2px solid #e2e8f0; }
+        .totals-box { margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+        .total-row { display: flex; justify-content: space-between; font-size: 12px; color: #475569; margin-bottom: 4px; }
+        .total-grand { font-size: 16px; font-weight: 800; color: #017c36; padding-top: 6px; border-top: 1.5px dashed #017c36; margin-top: 6px; }
+        .guarantee-pills { display: flex; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; margin: 18px 0; font-size: 11px; font-weight: 600; color: #334155; }
+        .receipt-footer { text-align: center; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #64748b; font-size: 11px; }
+    </style>
+</head>
+<body>
+    <div class="receipt-box">
+        <div class="receipt-header">
+            <div class="store-brand">${siteName}</div>
+            <p class="store-meta">${siteAddress} • Phone: ${sitePhone}</p>
+            <p class="store-meta">${vatNumber} • Date: ${b.dateFormatted}</p>
+        </div>
+
+        <div class="status-check">✓</div>
+        <h2 class="confirmed-title">🎉 Repair Booking Confirmed!</h2>
+        <p class="confirmed-subtitle">Thank you! Your repair request has been registered. A technician has been assigned.</p>
+
+        <div class="tracking-card">
+            <div class="tracking-label">YOUR TRACKING ID</div>
+            <div class="tracking-val">${b.bookingId}</div>
+        </div>
+
+        <div class="details-card">
+            <p><strong>Customer:</strong> ${b.name}</p>
+            <p><strong>Phone:</strong> ${b.phone}</p>
+            ${b.email ? `<p><strong>Email:</strong> ${b.email}</p>` : ''}
+            <p><strong>Device:</strong> ${b.brand} - ${b.model}</p>
+            ${b.imei ? `<p><strong>IMEI/SN:</strong> ${b.imei}</p>` : ''}
+            <p><strong>Service:</strong> ${b.serviceType} ${b.serviceDate ? `(${b.serviceDate} ${b.serviceTime})` : ''}</p>
+            ${b.address ? `<p><strong>Address:</strong> ${b.address}</p>` : ''}
+            <p><strong>Repairs:</strong> ${repairsList}</p>
+            <p><strong>Total Cost:</strong> <span style="font-weight: 800; color: #017c36;">${b.formattedTotal} (VAT incl.)</span></p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service Details</th>
+                            <th style="text-align: right;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${repairsRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="totals-box">
+                <div class="total-row"><span>Subtotal:</span><span>${b.formattedSubtotal}</span></div>
+                <div class="total-row"><span>VAT (5%):</span><span>${b.formattedVat}</span></div>
+                <div class="total-row total-grand"><span>Total Amount:</span><span>${b.formattedTotal}</span></div>
+            </div>
+        </div>
+
+        <div class="guarantee-pills">
+            <span>🛡️ Up to 12M Warranty</span>
+            <span>⚡ No Fix, No Fee</span>
+            <span>🔒 100% Data Safe</span>
+        </div>
+
+        <div class="receipt-footer">
+            <p style="margin: 3px 0;"><strong>Thank you for choosing ${siteName}!</strong></p>
+            <p style="margin: 3px 0;">Please keep this receipt or your tracking ID <strong>#${b.bookingId}</strong> for device collection.</p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+        // Render in hidden iframe for 100% clean isolation from website menus and headers
+        let printIframe = document.getElementById('rbf-receipt-print-iframe');
+        if (!printIframe) {
+            printIframe = document.createElement('iframe');
+            printIframe.id = 'rbf-receipt-print-iframe';
+            printIframe.style.position = 'fixed';
+            printIframe.style.right = '0';
+            printIframe.style.bottom = '0';
+            printIframe.style.width = '0';
+            printIframe.style.height = '0';
+            printIframe.style.border = '0';
+            document.body.appendChild(printIframe);
+        }
+
+        try {
+            const frameDoc = printIframe.contentWindow.document;
+            frameDoc.open();
+            frameDoc.write(receiptHtml);
+            frameDoc.close();
+
+            setTimeout(function() {
+                try {
+                    printIframe.contentWindow.focus();
+                    printIframe.contentWindow.print();
+                } catch(e) {
+                    // Fallback to window.open if iframe print is blocked
+                    const win = window.open('', '_blank');
+                    win.document.write(receiptHtml);
+                    win.document.close();
+                    win.focus();
+                    setTimeout(() => win.print(), 350);
+                }
+            }, 300);
+        } catch(err) {
+            // Popup window fallback
+            const win = window.open('', '_blank');
+            win.document.write(receiptHtml);
+            win.document.close();
+            win.focus();
+            setTimeout(() => win.print(), 350);
+        }
+    };
 
 })(jQuery);

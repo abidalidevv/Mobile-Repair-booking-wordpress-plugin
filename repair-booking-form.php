@@ -299,8 +299,8 @@ class RepairBookingForm {
     
     public function enqueue_scripts() {
         wp_enqueue_script('jquery');
-        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.2', true);
-        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.2');
+        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.3', true);
+        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.3');
         
         // Payment gateway scripts
         if (get_option('rbf_paypal_enabled', false)) {
@@ -8019,18 +8019,25 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
     public function ajax_generate_invoice() {
         check_ajax_referer('rbf_nonce', 'nonce');
         
-        $booking_id = intval($_GET['booking_id']);
+        $raw_id = sanitize_text_field($_GET['booking_id'] ?? '');
         
-        if (!$booking_id) {
+        if (empty($raw_id)) {
             wp_die('Invalid booking ID');
         }
         
-        // Get booking details
+        // Get booking details (support both numeric ID and tracking string e.g. eFIX-910CF)
         global $wpdb;
-        $booking = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}rbf_bookings WHERE id = %d",
-            $booking_id
-        ));
+        if (is_numeric($raw_id)) {
+            $booking = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}rbf_bookings WHERE id = %d",
+                intval($raw_id)
+            ));
+        } else {
+            $booking = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}rbf_bookings WHERE booking_id = %s",
+                $raw_id
+            ));
+        }
         
         if (!$booking) {
             wp_die('Booking not found');
