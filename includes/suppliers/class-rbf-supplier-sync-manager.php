@@ -46,7 +46,7 @@ class RBF_Supplier_Sync_Manager {
         if (!isset($schedules['forty_eight_hours'])) {
             $schedules['forty_eight_hours'] = array(
                 'interval' => 48 * HOUR_IN_SECONDS,
-                'display'  => __('Every 48 Hours', 'repair-booking-form')
+                'display'  => 'Every 48 Hours'
             );
         }
         return $schedules;

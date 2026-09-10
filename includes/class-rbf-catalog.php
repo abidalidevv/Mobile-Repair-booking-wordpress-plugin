@@ -30,6 +30,72 @@ class RBF_Catalog {
     /**
      * Get all active brands from the database
      */
+    /**
+     * Get all active repairs from database or JSON catalog
+     */
+    public function get_all_repairs() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'rbf_repairs';
+        $repairs = $wpdb->get_results("SELECT id, name, icon, price, labour_cost FROM $table WHERE status = 'active' ORDER BY id ASC", ARRAY_A);
+        if (!empty($repairs)) {
+            return $repairs;
+        }
+
+        // Fallback to JSON
+        $json_file = RBF_PLUGIN_PATH . 'brands_models_data.json';
+        if (file_exists($json_file)) {
+            $data = json_decode(file_get_contents($json_file), true);
+            return $data['repair_services'] ?? array();
+        }
+        return array();
+    }
+
+    /**
+     * Get all active brands (alias / wrapper)
+     */
+    public function get_all_brands() {
+        return $this->get_brands();
+    }
+
+    /**
+     * Get all active models across all brands
+     */
+    public function get_all_models() {
+        global $wpdb;
+        $models_table = $wpdb->prefix . 'rbf_models';
+        $brands_table = $wpdb->prefix . 'rbf_brands';
+
+        $models = $wpdb->get_results(
+            "SELECT m.id, m.brand_id, m.name, m.image_url as image, m.tier_id, b.name as brand_name 
+             FROM $models_table m 
+             LEFT JOIN $brands_table b ON m.brand_id = b.id 
+             WHERE m.status = 'active' 
+             ORDER BY b.name ASC, m.name ASC",
+            ARRAY_A
+        );
+
+        if (!empty($models)) {
+            return $models;
+        }
+
+        // Fallback to JSON
+        $json_file = RBF_PLUGIN_PATH . 'brands_models_data.json';
+        $all = array();
+        if (file_exists($json_file)) {
+            $data = json_decode(file_get_contents($json_file), true);
+            foreach ($data['brands'] as $b) {
+                foreach ($b['models'] as $m) {
+                    $all[] = array(
+                        'name' => $m['name'],
+                        'brand_name' => $b['name'],
+                        'image' => $m['image']
+                    );
+                }
+            }
+        }
+        return $all;
+    }
+
     public function get_brands() {
         global $wpdb;
         $table = $wpdb->prefix . 'rbf_brands';

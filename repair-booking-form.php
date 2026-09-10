@@ -161,7 +161,29 @@ class RepairBookingForm {
         add_action('wp_ajax_rbf_regenerate_combinations', array($this, 'ajax_regenerate_combinations'));
     }
     
+    /**
+     * Register custom cron recurrence intervals
+     */
+    public function add_cron_intervals($schedules) {
+        if (!isset($schedules['forty_eight_hours'])) {
+            $schedules['forty_eight_hours'] = array(
+                'interval' => 48 * HOUR_IN_SECONDS,
+                'display'  => 'Every 48 Hours'
+            );
+        }
+        return $schedules;
+    }
+
+    /**
+     * Plugin deactivation cleanup
+     */
+    public function deactivate_plugin() {
+        wp_clear_scheduled_hook('rbf_supplier_price_sync');
+    }
+
     public function init() {
+        // Load plugin textdomain at init (Standard WordPress Lifecycle)
+        load_plugin_textdomain('repair-booking-form', false, dirname(plugin_basename(__FILE__)) . '/languages');
         // Create database tables if needed (only for bookings)
         $this->create_bookings_table();
         
