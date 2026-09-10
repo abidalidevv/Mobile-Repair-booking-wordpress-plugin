@@ -9,21 +9,21 @@
         {
           "id": 150,
           "name": "iPhone 17 Pro Max",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-17-pro-max.jpg",
           "series": "iPhone 17",
           "parent_series": "iPhone 17"
         },
         {
           "id": 151,
           "name": "iPhone 17 Pro",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-17-pro.jpg",
           "series": "iPhone 17",
           "parent_series": "iPhone 17"
         },
         {
           "id": 152,
           "name": "iPhone 17",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-17.jpg",
           "series": "iPhone 17",
           "parent_series": "iPhone 17"
         },
@@ -37,7 +37,7 @@
         {
           "id": 154,
           "name": "iPhone 17e",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-17-air.jpg",
           "series": "iPhone 17",
           "parent_series": "iPhone 17"
         },
@@ -51,28 +51,28 @@
         {
           "id": 141,
           "name": "iPhone 16 Pro",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-16-pro.jpg",
           "series": "iPhone 16",
           "parent_series": "iPhone 16"
         },
         {
           "id": 142,
           "name": "iPhone 16 Plus",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-16-plus.jpg",
           "series": "iPhone 16",
           "parent_series": "iPhone 16"
         },
         {
           "id": 143,
           "name": "iPhone 16",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-16.jpg",
           "series": "iPhone 16",
           "parent_series": "iPhone 16"
         },
         {
           "id": 144,
           "name": "iPhone 16e",
-          "image": "Brands/iphone_modals/apple-iphone-15-pro-max.jpg",
+          "image": "Brands/iphone_modals/apple-iphone-16e.jpg",
           "series": "iPhone 16",
           "parent_series": "iPhone 16"
         },

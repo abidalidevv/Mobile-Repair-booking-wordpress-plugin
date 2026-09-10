@@ -222,15 +222,15 @@ class RBF_Supplier_Manager {
         $where_sql = implode(' AND ', $where);
         $sql = "SELECT m.*, 
                        b.name as brand_name, 
-                       mod.name as model_name, 
+                       mdl.name as model_name, 
                        r.name as repair_name,
                        p.current_price,
                        p.stock_status,
                        p.product_name,
                        p.fetched_at as last_price_update
                 FROM $mappings_table m
-                LEFT JOIN $models_table mod ON m.model_id = mod.id
-                LEFT JOIN $brands_table b ON mod.brand_id = b.id
+                LEFT JOIN $models_table mdl ON m.model_id = mdl.id
+                LEFT JOIN $brands_table b ON mdl.brand_id = b.id
                 LEFT JOIN $repairs_table r ON m.repair_id = r.id
                 LEFT JOIN $prices_table p ON (m.supplier_id = p.supplier_id AND m.supplier_sku = p.supplier_sku)
                 WHERE $where_sql

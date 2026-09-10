@@ -1004,7 +1004,7 @@ class RepairBookingForm {
                   (is_string($hook) && strpos($hook, 'repair-booking') !== false);
                   
         if ($is_rbf) {
-            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.2');
+            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.3');
             wp_enqueue_media(); // For image uploads
             
             // Enqueue jQuery for admin pages
@@ -5737,7 +5737,7 @@ class RepairBookingForm {
     /**
      * Admin Payment Settings
      */
-    public function admin_payment_settings() {
+        public function admin_payment_settings() {
         // Handle form submission
         if (isset($_POST['submit'])) {
             check_admin_referer('rbf_payment_settings');
@@ -5763,7 +5763,7 @@ class RepairBookingForm {
             update_option('rbf_store_email', sanitize_email($_POST['store_email']));
             update_option('rbf_store_working_hours', sanitize_text_field($_POST['store_working_hours']));
             
-            echo '<div class="notice notice-success"><p>Payment and delivery settings saved successfully!</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p><strong>Payment gateways and workshop delivery settings saved successfully!</strong></p></div>';
         }
         
         // Get current settings
@@ -5785,174 +5785,185 @@ class RepairBookingForm {
         $store_whatsapp = get_option('rbf_store_whatsapp', '');
         $store_email = get_option('rbf_store_email', '');
         $store_working_hours = get_option('rbf_store_working_hours', 'Sunday - Thursday: 9:00 AM - 6:00 PM');
-        
         ?>
-        <div class="wrap rbf-payment-page">
-            <h1>Payment Gateway Settings</h1>
+        <div class="wrap rbf-admin-wrap">
+            <!-- Executive Header -->
+            <div class="rbf-admin-header">
+                <div class="rbf-header-left">
+                    <h1>
+                        💳 Payment Gateways & Delivery Settings
+                        <span class="rbf-version-badge">v2.0.2 Secure</span>
+                    </h1>
+                    <p class="rbf-header-desc">Configure Stripe, PayPal, and customer device drop-off / workshop delivery locations.</p>
+                </div>
+                <div class="rbf-header-actions">
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-bookings')); ?>" class="rbf-btn-light">
+                        📋 View Bookings
+                    </a>
+                </div>
+            </div>
+
+            <!-- Admin Navigation Tabs -->
+            <div class="rbf-nav-tabs">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking')); ?>" class="rbf-nav-tab">📊 Dashboard</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-bookings')); ?>" class="rbf-nav-tab">📅 Bookings</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-prices')); ?>" class="rbf-nav-tab">💰 Bulk Prices</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-brands')); ?>" class="rbf-nav-tab">📱 Brands</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-models')); ?>" class="rbf-nav-tab">📲 Models</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-repairs')); ?>" class="rbf-nav-tab">🛠️ Repairs</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-currency')); ?>" class="rbf-nav-tab">💱 Currency & VAT</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-whatsapp')); ?>" class="rbf-nav-tab">💬 WhatsApp Alerts</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-payments')); ?>" class="rbf-nav-tab active">⚙️ Payment Gateways</a>
+            </div>
+
             <form method="post" action="">
                 <?php wp_nonce_field('rbf_payment_settings'); ?>
                 
-                <h2>PayPal Settings</h2>
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Enable PayPal</th>
-                        <td>
-                            <input type="checkbox" name="paypal_enabled" value="1" <?php checked($paypal_enabled); ?>>
-                            <p class="description">Enable PayPal payment processing</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Client ID</th>
-                        <td>
-                            <input type="text" name="paypal_client_id" value="<?php echo esc_attr($paypal_client_id); ?>" class="regular-text">
-                            <p class="description">Your PayPal Client ID</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Secret</th>
-                        <td>
-                            <input type="password" name="paypal_secret" value="<?php echo esc_attr($paypal_secret); ?>" class="regular-text">
-                            <p class="description">Your PayPal Secret Key</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Mode</th>
-                        <td>
-                            <select name="paypal_mode">
-                                <option value="sandbox" <?php selected($paypal_mode, 'sandbox'); ?>>Sandbox (Testing)</option>
-                                <option value="live" <?php selected($paypal_mode, 'live'); ?>>Live (Production)</option>
+                <div class="rbf-grid-2col" style="margin-bottom: 24px;">
+                    <!-- PayPal Settings Card -->
+                    <div class="rbf-card">
+                        <div class="rbf-card-header">
+                            <h3 class="rbf-card-title">
+                                <span class="dashicons dashicons-cart" style="color: #003087;"></span>
+                                PayPal Express Checkout
+                            </h3>
+                            <span class="rbf-badge <?php echo $paypal_enabled ? 'rbf-badge-completed' : 'rbf-badge-cancelled'; ?>">
+                                <?php echo $paypal_enabled ? 'Active' : 'Disabled'; ?>
+                            </span>
+                        </div>
+                        
+                        <div class="rbf-form-group">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="paypal_enabled" value="1" <?php checked($paypal_enabled); ?> style="width: 18px; height: 18px;">
+                                <strong>Enable PayPal payments during checkout</strong>
+                            </label>
+                            <p class="description">Accept credit cards and PayPal balance securely from customers.</p>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="paypal_mode">Environment Mode</label>
+                            <select name="paypal_mode" id="paypal_mode" class="rbf-select">
+                                <option value="sandbox" <?php selected($paypal_mode, 'sandbox'); ?>>🧪 Sandbox (Testing Mode)</option>
+                                <option value="live" <?php selected($paypal_mode, 'live'); ?>>🚀 Live (Production Mode)</option>
                             </select>
-                            <p class="description">Select PayPal environment</p>
-                        </td>
-                    </tr>
-                </table>
-                
-                <h2>Stripe Settings</h2>
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Enable Stripe</th>
-                        <td>
-                            <input type="checkbox" name="stripe_enabled" value="1" <?php checked($stripe_enabled); ?>>
-                            <p class="description">Enable Stripe payment processing</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Publishable Key</th>
-                        <td>
-                            <input type="text" name="stripe_publishable_key" value="<?php echo esc_attr($stripe_publishable_key); ?>" class="regular-text">
-                            <p class="description">Your Stripe Publishable Key</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Secret Key</th>
-                        <td>
-                            <input type="password" name="stripe_secret_key" value="<?php echo esc_attr($stripe_secret_key); ?>" class="regular-text">
-                            <p class="description">Your Stripe Secret Key</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Mode</th>
-                        <td>
-                            <select name="stripe_mode">
-                                <option value="test" <?php selected($stripe_mode, 'test'); ?>>Test Mode</option>
-                                <option value="live" <?php selected($stripe_mode, 'live'); ?>>Live Mode</option>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="paypal_client_id">PayPal Client ID</label>
+                            <input type="text" id="paypal_client_id" name="paypal_client_id" value="<?php echo esc_attr($paypal_client_id); ?>" class="rbf-input" placeholder="e.g. AeA...123">
+                            <p class="description">From developer.paypal.com dashboard apps.</p>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="paypal_secret">PayPal Secret Key</label>
+                            <input type="password" id="paypal_secret" name="paypal_secret" value="<?php echo esc_attr($paypal_secret); ?>" class="rbf-input" placeholder="••••••••••••••••">
+                            <p class="description">Keep your API secret strictly private.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stripe Settings Card -->
+                    <div class="rbf-card">
+                        <div class="rbf-card-header">
+                            <h3 class="rbf-card-title">
+                                <span class="dashicons dashicons-money-alt" style="color: #635bff;"></span>
+                                Stripe Payment Gateway
+                            </h3>
+                            <span class="rbf-badge <?php echo $stripe_enabled ? 'rbf-badge-completed' : 'rbf-badge-cancelled'; ?>">
+                                <?php echo $stripe_enabled ? 'Active' : 'Disabled'; ?>
+                            </span>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="stripe_enabled" value="1" <?php checked($stripe_enabled); ?> style="width: 18px; height: 18px;">
+                                <strong>Enable Stripe payments during checkout</strong>
+                            </label>
+                            <p class="description">Direct on-site card payments (Visa, Mastercard, Apple Pay).</p>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="stripe_mode">Environment Mode</label>
+                            <select name="stripe_mode" id="stripe_mode" class="rbf-select">
+                                <option value="test" <?php selected($stripe_mode, 'test'); ?>>🧪 Test Mode</option>
+                                <option value="live" <?php selected($stripe_mode, 'live'); ?>>🚀 Live Mode</option>
                             </select>
-                            <p class="description">Select Stripe environment</p>
-                        </td>
-                    </tr>
-                </table>
-                
-                <h2>🏪 Store & Delivery Address Settings</h2>
-                <p class="description">Configure your store location and contact information that will appear on the frontend booking form.</p>
-                
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Store Address *</th>
-                        <td>
-                            <input type="text" name="store_address" value="<?php echo esc_attr($store_address); ?>" class="regular-text" required>
-                            <p class="description">Your complete store address (e.g., Building 123, Street Name)</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">City *</th>
-                        <td>
-                            <input type="text" name="store_city" value="<?php echo esc_attr($store_city); ?>" class="regular-text" required>
-                            <p class="description">Your store city</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Emirate *</th>
-                        <td>
-                            <select name="store_emirate" required>
-                                <option value="">Select Emirate</option>
-                                <option value="Abu Dhabi" <?php selected($store_emirate, 'Abu Dhabi'); ?>>Abu Dhabi</option>
-                                <option value="Dubai" <?php selected($store_emirate, 'Dubai'); ?>>Dubai</option>
-                                <option value="Sharjah" <?php selected($store_emirate, 'Sharjah'); ?>>Sharjah</option>
-                                <option value="Ajman" <?php selected($store_emirate, 'Ajman'); ?>>Ajman</option>
-                                <option value="Umm Al Quwain" <?php selected($store_emirate, 'Umm Al Quwain'); ?>>Umm Al Quwain</option>
-                                <option value="Ras Al Khaimah" <?php selected($store_emirate, 'Ras Al Khaimah'); ?>>Ras Al Khaimah</option>
-                                <option value="Fujairah" <?php selected($store_emirate, 'Fujairah'); ?>>Fujairah</option>
-                            </select>
-                            <p class="description">Select your store emirate</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Phone Number *</th>
-                        <td>
-                            <input type="tel" name="store_phone" value="<?php echo esc_attr($store_phone); ?>" class="regular-text" required>
-                            <p class="description">Your store phone number (e.g., +971 XX XXX XXXX)</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">WhatsApp Number</th>
-                        <td>
-                            <input type="tel" name="store_whatsapp" value="<?php echo esc_attr($store_whatsapp); ?>" class="regular-text">
-                            <p class="description">Your WhatsApp number (optional, e.g., +971 XX XXX XXXX)</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Email Address *</th>
-                        <td>
-                            <input type="email" name="store_email" value="<?php echo esc_attr($store_email); ?>" class="regular-text" required>
-                            <p class="description">Your store email address</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Working Hours</th>
-                        <td>
-                            <input type="text" name="store_working_hours" value="<?php echo esc_attr($store_working_hours); ?>" class="regular-text">
-                            <p class="description">Your store working hours (e.g., Sunday - Thursday: 9:00 AM - 6:00 PM)</p>
-                        </td>
-                    </tr>
-                </table>
-                
-                <?php submit_button('Save Payment & Delivery Settings'); ?>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="stripe_publishable_key">Stripe Publishable Key</label>
+                            <input type="text" id="stripe_publishable_key" name="stripe_publishable_key" value="<?php echo esc_attr($stripe_publishable_key); ?>" class="rbf-input" placeholder="pk_test_... or pk_live_...">
+                            <p class="description">Public API key used on client checkout.</p>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="stripe_secret_key">Stripe Secret Key</label>
+                            <input type="password" id="stripe_secret_key" name="stripe_secret_key" value="<?php echo esc_attr($stripe_secret_key); ?>" class="rbf-input" placeholder="sk_test_... or sk_live_...">
+                            <p class="description">Secret key used for secure server-side charges.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workshop & Store Delivery Card -->
+                <div class="rbf-card">
+                    <div class="rbf-card-header">
+                        <h3 class="rbf-card-title">
+                            <span class="dashicons dashicons-location" style="color: #017c36;"></span>
+                            Store & Workshop Drop-off Location
+                        </h3>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div class="rbf-form-group">
+                            <label for="store_address">Physical Store Address</label>
+                            <textarea id="store_address" name="store_address" rows="3" class="rbf-textarea" style="width:100%; max-width:100%;" placeholder="e.g. Shop 12, Tech Tower, Al Barsha 1"><?php echo esc_textarea($store_address); ?></textarea>
+                            <p class="description">Displayed to customers who choose "Bring to Shop" service.</p>
+                        </div>
+
+                        <div>
+                            <div class="rbf-form-group">
+                                <label for="store_city">City</label>
+                                <input type="text" id="store_city" name="store_city" value="<?php echo esc_attr($store_city); ?>" class="rbf-input" style="width:100%; max-width:100%;" placeholder="Dubai">
+                            </div>
+                            <div class="rbf-form-group">
+                                <label for="store_emirate">State / Emirate</label>
+                                <input type="text" id="store_emirate" name="store_emirate" value="<?php echo esc_attr($store_emirate); ?>" class="rbf-input" style="width:100%; max-width:100%;" placeholder="Dubai / Abu Dhabi / Sharjah">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="rbf-form-group">
+                                <label for="store_phone">Store Helpline Phone</label>
+                                <input type="text" id="store_phone" name="store_phone" value="<?php echo esc_attr($store_phone); ?>" class="rbf-input" style="width:100%; max-width:100%;" placeholder="+971 4 123 4567">
+                            </div>
+                            <div class="rbf-form-group">
+                                <label for="store_whatsapp">Official WhatsApp Number</label>
+                                <input type="text" id="store_whatsapp" name="store_whatsapp" value="<?php echo esc_attr($store_whatsapp); ?>" class="rbf-input" style="width:100%; max-width:100%;" placeholder="+971 50 123 4567">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="rbf-form-group">
+                                <label for="store_email">Support Email</label>
+                                <input type="email" id="store_email" name="store_email" value="<?php echo esc_attr($store_email); ?>" class="rbf-input" style="width:100%; max-width:100%;" placeholder="support@efix.ae">
+                            </div>
+                            <div class="rbf-form-group">
+                                <label for="store_working_hours">Working Hours</label>
+                                <input type="text" id="store_working_hours" name="store_working_hours" value="<?php echo esc_attr($store_working_hours); ?>" class="rbf-input" style="width:100%; max-width:100%;" placeholder="Mon - Sat: 9:00 AM - 9:00 PM">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--rbf-border);">
+                        <button type="submit" name="submit" class="rbf-btn-primary">
+                            <span class="dashicons dashicons-saved"></span> Save All Gateway & Address Settings
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
         <?php
     }
-
-
-
-    /**
-     * Get store settings for frontend use
-     */
-    public function get_store_settings() {
-        return array(
-            'address' => get_option('rbf_store_address', ''),
-            'city' => get_option('rbf_store_city', ''),
-            'emirate' => get_option('rbf_store_emirate', ''),
-            'phone' => get_option('rbf_store_phone', ''),
-            'whatsapp' => get_option('rbf_store_whatsapp', ''),
-            'email' => get_option('rbf_store_email', ''),
-            'working_hours' => get_option('rbf_store_working_hours', 'Sunday - Thursday: 9:00 AM - 6:00 PM')
-        );
-    }
-
-    /**
-     * Admin Currency Settings Page
-     */
-    public function admin_currency_settings() {
+        public function admin_currency_settings() {
         if (!current_user_can('manage_options')) {
             wp_die('Unauthorized');
         }
@@ -5999,17 +6010,51 @@ class RepairBookingForm {
         $last_updated = get_option('rbf_exchange_rates_last_updated', 0);
         ?>
         <div class="wrap rbf-admin-wrap">
-            <h1>💱 Multi-Currency & Live Rates Management</h1>
-            <p class="description">Configure primary base currency (AED, SAR, USD), live exchange rate sync, and regional VAT calculation.</p>
-            
+            <!-- Executive Header -->
+            <div class="rbf-admin-header">
+                <div class="rbf-header-left">
+                    <h1>
+                        💱 Multi-Currency & Live Rates Management
+                        <span class="rbf-version-badge">v2.0.2 Global</span>
+                    </h1>
+                    <p class="rbf-header-desc">Configure primary base currency (AED, SAR, USD), automatic 12-hour exchange rates sync, and regional VAT calculation.</p>
+                </div>
+                <div class="rbf-header-actions">
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-prices')); ?>" class="rbf-btn-light">
+                        💰 Bulk Repair Prices
+                    </a>
+                </div>
+            </div>
+
+            <!-- Admin Navigation Tabs -->
+            <div class="rbf-nav-tabs">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking')); ?>" class="rbf-nav-tab">📊 Dashboard</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-bookings')); ?>" class="rbf-nav-tab">📅 Bookings</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-prices')); ?>" class="rbf-nav-tab">💰 Bulk Prices</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-brands')); ?>" class="rbf-nav-tab">📱 Brands</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-models')); ?>" class="rbf-nav-tab">📲 Models</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-repairs')); ?>" class="rbf-nav-tab">🛠️ Repairs</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-currency')); ?>" class="rbf-nav-tab active">💱 Currency & VAT</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-whatsapp')); ?>" class="rbf-nav-tab">💬 WhatsApp Alerts</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-payments')); ?>" class="rbf-nav-tab">⚙️ Payment Gateways</a>
+            </div>
+
             <form method="post" action="">
                 <?php wp_nonce_field('rbf_currency_settings_nonce'); ?>
                 
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Default Base Currency</th>
-                        <td>
-                            <select name="default_currency" style="min-width: 200px;">
+                <div class="rbf-grid-2col" style="margin-bottom: 24px;">
+                    <!-- Base Currency & Tax Settings Card -->
+                    <div class="rbf-card">
+                        <div class="rbf-card-header">
+                            <h3 class="rbf-card-title">
+                                <span class="dashicons dashicons-admin-settings" style="color: #017c36;"></span>
+                                Base Currency & Regional VAT
+                            </h3>
+                        </div>
+                        
+                        <div class="rbf-form-group">
+                            <label for="default_currency">Default Base Store Currency</label>
+                            <select name="default_currency" id="default_currency" class="rbf-select" style="width:100%; max-width:100%;">
                                 <?php foreach ($currencies as $code => $cur): ?>
                                     <option value="<?php echo esc_attr($code); ?>" <?php selected($default_currency, $code); ?>>
                                         <?php echo esc_html($code . ' (' . $cur['symbol'] . ') - ' . $cur['name']); ?>
@@ -6017,22 +6062,33 @@ class RepairBookingForm {
                                 <?php endforeach; ?>
                             </select>
                             <p class="description">All prices in the catalog JSON file are stored relative to AED (Base: 1.00 AED).</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">VAT / Tax Rate (%)</th>
-                        <td>
-                            <input type="number" step="0.1" min="0" max="100" name="vat_rate" value="<?php echo esc_attr($vat_rate); ?>" class="small-text"> %
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="vat_rate">VAT / Tax Rate (%)</label>
+                            <input type="number" step="0.1" min="0" max="100" id="vat_rate" name="vat_rate" value="<?php echo esc_attr($vat_rate); ?>" class="rbf-input" style="max-width: 150px;"> %
                             <p class="description">UAE standard VAT is 5%, Saudi Arabia VAT is 15%. Calculated dynamically during checkout.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Live Exchange Rates Sync</th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="auto_fetch_rates" value="1" <?php checked($auto_fetch, 1); ?>>
-                                Enable automatic live exchange rates sync (Refreshes every 12 hours from open exchange API)
+                        </div>
+                    </div>
+
+                    <!-- Live Exchange Rate Feed Card -->
+                    <div class="rbf-card">
+                        <div class="rbf-card-header">
+                            <h3 class="rbf-card-title">
+                                <span class="dashicons dashicons-update" style="color: #0284c7;"></span>
+                                Live Rates Auto-Sync
+                            </h3>
+                            <span class="rbf-badge <?php echo $auto_fetch ? 'rbf-badge-completed' : 'rbf-badge-cancelled'; ?>">
+                                <?php echo $auto_fetch ? 'Automated' : 'Manual'; ?>
+                            </span>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="auto_fetch_rates" value="1" <?php checked($auto_fetch, 1); ?> style="width: 18px; height: 18px;">
+                                <strong>Enable automatic live exchange rates sync</strong>
                             </label>
+                            <p class="description">Refreshes every 12 hours from open exchange rate API.</p>
                             <?php 
                             $display_rates_date = '';
                             if (!empty($last_updated)) {
@@ -6044,64 +6100,74 @@ class RepairBookingForm {
                             }
                             ?>
                             <?php if (!empty($display_rates_date)): ?>
-                                <p class="description" style="color: #017c36;">
+                                <p style="margin: 8px 0 0 0; color: #15803d; font-weight: 600; font-size: 12.5px;">
                                     ✓ Rates last fetched: <?php echo $display_rates_date; ?>
                                 </p>
                             <?php endif; ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">ExchangeRate API Key (Optional)</th>
-                        <td>
-                            <input type="text" name="exchangerate_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" placeholder="Free tier works without key">
-                            <p class="description">Leave blank to use the default open-access rate feeds, or provide your exchangerate-api.com key.</p>
-                        </td>
-                    </tr>
-                </table>
+                        </div>
 
-                <h2>Active Currency Rates (relative to 1.00 AED)</h2>
-                <table class="wp-list-table widefat fixed striped" style="max-width: 700px; margin-top: 15px;">
-                    <thead>
-                        <tr>
-                            <th>Currency</th>
-                            <th>Symbol</th>
-                            <th>1 AED Equals</th>
-                            <th>Example: 100 AED Screen Repair</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($currencies as $code => $cur): 
-                            $rate = isset($current_rates[$code]) ? $current_rates[$code] : 1.0;
-                        ?>
-                        <tr>
-                            <td><strong><?php echo esc_html($code); ?></strong> (<?php echo esc_html($cur['name']); ?>)</td>
-                            <td><span style="font-size: 16px; font-weight: bold;"><?php echo esc_html($cur['symbol']); ?></span></td>
-                            <td>
-                                <input type="number" step="0.0001" min="0" name="rates[<?php echo esc_attr($code); ?>]" value="<?php echo esc_attr($rate); ?>" style="width: 110px;">
-                            </td>
-                            <td>
-                                <span style="font-weight: 600; color: #017c36;">
-                                    <?php echo esc_html($cur['symbol'] . ' ' . number_format(100 * $rate, 2)); ?>
-                                </span>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        <div class="rbf-form-group">
+                            <label for="exchangerate_api_key">ExchangeRate API Key (Optional)</label>
+                            <input type="text" id="exchangerate_api_key" name="exchangerate_api_key" value="<?php echo esc_attr($api_key); ?>" class="rbf-input" placeholder="Free open-access tier works without key">
+                            <p class="description">Optional: Provide your exchangerate-api.com key if you have a custom paid plan.</p>
+                        </div>
+                    </div>
+                </div>
 
-                <p class="submit" style="margin-top: 25px;">
-                    <input type="submit" name="rbf_save_currency_settings" class="button button-primary" value="Save Currency Settings">
-                    <input type="submit" name="force_refresh_rates" class="button button-secondary" value="🔄 Force Fetch Live Rates Now" style="margin-left: 10px;">
-                </p>
+                <!-- Active Conversion Rates Matrix Card -->
+                <div class="rbf-card">
+                    <div class="rbf-card-header">
+                        <h3 class="rbf-card-title">
+                            <span class="dashicons dashicons-chart-line" style="color: #017c36;"></span>
+                            Active Regional Currency Rates (Relative to 1.00 AED)
+                        </h3>
+                    </div>
+
+                    <div class="rbf-table-responsive">
+                        <table class="rbf-modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Currency</th>
+                                    <th>Symbol</th>
+                                    <th>1 AED Equals</th>
+                                    <th>Preview (100 AED Screen Repair)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($currencies as $code => $cur): 
+                                    $rate = isset($current_rates[$code]) ? $current_rates[$code] : 1.0;
+                                ?>
+                                <tr>
+                                    <td><strong><?php echo esc_html($code); ?></strong> — <?php echo esc_html($cur['name']); ?></td>
+                                    <td><span style="font-size: 16px; font-weight: bold; color: var(--rbf-dark);"><?php echo esc_html($cur['symbol']); ?></span></td>
+                                    <td>
+                                        <input type="number" step="0.0001" min="0" name="rates[<?php echo esc_attr($code); ?>]" value="<?php echo esc_attr($rate); ?>" class="rbf-input" style="width: 140px; padding: 6px 10px;">
+                                    </td>
+                                    <td>
+                                        <span class="rbf-badge rbf-badge-confirmed" style="font-size: 13px;">
+                                            <?php echo esc_html($cur['symbol'] . ' ' . number_format(100 * $rate, 2)); ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--rbf-border); display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button type="submit" name="rbf_save_currency_settings" class="rbf-btn-primary">
+                            <span class="dashicons dashicons-saved"></span> Save Currency Settings
+                        </button>
+                        <button type="submit" name="force_refresh_rates" class="button button-secondary" style="height: auto; padding: 10px 18px; font-weight: 600; border-radius: 8px;">
+                            <span class="dashicons dashicons-update"></span> 🔄 Force Fetch Live Rates Now
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
         <?php
     }
-
-    /**
-     * Admin WhatsApp & Alerts Page
-     */
-    public function admin_whatsapp_settings() {
+        public function admin_whatsapp_settings() {
         if (!current_user_can('manage_options')) {
             wp_die('Unauthorized');
         }
@@ -6127,82 +6193,122 @@ class RepairBookingForm {
         $admin_number = get_option('rbf_wa_admin_number', '');
         ?>
         <div class="wrap rbf-admin-wrap">
-            <h1>📲 WhatsApp Notifications & Direct Chat Settings</h1>
-            <p class="description">Enable 1-click WhatsApp customer support links, instant technician chat, and automated booking notifications.</p>
-            
+            <!-- Executive Header -->
+            <div class="rbf-admin-header">
+                <div class="rbf-header-left">
+                    <h1>
+                        💬 WhatsApp Notifications & Customer Chat
+                        <span class="rbf-version-badge">v2.0.2 Live</span>
+                    </h1>
+                    <p class="rbf-header-desc">Configure direct 1-click WhatsApp customer support, automated UltraMsg booking confirmations, and manager alerts.</p>
+                </div>
+                <div class="rbf-header-actions">
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-bookings')); ?>" class="rbf-btn-light">
+                        📋 View Bookings
+                    </a>
+                </div>
+            </div>
+
+            <!-- Admin Navigation Tabs -->
+            <div class="rbf-nav-tabs">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking')); ?>" class="rbf-nav-tab">📊 Dashboard</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-bookings')); ?>" class="rbf-nav-tab">📅 Bookings</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-prices')); ?>" class="rbf-nav-tab">💰 Bulk Prices</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-brands')); ?>" class="rbf-nav-tab">📱 Brands</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-models')); ?>" class="rbf-nav-tab">📲 Models</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-repairs')); ?>" class="rbf-nav-tab">🛠️ Repairs</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-currency')); ?>" class="rbf-nav-tab">💱 Currency & VAT</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-whatsapp')); ?>" class="rbf-nav-tab active">💬 WhatsApp Alerts</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=repair-booking-payments')); ?>" class="rbf-nav-tab">⚙️ Payment Gateways</a>
+            </div>
+
             <form method="post" action="">
                 <?php wp_nonce_field('rbf_wa_settings_nonce'); ?>
                 
-                <h2>1. Direct WhatsApp Chat (Free - No API Required)</h2>
-                <p class="description">When a customer places a booking, a pre-filled "Chat on WhatsApp" button is shown with their Booking ID and repair details.</p>
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Technician / Shop WhatsApp Number *</th>
-                        <td>
-                            <input type="text" name="business_whatsapp" value="<?php echo esc_attr($business_wa); ?>" class="regular-text" placeholder="+971501234567">
-                            <p class="description">Include international country code (e.g., +971 for UAE, +966 for Saudi Arabia).</p>
-                        </td>
-                    </tr>
-                </table>
+                <div class="rbf-grid-2col" style="margin-bottom: 24px;">
+                    <!-- Direct Chat Card -->
+                    <div class="rbf-card">
+                        <div class="rbf-card-header">
+                            <h3 class="rbf-card-title">
+                                <span class="dashicons dashicons-format-chat" style="color: #25D366;"></span>
+                                1. Direct Customer WhatsApp Chat (Free)
+                            </h3>
+                            <span class="rbf-badge rbf-badge-completed">Free</span>
+                        </div>
+                        <p class="description" style="margin-bottom: 18px;">
+                            Customers see a 1-click "Chat on WhatsApp" button on booking success with pre-filled device & repair info.
+                        </p>
 
-                <h2>2. Automated WhatsApp Gateway (UltraMsg API)</h2>
-                <p class="description">Automatically send booking confirmations and status updates directly to customer phones via WhatsApp API.</p>
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Enable UltraMsg Gateway</th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="ultramsg_enabled" value="1" <?php checked($ultramsg_enabled, 1); ?>>
-                                Send automated WhatsApp messages via UltraMsg API
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">UltraMsg Instance ID</th>
-                        <td>
-                            <input type="text" name="ultramsg_instance_id" value="<?php echo esc_attr($ultramsg_instance); ?>" class="regular-text" placeholder="instance12345">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">UltraMsg Token</th>
-                        <td>
-                            <input type="password" name="ultramsg_token" value="<?php echo esc_attr($ultramsg_token); ?>" class="regular-text" placeholder="ultramsg_token_xyz">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Admin Alert on New Booking</th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="wa_admin_notification" value="1" <?php checked($admin_notify, 1); ?>>
-                                Send instant WhatsApp alert to shop manager on every new customer booking
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Manager WhatsApp Number</th>
-                        <td>
-                            <input type="text" name="wa_admin_number" value="<?php echo esc_attr($admin_number); ?>" class="regular-text" placeholder="+971501234567">
-                        </td>
-                    </tr>
-                </table>
+                        <div class="rbf-form-group">
+                            <label for="business_whatsapp">Technician / Store WhatsApp Number *</label>
+                            <input type="text" id="business_whatsapp" name="business_whatsapp" value="<?php echo esc_attr($business_wa); ?>" class="rbf-input" placeholder="+971501234567">
+                            <p class="description">Include full international country code (e.g., +971 for UAE, +966 for KSA).</p>
+                        </div>
 
-                <h2>3. Customer Status Tracking Shortcode</h2>
-                <div style="background: #f0f6fc; border-left: 4px solid #0073aa; padding: 15px; border-radius: 4px; max-width: 700px;">
-                    <p style="margin: 0; font-size: 14px;">Place this shortcode on any WordPress page to give customers a real-time status tracker:</p>
-<code style="display: block; margin-top: 10px; font-size: 16px; padding: 8px 12px; background: #fff; border: 1px solid #cce5ff; border-radius: 4px; color: #0073aa;">[rbf_track_repair]</code>
+                        <div class="rbf-form-group" style="margin-top: 24px;">
+                            <label><strong>Tracking Shortcode for Customers:</strong></label>
+                            <div style="background: #f8fafc; border: 1px solid var(--rbf-border); padding: 12px 16px; border-radius: 8px; margin-top: 6px;">
+                                <p style="margin: 0 0 6px 0; font-size: 13px; color: var(--rbf-muted);">Place on any page for live self-service repair lookup:</p>
+                                <code class="rbf-code-pill">[rbf_track_repair]</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Automated UltraMsg API Card -->
+                    <div class="rbf-card">
+                        <div class="rbf-card-header">
+                            <h3 class="rbf-card-title">
+                                <span class="dashicons dashicons-cloud" style="color: #0284c7;"></span>
+                                2. Automated API Gateway (UltraMsg)
+                            </h3>
+                            <span class="rbf-badge <?php echo $ultramsg_enabled ? 'rbf-badge-completed' : 'rbf-badge-cancelled'; ?>">
+                                <?php echo $ultramsg_enabled ? 'Active' : 'Disabled'; ?>
+                            </span>
+                        </div>
+                        <p class="description" style="margin-bottom: 18px;">
+                            Sends instant automated WhatsApp booking confirmations and dispatch alerts without human intervention.
+                        </p>
+
+                        <div class="rbf-form-group">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="ultramsg_enabled" value="1" <?php checked($ultramsg_enabled, 1); ?> style="width: 18px; height: 18px;">
+                                <strong>Enable automated WhatsApp messaging via UltraMsg API</strong>
+                            </label>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="ultramsg_instance_id">UltraMsg Instance ID</label>
+                            <input type="text" id="ultramsg_instance_id" name="ultramsg_instance_id" value="<?php echo esc_attr($ultramsg_instance); ?>" class="rbf-input" placeholder="instance12345">
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="ultramsg_token">UltraMsg Token</label>
+                            <input type="password" id="ultramsg_token" name="ultramsg_token" value="<?php echo esc_attr($ultramsg_token); ?>" class="rbf-input" placeholder="ultramsg_token_secret">
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="wa_admin_notification" value="1" <?php checked($admin_notify, 1); ?> style="width: 18px; height: 18px;">
+                                <strong>Send instant WhatsApp alert to Store Manager on every new booking</strong>
+                            </label>
+                        </div>
+
+                        <div class="rbf-form-group">
+                            <label for="wa_admin_number">Manager WhatsApp Number</label>
+                            <input type="text" id="wa_admin_number" name="wa_admin_number" value="<?php echo esc_attr($admin_number); ?>" class="rbf-input" placeholder="+971501234567">
+                        </div>
+                    </div>
                 </div>
 
-                <p class="submit" style="margin-top: 25px;">
-                    <input type="submit" name="rbf_save_wa_settings" class="button button-primary" value="Save WhatsApp Settings">
-                </p>
+                <div class="rbf-card">
+                    <button type="submit" name="rbf_save_wa_settings" class="rbf-btn-primary">
+                        <span class="dashicons dashicons-saved"></span> Save WhatsApp & Notification Settings
+                    </button>
+                </div>
             </form>
         </div>
         <?php
     }
-
-    /**
-     * Admin Repair Prices Page - Modern Tiered Pricing & Cascading Engine
-     */
     public function admin_repair_prices() {
         global $wpdb;
 
@@ -7014,6 +7120,10 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
             gap: 8px;
             border-bottom: 2px solid #e2e4e7;
             margin-bottom: 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            padding-bottom: 2px;
         }
         .rbf-tab-btn {
             background: transparent;
@@ -7029,6 +7139,8 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
             align-items: center;
             gap: 8px;
             transition: all 0.2s ease;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
         .rbf-tab-btn:hover {
             color: #017c36;
@@ -7111,6 +7223,30 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
             padding: 10px 14px;
             border-bottom: 1px solid #f0f0f1;
             vertical-align: middle;
+        }
+        .rbf-pricing-table th:first-child,
+        .rbf-pricing-table td:first-child {
+            position: sticky;
+            left: 0;
+            background: #fff;
+            z-index: 3;
+        }
+        .rbf-pricing-table th:nth-child(2),
+        .rbf-pricing-table td:nth-child(2) {
+            position: sticky;
+            left: 50px;
+            background: #fff;
+            z-index: 3;
+            box-shadow: 3px 0 5px -2px rgba(0, 0, 0, 0.08);
+        }
+        .rbf-pricing-table th:first-child,
+        .rbf-pricing-table th:nth-child(2) {
+            background: #f6f7f7;
+            z-index: 5;
+        }
+        .rbf-pricing-table tr:hover td:first-child,
+        .rbf-pricing-table tr:hover td:nth-child(2) {
+            background-color: #f9fbf9;
         }
         .rbf-pricing-table tr:hover td {
             background-color: #f9fbf9;

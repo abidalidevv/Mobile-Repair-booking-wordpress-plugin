@@ -861,3 +861,83 @@
     padding-top: 16px;
     border-top: 1px solid var(--rbf-border);
 }
+
+/* ==========================================================================
+   Responsive & Mobile Admin Improvements
+   ========================================================================== */
+.rbf-nav-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.rbf-nav-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .rbf-admin-header,
+    .rbf-pricing-header {
+        padding: 20px 22px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .rbf-header-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .rbf-header-actions .button,
+    .rbf-btn-light {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .rbf-grid-2col {
+        grid-template-columns: 1fr;
+    }
+
+    .rbf-dashboard-stats,
+    .rbf-stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .rbf-stat-card {
+        padding: 14px 16px;
+    }
+
+    .rbf-panel-card,
+    .rbf-card {
+        padding: 18px 16px;
+    }
+
+    .rbf-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .rbf-batch-tools,
+    .rbf-filter-tools {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 550px) {
+    .rbf-dashboard-stats,
+    .rbf-stats-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .rbf-brands-grid,
+    .rbf-models-grid,
+    .rbf-repairs-grid {
+        grid-template-columns: 1fr;
+    }
+}
