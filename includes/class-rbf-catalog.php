@@ -181,6 +181,67 @@ class RBF_Catalog {
     /**
      * Get repair services for a model with dynamically resolved prices
      */
+    /**
+     * Normalize repair icon path or map to authentic Brand icon
+     */
+    public function normalize_repair_icon($icon, $repair_name = '') {
+        $icon = trim($icon ?? '');
+        $name = strtolower(trim($repair_name));
+
+        if (!empty($icon) && (str_starts_with($icon, 'http://') || str_starts_with($icon, 'https://'))) {
+            return $icon;
+        }
+
+        // Map known repair names if icon is empty or default
+        if (empty($icon) || $icon === '🛠️' || $icon === '⚙️') {
+            if (str_contains($name, 'screen') || str_contains($name, 'display') || str_contains($name, 'glass') || str_contains($name, 'lcd')) {
+                return 'Brands/repair_Icons/broken.png';
+            }
+            if (str_contains($name, 'battery')) {
+                return 'Brands/repair_Icons/battry.png';
+            }
+            if (str_contains($name, 'port') || str_contains($name, 'charging')) {
+                return 'Brands/repair_Icons/port_issue.png';
+            }
+            if (str_contains($name, 'camera') || str_contains($name, 'lens')) {
+                return 'Brands/repair_Icons/camera.png';
+            }
+            if (str_contains($name, 'speaker') || str_contains($name, 'audio') || str_contains($name, 'sound')) {
+                return 'Brands/repair_Icons/speaker.png';
+            }
+            if (str_contains($name, 'microphone') || str_contains($name, 'mic')) {
+                return 'Brands/repair_Icons/connectivity.png';
+            }
+            if (str_contains($name, 'back glass') || str_contains($name, 'back cover')) {
+                return 'Brands/repair_Icons/back_damaged.png';
+            }
+            if (str_contains($name, 'frame') || str_contains($name, 'housing') || str_contains($name, 'body')) {
+                return 'Brands/repair_Icons/frame_damaged.png';
+            }
+            if (str_contains($name, 'water') || str_contains($name, 'liquid')) {
+                return 'Brands/repair_Icons/waterdaamage.png';
+            }
+            if (str_contains($name, 'software') || str_contains($name, 'slow') || str_contains($name, 'os')) {
+                return 'Brands/repair_Icons/slow.png';
+            }
+            if (str_contains($name, 'diagnosis') || str_contains($name, 'checkup') || str_contains($name, 'inspect')) {
+                return 'Brands/repair_Icons/Checkup.png';
+            }
+            if (str_contains($name, 'lock') || str_contains($name, 'unlock')) {
+                return 'Brands/repair_Icons/locked.png';
+            }
+            if (str_contains($name, 'data') || str_contains($name, 'recovery')) {
+                return 'Brands/repair_Icons/data_recovery.png';
+            }
+            if (str_contains($name, 'power') || str_contains($name, 'button')) {
+                return 'Brands/repair_Icons/power.png';
+            }
+            return 'Brands/repair_Icons/hardware.png';
+        }
+
+        return ltrim($icon, '/');
+    }
+
     public function get_repairs_by_model($brand_name, $model_name, $country_code = null) {
         global $wpdb;
         $repairs_table = $wpdb->prefix . 'rbf_repairs';
@@ -205,7 +266,7 @@ class RBF_Catalog {
                     'name' => $r['name'],
                     'price' => 0.00,
                     'duration' => !empty($r['duration']) ? $r['duration'] : '01-02 Day(s)',
-                    'icon' => $r['icon'],
+                    'icon' => $this->normalize_repair_icon($r['icon'] ?? '', $r['name'] ?? ''),
                     'description' => 'Service available (quote provided after physical inspection)'
                 );
             }
@@ -228,7 +289,7 @@ class RBF_Catalog {
                 'name' => $r['name'],
                 'price' => $price,
                 'duration' => !empty($r['duration']) ? $r['duration'] : '01-02 Hours',
-                'icon' => $r['icon'],
+                'icon' => $this->normalize_repair_icon($r['icon'] ?? '', $r['name'] ?? ''),
                 'description' => !empty($r['description']) ? $r['description'] : 'OEM grade replacement part with warranty'
             );
         }

@@ -105,6 +105,44 @@ class RBF_WhatsApp {
     }
 
     /**
+     * Send booking notification via automated WhatsApp if enabled
+     *
+     * @param array $booking Booking data array
+     * @return bool
+     */
+    public function send_booking_notification($booking) {
+        try {
+            $message = $this->get_booking_message($booking);
+            $phone = $booking['customer_phone'] ?? $booking['phone'] ?? '';
+            if (!empty($phone)) {
+                return $this->send_ultramsg_message($phone, $message);
+            }
+        } catch (\Throwable $e) {
+            error_log('RBF WhatsApp send_booking_notification error: ' . $e->getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Get direct wa.me link for booking
+     *
+     * @param array $booking Booking data array
+     * @return string Direct WhatsApp URL
+     */
+    public function get_direct_whatsapp_url($booking) {
+        try {
+            $phone = $booking['customer_phone'] ?? $booking['phone'] ?? '';
+            $store_whatsapp = get_option('rbf_business_whatsapp', '+971501234567');
+            $target_phone = !empty($store_whatsapp) ? $store_whatsapp : $phone;
+            $message = $this->get_booking_message($booking);
+            return $this->get_direct_wa_url($target_phone, $message);
+        } catch (\Throwable $e) {
+            error_log('RBF WhatsApp get_direct_whatsapp_url error: ' . $e->getMessage());
+            return '';
+        }
+    }
+
+    /**
      * Send automated WhatsApp message via UltraMsg API (if configured)
      */
     public function send_ultramsg_message($phone, $message) {

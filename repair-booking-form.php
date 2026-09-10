@@ -273,20 +273,24 @@ class RepairBookingForm {
         $actual_columns = array_column($table_structure, 'Field');
         
         // Safely add missing columns without dropping existing customer booking data
-        if (!in_array('imei', $actual_columns)) {
-            $wpdb->query("ALTER TABLE $bookings_table ADD COLUMN imei varchar(50) DEFAULT NULL AFTER model");
-        }
-        if (!in_array('currency', $actual_columns)) {
-            $wpdb->query("ALTER TABLE $bookings_table ADD COLUMN currency varchar(10) NOT NULL DEFAULT 'AED' AFTER notes");
-        }
-        if (!in_array('payment_status', $actual_columns)) {
-            $wpdb->query("ALTER TABLE $bookings_table ADD COLUMN payment_status varchar(20) DEFAULT 'pending' AFTER total_amount");
-        }
-        if (!in_array('payment_gateway', $actual_columns)) {
-            $wpdb->query("ALTER TABLE $bookings_table ADD COLUMN payment_gateway varchar(50) DEFAULT NULL AFTER payment_status");
-        }
-        if (!in_array('transaction_id', $actual_columns)) {
-            $wpdb->query("ALTER TABLE $bookings_table ADD COLUMN transaction_id varchar(100) DEFAULT NULL AFTER payment_gateway");
+        $required_columns = array(
+            'imei' => "ADD COLUMN imei varchar(50) DEFAULT NULL AFTER model",
+            'street_building' => "ADD COLUMN street_building varchar(200) DEFAULT NULL AFTER address",
+            'city' => "ADD COLUMN city varchar(100) DEFAULT 'Dubai' AFTER street_building",
+            'emirate' => "ADD COLUMN emirate varchar(50) DEFAULT 'Dubai' AFTER city",
+            'currency' => "ADD COLUMN currency varchar(10) NOT NULL DEFAULT 'AED' AFTER notes",
+            'subtotal' => "ADD COLUMN subtotal decimal(10,2) NOT NULL DEFAULT 0 AFTER currency",
+            'vat_amount' => "ADD COLUMN vat_amount decimal(10,2) NOT NULL DEFAULT 0 AFTER subtotal",
+            'total_amount' => "ADD COLUMN total_amount decimal(10,2) NOT NULL DEFAULT 0 AFTER vat_amount",
+            'payment_status' => "ADD COLUMN payment_status varchar(20) DEFAULT 'pending' AFTER total_amount",
+            'payment_gateway' => "ADD COLUMN payment_gateway varchar(50) DEFAULT NULL AFTER payment_status",
+            'transaction_id' => "ADD COLUMN transaction_id varchar(100) DEFAULT NULL AFTER payment_gateway",
+            'booking_id' => "ADD COLUMN booking_id varchar(50) DEFAULT NULL AFTER status"
+        );
+        foreach ($required_columns as $col => $sql_clause) {
+            if (!in_array($col, $actual_columns)) {
+                $wpdb->query("ALTER TABLE $bookings_table $sql_clause");
+            }
         }
         
         error_log('RBF Debug: Bookings table verified and updated');
@@ -295,8 +299,8 @@ class RepairBookingForm {
     
     public function enqueue_scripts() {
         wp_enqueue_script('jquery');
-        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.0', true);
-        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.0');
+        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.2', true);
+        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.2');
         
         // Payment gateway scripts
         if (get_option('rbf_paypal_enabled', false)) {
@@ -376,7 +380,8 @@ class RepairBookingForm {
     }
     
     public function ajax_submit_booking() {
-        check_ajax_referer('rbf_nonce', 'nonce');
+        try {
+            check_ajax_referer('rbf_nonce', 'nonce');
         
         global $wpdb;
         
@@ -582,6 +587,10 @@ class RepairBookingForm {
             'whatsapp_url' => $direct_wa_url,
             'message' => 'Booking submitted successfully!'
         ));
+        } catch (\Throwable $e) {
+            error_log('RBF Booking Submission Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            wp_send_json_error('Booking processing error: ' . $e->getMessage());
+        }
     }
     
     /**
@@ -3512,22 +3521,27 @@ class RepairBookingForm {
         $message .= "Best regards,\n";
         $message .= get_bloginfo('name');
         
-        $headers = array('Content-Type: text/html; charset=UTF-8');
-        
-        wp_mail($customer_email, $subject, nl2br($message), $headers);
-        
-        // Send notification to admin
-        $admin_email = get_option('admin_email');
-        $admin_subject = 'New Repair Booking - ' . $booking_id;
-        $admin_message = "New booking received:\n\n";
-        $admin_message .= "Customer: {$customer_name}\n";
-        $admin_message .= "Phone: {$booking_data['phone']}\n";
-        $admin_message .= "Email: {$customer_email}\n";
-        $admin_message .= "Device: {$booking_data['selected_brand']} {$booking_data['selected_model']}\n";
-        $admin_message .= "Total: AED " . number_format($booking_data['subtotal'] * 1.05, 2) . "\n\n";
-        $admin_message .= "View booking details in admin panel.";
-        
-        wp_mail($admin_email, $admin_subject, $admin_message);
+        try {
+            $headers = array('Content-Type: text/html; charset=UTF-8');
+            
+            wp_mail($customer_email, $subject, nl2br($message), $headers);
+            
+            // Send notification to admin
+            $admin_email = get_option('admin_email');
+            $admin_subject = 'New Repair Booking - ' . $booking_id;
+            $admin_message = "New booking received:\n\n";
+            $admin_message .= "Customer: {$customer_name}\n";
+            $admin_message .= "Phone: {$booking_data['phone']}\n";
+            $admin_message .= "Email: {$customer_email}\n";
+            $admin_message .= "Device: {$booking_data['selected_brand']} {$booking_data['selected_model']}\n";
+            $sub_val = floatval($booking_data['subtotal'] ?? 0);
+            $admin_message .= "Total: AED " . number_format($sub_val * 1.05, 2) . "\n\n";
+            $admin_message .= "View booking details in admin panel.";
+            
+            wp_mail($admin_email, $admin_subject, $admin_message);
+        } catch (\Throwable $e) {
+            error_log('RBF send_booking_confirmation error: ' . $e->getMessage());
+        }
     }
     
     /**

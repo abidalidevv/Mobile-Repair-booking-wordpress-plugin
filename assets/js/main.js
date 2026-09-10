@@ -344,12 +344,67 @@
         return 'other';
     }
 
+    function renderRepairIconHtml(item) {
+        let icon = (item.icon || '').trim();
+        const fallbackEmoji = '🛠️';
+
+        // Auto-match repair name to authentic Brand repair icons if missing, empty, or generic
+        if (!icon || icon === '🛠️' || icon === '⚙️') {
+            const nameLower = (item.name || '').toLowerCase();
+            if (nameLower.includes('screen') || nameLower.includes('display') || nameLower.includes('glass') || nameLower.includes('lcd')) {
+                icon = 'Brands/repair_Icons/broken.png';
+            } else if (nameLower.includes('battery')) {
+                icon = 'Brands/repair_Icons/battry.png';
+            } else if (nameLower.includes('port') || nameLower.includes('charging')) {
+                icon = 'Brands/repair_Icons/port_issue.png';
+            } else if (nameLower.includes('camera') || nameLower.includes('lens')) {
+                icon = 'Brands/repair_Icons/camera.png';
+            } else if (nameLower.includes('speaker') || nameLower.includes('audio') || nameLower.includes('sound')) {
+                icon = 'Brands/repair_Icons/speaker.png';
+            } else if (nameLower.includes('microphone') || nameLower.includes('mic')) {
+                icon = 'Brands/repair_Icons/connectivity.png';
+            } else if (nameLower.includes('back glass') || nameLower.includes('back cover')) {
+                icon = 'Brands/repair_Icons/back_damaged.png';
+            } else if (nameLower.includes('frame') || nameLower.includes('housing') || nameLower.includes('body')) {
+                icon = 'Brands/repair_Icons/frame_damaged.png';
+            } else if (nameLower.includes('water') || nameLower.includes('liquid')) {
+                icon = 'Brands/repair_Icons/waterdaamage.png';
+            } else if (nameLower.includes('software') || nameLower.includes('slow') || nameLower.includes('os')) {
+                icon = 'Brands/repair_Icons/slow.png';
+            } else if (nameLower.includes('diagnos') || nameLower.includes('checkup') || nameLower.includes('inspect')) {
+                icon = 'Brands/repair_Icons/Checkup.png';
+            } else if (nameLower.includes('lock') || nameLower.includes('unlock')) {
+                icon = 'Brands/repair_Icons/locked.png';
+            } else if (nameLower.includes('data') || nameLower.includes('recovery')) {
+                icon = 'Brands/repair_Icons/data_recovery.png';
+            } else if (nameLower.includes('power') || nameLower.includes('button')) {
+                icon = 'Brands/repair_Icons/power.png';
+            } else if (nameLower.includes('motherboard') || nameLower.includes('chip') || nameLower.includes('ic')) {
+                icon = 'Brands/repair_Icons/hardware.png';
+            } else {
+                icon = 'Brands/repair_Icons/hardware.png';
+            }
+        }
+
+        // If it's a file path or URL
+        if (icon.match(/\.(png|jpg|jpeg|webp|svg)(\?.*)?$/i) || icon.includes('/')) {
+            let fullUrl = icon;
+            if (!icon.startsWith('http://') && !icon.startsWith('https://') && !icon.startsWith('//')) {
+                fullUrl = (rbfData.plugin_url || '') + icon.replace(/^\//, '');
+            }
+            return `<img src="${fullUrl}" class="rbf-repair-img-icon" alt="${item.name}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='🛠️';">`;
+        }
+
+        // Fallback to emoji or text icon
+        return `<span class="rbf-repair-emoji-icon">${icon || fallbackEmoji}</span>`;
+    }
+
     function renderRepairs() {
         const $list = $('#repair-list');
         $list.empty();
 
         if (!state.allRepairs || state.allRepairs.length === 0) {
-            $list.html('<p style="padding: 20px; color: #64748b;">No repair services found.</p>');
+            $list.html('<p style="padding: 20px; color: #64748b; grid-column: 1 / -1; text-align: center;">No repair services found.</p>');
             return;
         }
 
@@ -359,28 +414,30 @@
         });
 
         if (filtered.length === 0) {
-            $list.html('<p style="padding: 20px; color: #64748b;">No services found in this category for this model.</p>');
+            $list.html('<p style="padding: 20px; color: #64748b; grid-column: 1 / -1; text-align: center;">No services found in this category for this model.</p>');
             return;
         }
 
         filtered.forEach(function(item) {
             const isSelected = state.cart.some(c => c.id === item.id);
             const formattedPrice = formatPrice(item.price);
-            const icon = item.icon || '🛠️';
+            const iconHtml = renderRepairIconHtml(item);
             
             const itemHtml = `
-                <div class="rbf-repair-item ${isSelected ? 'selected' : ''}" data-id="${item.id}" tabindex="0" role="button">
-                    <div class="rbf-repair-left">
-                        <div class="rbf-repair-icon">${icon}</div>
-                        <div class="rbf-repair-info">
-                            <h4>${item.name}</h4>
-                            <p>${item.description || 'OEM grade replacement part with warranty'}</p>
-                            <span class="rbf-repair-duration">⏱️ ${item.duration || '01-02 Hours'}</span>
-                        </div>
+                <div class="rbf-repair-item ${isSelected ? 'selected' : ''}" data-id="${item.id}" tabindex="0" role="button" aria-pressed="${isSelected}">
+                    <div class="rbf-repair-checkbox ${isSelected ? 'checked' : ''}">
+                        ${isSelected ? '✓' : ''}
                     </div>
-                    <div class="rbf-repair-right">
+                    <div class="rbf-repair-icon">
+                        ${iconHtml}
+                    </div>
+                    <div class="rbf-repair-info">
+                        <h4 title="${item.name}">${item.name}</h4>
+                        <p>${item.description || 'OEM grade replacement part with warranty'}</p>
+                    </div>
+                    <div class="rbf-repair-footer">
+                        <span class="rbf-repair-duration">⏱️ ${item.duration || '01-02 Hours'}</span>
                         <div class="rbf-repair-price">${formattedPrice}</div>
-                        <div class="rbf-repair-checkbox">${isSelected ? '✓' : ''}</div>
                     </div>
                 </div>
             `;
@@ -575,10 +632,21 @@
                         alert(res.data || 'Failed to submit repair booking. Please try again.');
                     }
                 },
-                error: function(err) {
+                error: function(xhr, status, error) {
                     showLoading(false);
                     $('#rbf-submit-btn').prop('disabled', false).text('🔒 Confirm & Book Repair');
-                    alert('Network error while processing booking. Please check your connection.');
+                    let errMsg = 'Network error while processing booking. Please check your connection.';
+                    if (xhr.responseJSON && xhr.responseJSON.data) {
+                        errMsg = xhr.responseJSON.data;
+                    } else if (xhr.responseText) {
+                        try {
+                            const parsed = JSON.parse(xhr.responseText);
+                            if (parsed.data) errMsg = parsed.data;
+                        } catch(e) {
+                            console.error('RBF Server Response:', xhr.responseText);
+                        }
+                    }
+                    alert(errMsg);
                 }
             });
         });

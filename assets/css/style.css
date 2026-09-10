@@ -495,14 +495,14 @@
 
 #efix-repair-form-wrapper .rbf-repair-container {
     display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 30px;
+    grid-template-columns: 1fr 340px;
+    gap: 25px;
     align-items: start;
 }
 
 #efix-repair-form-wrapper .rbf-repair-list {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
 
@@ -510,53 +510,128 @@
     background: #ffffff;
     border: 2px solid var(--rbf-border);
     border-radius: var(--rbf-radius-md);
-    padding: 18px 20px;
+    padding: 20px 14px 14px;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
     justify-content: space-between;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    box-sizing: border-box;
+    min-height: 235px;
 }
 
 #efix-repair-form-wrapper .rbf-repair-item:hover {
     border-color: var(--rbf-primary);
-    box-shadow: var(--rbf-shadow-sm);
-    transform: translateY(-2px);
+    box-shadow: var(--rbf-shadow-md);
+    transform: translateY(-4px);
 }
 
 #efix-repair-form-wrapper .rbf-repair-item.selected {
     border-color: var(--rbf-primary);
     background: var(--rbf-primary-subtle);
+    box-shadow: 0 4px 14px rgba(1, 124, 54, 0.15);
 }
 
-#efix-repair-form-wrapper .rbf-repair-left {
+#efix-repair-form-wrapper .rbf-repair-checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--rbf-border);
+    border-radius: 6px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: center;
+    background: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    color: transparent;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+#efix-repair-form-wrapper .rbf-repair-item.selected .rbf-repair-checkbox {
+    background: var(--rbf-primary);
+    border-color: var(--rbf-primary);
+    color: #ffffff;
 }
 
 #efix-repair-form-wrapper .rbf-repair-icon {
-    font-size: 28px;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--rbf-bg-subtle);
     border-radius: var(--rbf-radius-sm);
+    margin-bottom: 10px;
+    padding: 8px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+#efix-repair-form-wrapper .rbf-repair-item:hover .rbf-repair-icon {
+    transform: scale(1.06);
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+#efix-repair-form-wrapper .rbf-repair-icon img.rbf-repair-img-icon {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+#efix-repair-form-wrapper .rbf-repair-icon .rbf-repair-emoji-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+#efix-repair-form-wrapper .rbf-repair-info {
+    width: 100%;
+    margin-bottom: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #efix-repair-form-wrapper .rbf-repair-info h4 {
-    margin: 0 0 4px;
-    font-size: 16px;
+    margin: 0 0 6px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--rbf-text);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 #efix-repair-form-wrapper .rbf-repair-info p {
     margin: 0;
-    font-size: 13px;
+    font-size: 11px;
     color: var(--rbf-text-muted);
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+#efix-repair-form-wrapper .rbf-repair-footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--rbf-border);
 }
 
 #efix-repair-form-wrapper .rbf-repair-duration {
@@ -565,44 +640,14 @@
     font-weight: 600;
     color: #475569;
     background: #f1f5f9;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-top: 4px;
-}
-
-#efix-repair-form-wrapper .rbf-repair-right {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
 }
 
 #efix-repair-form-wrapper .rbf-repair-price {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 800;
     color: var(--rbf-primary-dark);
-}
-
-#efix-repair-form-wrapper .rbf-repair-checkbox {
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--rbf-border);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    color: transparent;
-    font-weight: bold;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-#efix-repair-form-wrapper .rbf-repair-item.selected .rbf-repair-checkbox {
-    background: var(--rbf-primary);
-    border-color: var(--rbf-primary);
-    color: #ffffff;
 }
 
 /* Sticky Cart Sidebar */
@@ -847,26 +892,70 @@
 #efix-repair-form-wrapper .rbf-form-group input[type="text"],
 #efix-repair-form-wrapper .rbf-form-group input[type="email"],
 #efix-repair-form-wrapper .rbf-form-group input[type="tel"],
-#efix-repair-form-wrapper .rbf-form-group input[type="date"],
+#efix-repair-form-wrapper .rbf-form-group input[type="date"] {
+    width: 100%;
+    height: 48px !important;
+    min-height: 48px !important;
+    line-height: 1.4 !important;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    font-family: inherit;
+    border: 1.5px solid var(--rbf-border) !important;
+    border-radius: var(--rbf-radius-sm) !important;
+    background: #ffffff !important;
+    color: var(--rbf-text) !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease;
+}
+
 #efix-repair-form-wrapper .rbf-form-group select,
+#efix-repair-form-wrapper select.rbf-country-select,
+#efix-repair-form-wrapper select {
+    width: 100%;
+    height: 48px !important;
+    min-height: 48px !important;
+    line-height: 1.4 !important;
+    padding: 10px 36px 10px 14px !important;
+    font-size: 14px !important;
+    font-family: inherit;
+    border: 1.5px solid var(--rbf-border) !important;
+    border-radius: var(--rbf-radius-sm) !important;
+    background-color: #ffffff !important;
+    color: var(--rbf-text) !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 12px 12px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease;
+}
+
 #efix-repair-form-wrapper .rbf-form-group textarea {
     width: 100%;
     padding: 12px 14px;
     font-size: 14px;
     font-family: inherit;
-    border: 1px solid var(--rbf-border);
+    border: 1.5px solid var(--rbf-border);
     border-radius: var(--rbf-radius-sm);
     background: #ffffff;
     color: var(--rbf-text);
     outline: none;
+    box-sizing: border-box;
     transition: all 0.2s ease;
 }
 
 #efix-repair-form-wrapper .rbf-form-group input:focus,
 #efix-repair-form-wrapper .rbf-form-group select:focus,
 #efix-repair-form-wrapper .rbf-form-group textarea:focus {
-    border-color: var(--rbf-primary);
-    box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.12);
+    border-color: var(--rbf-primary) !important;
+    box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.14) !important;
 }
 
 #efix-repair-form-wrapper .rbf-field-hint {
@@ -878,8 +967,9 @@
 
 #efix-repair-form-wrapper .rbf-phone-input-wrap {
     display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 8px;
+    grid-template-columns: 175px 1fr;
+    gap: 10px;
+    align-items: center;
 }
 
 /* Radio Group: Service Types */
@@ -1153,5 +1243,41 @@
     #efix-repair-form-wrapper .rbf-model-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
+    }
+}
+
+/* Responsive Grid Breakpoints for Step 3 Repairs */
+@media (max-width: 1200px) {
+    #efix-repair-form-wrapper .rbf-repair-list {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (max-width: 900px) {
+    #efix-repair-form-wrapper .rbf-repair-container {
+        grid-template-columns: 1fr !important;
+    }
+    #efix-repair-form-wrapper .rbf-repair-list {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (max-width: 650px) {
+    #efix-repair-form-wrapper .rbf-repair-list {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    #efix-repair-form-wrapper .rbf-repair-item {
+        padding: 14px 10px 10px !important;
+        min-height: 210px !important;
+    }
+    #efix-repair-form-wrapper .rbf-phone-input-wrap {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 420px) {
+    #efix-repair-form-wrapper .rbf-repair-list {
+        grid-template-columns: 1fr !important;
     }
 }
