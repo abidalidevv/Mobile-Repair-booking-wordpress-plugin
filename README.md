@@ -1,7 +1,7 @@
 # 🔧 EFIX — Mobile & Laptop Repair Booking Plugin for WordPress
 
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org)
-[![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
+[![Version](https://img.shields.io/badge/Version-2.0.3-brightgreen.svg)](#) [![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](LICENSE)
 [![Brands](https://img.shields.io/badge/Brands-18%20Active-orange.svg)](#supported-brands--devices)
 [![Models](https://img.shields.io/badge/Models-525%20Devices-purple.svg)](#supported-brands--devices)
@@ -35,9 +35,13 @@ A modern, enterprise-ready WordPress plugin designed for mobile phone, tablet, a
 * **🧾 Printable Invoices & Calendar Integration**:
   - Instant branded PDF/print tax invoice with company headers, customer details, and VAT breakdown.
   - Google Calendar and Outlook appointment sync.
-* **💬 WhatsApp & Multi-Currency**:
-  - Instant automated customer notification messages via WhatsApp.
+* **💬 WhatsApp Automation & Isolated Receipt Printing**:
+  - Instant automated customer notification messages via WhatsApp with direct `wa.me` links.
+  - Dedicated **Print Invoice / Receipt** engine (`rbfPrintReceipt`): prints clean, branded customer confirmation invoices isolated from website headers, navigation menus, and footers.
   - Native AED base currency with multi-currency conversion support.
+* **📱 Modern 4-Column Square Cards (Step 3)**:
+  - Responsive 4-in-a-row square card grid with authentic icons, duration pills, price badges, and selection checkmarks.
+  - Flawless, unclipped dropdown inputs on Step 4 with custom SVG chevrons.
 
 ---
 
@@ -57,8 +61,9 @@ repair-booking-form/
 │   ├── models.php                 # Model catalog CRUD & tier assigner
 │   └── repairs.php                # Repair services & labour fees editor
 ├── assets/                        # Compiled CSS and JavaScript
-│   ├── css/                       # Frontend & admin stylesheets
-│   └── js/                        # Multi-step wizard frontend logic
+│   ├── css/                       # Frontend & admin stylesheets (style.css, admin.css)
+│   ├── js/                        # Multi-step wizard frontend logic (main.js)
+│   └── images/repairs/            # 14 Core repair icons (screen, battery, port, etc.)
 ├── Brands/                        # 100% self-hosted device images & brand logos
 │   ├── ipad_modals/               # iPad Pro, Air, Mini, 10th Gen renders
 │   ├── macbook_modals/            # MacBook Pro & MacBook Air renders

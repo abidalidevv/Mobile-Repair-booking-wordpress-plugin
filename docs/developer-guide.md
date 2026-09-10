@@ -651,3 +651,23 @@ function getCachedDeviceData(brand) {
 ---
 
 *This documentation is maintained by the EFIX Repair Services development team. Last updated: January 2025*
+
+### **Receipt Printing & Frontend JS API**
+
+#### `window.rbfPrintReceipt()`
+Opens a dedicated, clean, isolated print dialog for the confirmed repair booking.
+- **Mechanism**: Dynamically populates a hidden `<iframe>` with an isolated receipt HTML document and triggers `print()` directly on that frame.
+- **Data Source**: Pulls from `state.completedBooking` (persisted on successful booking AJAX response) with automatic DOM fallback.
+- **Output Structure**: Company header, green checkmark, Tracking ID box, Customer & Device details box, Itemized services table, Subtotal, 5% VAT, Grand Total, and Warranty badges.
+
+#### `renderRepairIconHtml(item)`
+Normalizes icon paths and generates appropriate HTML:
+- Resolves relative file paths (e.g. `Brands/repair_Icons/broken.png` or `assets/images/repairs/screen-replacement.png`) with `rbfData.plugin_url`.
+- Automatically maps repair names to authentic icons via keyword matching (screen, battery, charging port, camera, speaker, mic, back glass, frame, water damage, software, diagnostics, buttons).
+- Implements `onerror` graceful fallback to prevent broken image displays.
+
+#### Backend Helper: `RBF_Catalog::normalize_repair_icon($icon, $name)`
+PHP server-side counterpart that sanitizes and returns clean relative asset paths for all repair services.
+
+#### Backend Helper: `RBF_WhatsApp::send_booking_notification($booking)` & `get_direct_whatsapp_url($booking)`
+Handles automated UltraMsg API dispatch and free `https://wa.me/` direct chat link generation without fatal errors.

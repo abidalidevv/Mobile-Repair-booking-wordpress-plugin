@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.3] - 2026-09-10
+
+### 🚀 **Frontend Grid, Dropdown UI & Isolated Receipt Printing Release**
+
+#### 📱 **Frontend Multi-Step Form (Step 3 & Step 4)**
+- **4-Column Square Box Card Grid**: Transformed Step 3 repair selection from vertical list into an executive 4-column responsive grid (`repeat(4, 1fr)` on desktop, 3 columns on tablet, 2 columns on mobile).
+- **Square Card Layout**: Each repair card features an absolute top-right selection checkbox (`✓`), centered 60px icon, bold title, clamped description, duration pill badge (`⏱️ 1-2 hours`), and bold price badge.
+- **Repair Icon Normalization**: Added `renderRepairIconHtml()` in JavaScript and `normalize_repair_icon()` in PHP. Eliminates raw path text bleeding by rendering clean `<img src="..." class="rbf-repair-img-icon">` tags with keyword-based fallbacks to authentic `Brands/repair_Icons/` assets.
+- **Physical Asset Coverage**: Created `assets/images/repairs/` with 14 core PNG icons ensuring legacy database records load locally without 404s.
+- **Dropdown Text Clipping Fix**: Resolved vertical text cut-off on `<select>` inputs (`+971 (UAE)` and `Preferred Time Window`) by assigning `height: 48px !important; line-height: 1.4 !important; padding: 10px 36px 10px 14px !important;` with custom SVG chevron arrows and expanding country selector width to `175px`.
+
+#### 🧾 **Isolated Invoice & Receipt Printing System**
+- **Clean Receipt Printing (`rbfPrintReceipt()`)**: Replaced raw `window.print()` with a dedicated print function using an isolated print iframe.
+- **Zero Website Chrome**: Eliminates website menu bars, navigation bars, theme headers, and footers from the print output.
+- **Printable Receipt Template**: Features company branding (`eFix Repairs`), verified checkmark, prominent green-dashed Tracking ID card (`eFIX-XXXXX`), green-dashed customer details card, itemized repair breakdown table, 5% UAE VAT, total amount, and 12-month warranty terms.
+- **Scoped `@media print` CSS**: Added rules to automatically suppress WordPress navigation, headers, footers, admin bars, and unneeded wizard steps on printing.
+- **Alphanumeric Tracking ID Support**: Enhanced `ajax_generate_invoice` to query by alphanumeric Tracking ID strings (`eFIX-XXXXX`) as well as numeric primary IDs.
+
+#### 🔧 **Backend Stability & WhatsApp Automation**
+- **WhatsApp Methods**: Implemented `send_booking_notification($booking)` and `get_direct_whatsapp_url($booking)` in `RBF_WhatsApp` to prevent fatal errors during order completion.
+- **Fail-Safe Booking Handler**: Wrapped `ajax_submit_booking()` and `send_booking_confirmation()` in `try ... catch (\Throwable $e)` to guarantee proper error logging and eliminate HTTP 500 crashes.
+- **Automated Column Migration**: Added verification in `ensure_bookings_table_exists()` to automatically inspect and create missing columns (`imei`, `street_building`, `city`, `emirate`, `currency`, `subtotal`, `vat_amount`, `total_amount`, `payment_status`, `payment_gateway`, `transaction_id`, `booking_id`).
+- **MariaDB Compatibility**: Fixed MariaDB reserved keyword conflict (`mod` -> `mdl`) in supplier mappings query.
+- **Model Catalog Integrity**: Assigned unique IDs to all 525 models across 18 brands, with distinct authentic imagery for iPhone 16 and 17 series models.
+
+---
+
 ## [2.0.0] - 2025-01-XX
 
 ### ✨ **Major Release - Complete UI/UX Overhaul**

@@ -78,16 +78,16 @@ The frontend wizard guides customers through an intuitive, mobile-optimized 4-st
 2. **Step 2 — Model Selection**:
    - Loads genuine device photos with instant client-side search/filter.
    - Full model names with generation identifiers.
-3. **Step 3 — Repair Service Selection (Smart Cart)**:
-   - Browse repairs (Screen Replacement, Battery, Charging Port, Camera, Water Damage, Back Glass, etc.).
-   - Displays real-time estimated turnaround time and dynamic prices.
-   - Customers can add multiple repairs to their cart.
+3. **Step 3 — Repair Service Selection (Responsive 4-Column Grid)**:
+   - **4-in-a-Row Square Cards**: Repairs are displayed in an intuitive 4-column square card grid (adapts to 3 columns on tablet, 2 on mobile).
+   - **Visual Details**: Each card features an authentic component icon, repair name, brief description, duration pill (`⏱️ 1-2 hours`), bold price badge, and top-right checkmark indicator (`✓`).
+   - **Smart Cart**: Add/remove multiple repairs with real-time VAT (5%) and grand total updates in the sticky sidebar.
 4. **Step 4 — Customer Information & Booking**:
-   - Select Service Mode: **Store Visit**, **Free Pickup & Delivery**, or **Onsite Repair**.
-   - Pick preferred date and time slot.
-   - Enter contact details with international phone number validation.
-   - View itemized invoice breakdown (Subtotal, 5% VAT, Total Amount).
-   - Instant confirmation with short Booking ID (`EFIX-XXXXXX-XXX`), Print Invoice button, and Google/Outlook Calendar sync.
+   - Select Service Mode: **🚚 Free Doorstep Pickup**, **🏠 Onsite Repair Van**, **🏪 Visit Our Service Center**, or **📦 Courier Send-In**.
+   - Pick preferred date and time slot with clean, unclipped dropdown inputs.
+   - Enter contact details with international phone selector (+971 UAE, +966 KSA, etc.).
+   - Instant booking confirmation with Tracking ID (e.g. `eFIX-910CF`) and direct **💬 Chat with Technician on WhatsApp** button.
+   - **🧾 Print Invoice / Receipt**: Generates a clean, branded tax receipt isolated from the website's navigation menu and theme headers.
 
 ---
 

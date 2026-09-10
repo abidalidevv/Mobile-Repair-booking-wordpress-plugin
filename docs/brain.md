@@ -211,3 +211,31 @@ repair-booking-form/
     ├── check-syntax.php
     └── debug-plugin.php
 ```
+---
+
+## 11. Frontend Multi-Step Wizard & Isolated Receipt Print Architecture
+
+### 11.1 Step 3: 4-Column Square Box Card Grid
+The repair selection interface operates as an adaptive responsive grid:
+- **Desktop (>1200px)**: `grid-template-columns: repeat(4, 1fr)` with 16px gap.
+- **Tablet (901px - 1200px)**: `grid-template-columns: repeat(3, 1fr)`.
+- **Mobile (<=650px)**: `grid-template-columns: repeat(2, 1fr)`.
+
+#### Card Component Architecture (`.rbf-repair-item`)
+1. **Absolute Checkbox** (`.rbf-repair-checkbox`): Positioned top-right (10px, 10px). Displays vibrant green checkmark (`✓`) when active.
+2. **Centered Icon** (`.rbf-repair-icon`): 60x60px rounded container. Renders `<img src="..." class="rbf-repair-img-icon">` normalized via `renderRepairIconHtml` in JavaScript and `normalize_repair_icon()` in PHP.
+3. **Information Container** (`.rbf-repair-info`): Bold clamped title (max 2 lines) and OEM description.
+4. **Footer Section** (`.rbf-repair-footer`): Features turnaround time badge (`⏱️ 01-02 Hours`) and bold green price badge.
+
+### 11.2 Step 4: High-Legibility Form Inputs
+To avoid theme CSS text clipping on `<select>` dropdowns:
+- Enforced uniform height: `height: 48px !important; min-height: 48px !important; line-height: 1.4 !important;`.
+- Controlled padding: `padding: 10px 36px 10px 14px !important; box-sizing: border-box !important;`.
+- Country selector container: Expanded to `175px 1fr` to accommodate international flags, country codes, and custom SVG chevron.
+
+### 11.3 Isolated Receipt Printing (`rbfPrintReceipt()`)
+Raw `window.print()` triggers the browser to capture the host WordPress theme header, menu bars, sidebar, and footer. The EFIX plugin circumvents this through an **Isolated Print Frame Architecture**:
+1. Upon booking completion, full booking metadata is persisted in `state.completedBooking`.
+2. When the user clicks **🧾 Print Invoice / Receipt**, `window.rbfPrintReceipt()` renders a self-contained, print-styled HTML document into a hidden iframe (`#rbf-receipt-print-iframe`).
+3. The print command is dispatched directly on the isolated iframe document (`printIframe.contentWindow.print()`), ensuring **0% website chrome, 0% menu bars, and 0% theme footers** in the print dialog.
+4. Supplemented by scoped `@media print` CSS rules in `style.css` which suppress all external theme containers (`header`, `nav`, `footer`, `.main-navigation`, `#wpadminbar`).
