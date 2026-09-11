@@ -95,7 +95,7 @@ $store_hours = get_option('rbf_store_working_hours', 'Daily: 9:00 AM - 10:00 PM'
                 ?>
                 <div class="rbf-brand-card" data-brand="<?php echo esc_attr($brand['name']); ?>" tabindex="0" role="button" aria-label="<?php echo esc_attr($brand['name']); ?>">
                     <div class="rbf-brand-image">
-                        <img decoding="async" src="<?php echo esc_url(RBF_PLUGIN_URL . $brand['logo']); ?>" alt="<?php echo esc_attr($brand['name']); ?>">
+                        <img decoding="async" src="<?php echo esc_url(RBF_PLUGIN_URL . $brand['logo'] . '?v=' . (defined('RBF_VERSION') ? RBF_VERSION : '2.0.6')); ?>" alt="<?php echo esc_attr($brand['name']); ?>">
                     </div>
                     <div class="rbf-brand-name"><?php echo esc_html($brand['name']); ?></div>
                     <div class="rbf-brand-badge"><?php echo $model_count > 0 ? esc_html($model_count . ' Models') : 'Custom'; ?></div>

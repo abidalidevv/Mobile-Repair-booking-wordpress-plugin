@@ -3,7 +3,7 @@
  * Plugin Name: Repair Booking Form
  * Plugin URI: https://yourwebsite.com
  * Description: Multi-step repair booking form for mobile devices with cart functionality
- * Version: 1.1
+ * Version: 2.0.6
  * Author: Abid Ali
  * License: GPL v2 or later
  * Requires at least: 6.0
@@ -18,6 +18,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('RBF_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('RBF_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('RBF_VERSION', '2.0.6');
 
 // Include error logger
 require_once __DIR__ . '/includes/class-rbf-error-logger.php';
@@ -1013,7 +1014,7 @@ class RepairBookingForm {
                   (is_string($hook) && strpos($hook, 'repair-booking') !== false);
                   
         if ($is_rbf) {
-            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.5');
+            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), RBF_VERSION);
             wp_enqueue_media(); // For image uploads
             
             // Enqueue jQuery for admin pages
@@ -1330,7 +1331,7 @@ class RepairBookingForm {
      */
     public function admin_brands() {
         // Ensure admin CSS is loaded
-        wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '1.1.0');
+        wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), RBF_VERSION);
         
         // Use JSON data source instead of database
         if (!class_exists('RBF_Brands_Models_Manager')) {
@@ -1364,7 +1365,7 @@ class RepairBookingForm {
             
             // Brand Logo and Image - Made bigger
             echo '<div class="rbf-brand-logo">';
-            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $brand_logo) . '" alt="' . esc_attr($brand_name) . '">';
+            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $brand_logo . '?v=' . RBF_VERSION) . '" alt="' . esc_attr($brand_name) . '">';
             echo '</div>';
             
             // Brand Details
@@ -1571,7 +1572,7 @@ class RepairBookingForm {
                     <div class="rbf-modal-content">
                         <h2><span class="dashicons dashicons-edit-page" style="color: #017c36;"></span> ${title}</h2>
                         ${content}
-                        <button type="button" class="close-modal" aria-label="Close modal" title="Close">✕</button>
+                        <button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>
                     </div>
                 </div>`;
                 
@@ -1775,7 +1776,7 @@ class RepairBookingForm {
      */
     public function admin_models() {
         // Ensure admin CSS is loaded
-        wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '1.1.0');
+        wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), RBF_VERSION);
         
         // Use JSON data source instead of database
         if (!class_exists('RBF_Brands_Models_Manager')) {
@@ -1810,7 +1811,7 @@ class RepairBookingForm {
             $slug = sanitize_title($b['name']);
             $logo = !empty($b['logo']) ? $b['logo'] : 'Brands/other_brand.jpg';
             echo '<a href="#brand-section-' . esc_attr($slug) . '" class="rbf-brand-pill" data-brand-slug="' . esc_attr($slug) . '" data-brand-name="' . esc_attr(strtolower($b['name'])) . '">';
-            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $logo) . '" alt="' . esc_attr($b['name']) . '" class="rbf-pill-logo">';
+            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $logo . '?v=' . RBF_VERSION) . '" alt="' . esc_attr($b['name']) . '" class="rbf-pill-logo">';
             echo '<span class="rbf-pill-name">' . esc_html($b['name']) . '</span>';
             echo '<span class="rbf-pill-count">' . count($b['models']) . '</span>';
             echo '</a>';
@@ -1828,7 +1829,7 @@ class RepairBookingForm {
             echo '<div class="rbf-brand-section" id="brand-section-' . esc_attr($brand_slug) . '" data-brand-slug="' . esc_attr($brand_slug) . '" data-brand-name="' . esc_attr(strtolower($brand['name'])) . '">';
             echo '<div class="rbf-brand-header">';
             echo '<div class="rbf-brand-info">';
-            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $brand['logo']) . '" alt="' . esc_attr($brand['name']) . '" class="rbf-brand-logo-small">';
+            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $brand['logo'] . '?v=' . RBF_VERSION) . '" alt="' . esc_attr($brand['name']) . '" class="rbf-brand-logo-small">';
             echo '<h2>' . esc_html($brand['name']) . '</h2>';
             echo '<span class="rbf-model-count">' . count($brand['models']) . ' Models</span>';
             echo '</div>';
@@ -2122,7 +2123,7 @@ class RepairBookingForm {
                     <div class="rbf-modal-content">
                         <h2><span class="dashicons dashicons-edit-page" style="color: #017c36;"></span> ${title}</h2>
                         ${content}
-                        <button type="button" class="close-modal" aria-label="Close modal" title="Close">✕</button>
+                        <button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>
                     </div>
                 </div>`;
                 
@@ -2150,7 +2151,7 @@ class RepairBookingForm {
      */
     public function admin_repairs() {
         // Ensure admin CSS is loaded
-        wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '1.1.0');
+        wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), RBF_VERSION);
         
         // Use JSON data source instead of database
         if (!class_exists('RBF_Brands_Models_Manager')) {
@@ -2427,7 +2428,7 @@ class RepairBookingForm {
                     <div class="rbf-modal-content">
                         <h2><span class="dashicons dashicons-edit-page" style="color: #017c36;"></span> ${title}</h2>
                         ${content}
-                        <button type="button" class="close-modal" aria-label="Close modal" title="Close">✕</button>
+                        <button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>
                     </div>
                 </div>`;
                 
@@ -2529,6 +2530,7 @@ class RepairBookingForm {
         // Add New Booking Modal
         echo '<div id="add-booking-modal" class="rbf-modal" style="display: none;">';
         echo '<div class="rbf-modal-content" style="max-width: 600px;">';
+        echo '<button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>';
         echo '<h2>Add New Booking</h2>';
         echo '<form id="add-booking-form">';
         echo '<div class="rbf-form-row">';
@@ -2590,6 +2592,7 @@ class RepairBookingForm {
         // View/Edit Booking Modal
         echo '<div id="booking-detail-modal" class="rbf-modal" style="display: none;">';
         echo '<div class="rbf-modal-content" style="max-width: 800px;">';
+        echo '<button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>';
         echo '<h2>Booking Details</h2>';
         echo '<div id="booking-detail-content"></div>';
         echo '<div class="rbf-modal-actions">';
@@ -2610,18 +2613,18 @@ class RepairBookingForm {
             // Add New Booking Button
             $('#add-new-booking').on('click', function(e) {
                 e.preventDefault();
-                $('#add-booking-modal').show();
+                $('#add-booking-modal').addClass('active').css('display', 'flex');
             });
             
             // Close Modal
             $('.close-modal').on('click', function() {
-                $('.rbf-modal').hide();
+                $('.rbf-modal').removeClass('active').css('display', 'none');
             });
             
             // Close modal when clicking outside
             $('.rbf-modal').on('click', function(e) {
                 if (e.target === this) {
-                    $(this).hide();
+                    $(this).removeClass('active').css('display', 'none');
                 }
             });
             
@@ -2668,7 +2671,7 @@ class RepairBookingForm {
                     success: function(response) {
                         if (response.success) {
                             $('#booking-detail-content').html(response.data);
-                            $('#booking-detail-modal').show();
+                            $('#booking-detail-modal').addClass('active').css('display', 'flex');
                         } else {
                             showToast('Error loading booking details: ' + response.data, 'error');
                         }
@@ -7849,7 +7852,7 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
                 <h1><span class="dashicons dashicons-admin-tools" style="font-size: 34px; width: 34px; height: 34px;"></span> eFix Repair Booking System</h1>
                 <p>Enterprise Multi-Step Device Repair Automation, Cascading Wholesale Pricing Matrix, Automated Supplier Feeds, and Direct WhatsApp Dispatch for WordPress.</p>
                 <div class="rbf-about-badges">
-                    <span class="rbf-about-badge pulse">Enterprise v2.0.5</span>
+                    <span class="rbf-about-badge pulse">Enterprise v2.0.6</span>
                     <span class="rbf-about-badge">PHP <?php echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION; ?> Native</span>
                     <span class="rbf-about-badge">WordPress 6.7+ Verified</span>
                     <span class="rbf-about-badge">MariaDB Optimized</span>
@@ -7977,8 +7980,8 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
                     </a>
                     <div class="rbf-about-support-card">
                         <div class="icon">⚡</div>
-                        <strong>Version 2.0.5 Live</strong>
-                        <small>Production release with 1-page receipts</small>
+                        <strong>Version 2.0.6 Live</strong>
+                        <small>Production release with modal and logo fixes</small>
                     </div>
                 </div>
             </div>

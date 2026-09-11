@@ -1,7 +1,7 @@
 # 🔧 EFIX — Mobile & Laptop Repair Booking Plugin for WordPress
 
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org)
-[![Version](https://img.shields.io/badge/Version-2.0.5-brightgreen.svg)](#) [![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
+[![Version](https://img.shields.io/badge/Version-2.0.6-brightgreen.svg)](#) [![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](LICENSE)
 [![Brands](https://img.shields.io/badge/Brands-19%20Active-orange.svg)](#supported-brands--devices)
 [![Models](https://img.shields.io/badge/Models-525%20Devices-purple.svg)](#supported-brands--devices)
@@ -12,6 +12,12 @@ A modern, enterprise-ready WordPress plugin designed for mobile phone, tablet, a
 ---
 
 ## 🚀 Key Features
+
+* **💎 v2.0.6 UI Fixes & Reliability Enhancements**:
+  - **Modal Dismiss Button Isolation**: Fixed close button collision where footer buttons overlapped the top-right `✕` icon.
+  - **Bookings Page Overlay Fix**: Resolved bug where default empty modals and dark backdrops blocked the Bookings management screen.
+  - **Official Brand Logos**: Refreshed Huawei, Xiaomi, and Oppo with official graphics and added automatic asset cache busting (`?v=2.0.6`).
+  - **Consolidated Master Docs**: Merged all markdown manuals into a single interactive HTML manual `docs/documentation.html`.
 
 * **📱 Comprehensive Device Catalog (525 Models Across 18 Brands)**:
   - Covers devices from 2015 to 2026+ flagships.
@@ -78,13 +84,8 @@ repair-booking-form/
 │   ├── macbook_modals/            # MacBook Pro & MacBook Air renders
 │   ├── nothing_modals/            # Nothing & CMF phone photos
 │   └── ...                        # Apple, Samsung, Xiaomi, Huawei, etc.
-├── docs/                          # Comprehensive technical documentation
-│   ├── brain.md                   # 🧠 SYSTEM BRAIN: Architecture, State Machine & Schemas
-│   ├── documentation.md           # 📚 Complete User & Administrator Manual
-│   ├── documentation.html         # 🌐 Interactive HTML Documentation for Admin UI
-│   ├── developer-guide.md         # 🛠️ Developer Reference: Hooks, Filters & APIs
-│   ├── changelog.md               # 📝 Full Release History & Changelog
-│   └── archive/                   # Archived legacy documentation
+├── docs/                          # Interactive master documentation
+│   └── documentation.html         # 🌐 Master All-in-One Manual (Architecture, Guides, Hooks, Schema, FAQs)
 ├── includes/                      # Object-oriented core backend classes
 │   ├── class-rbf-pricing.php      # 6-Level pricing cascade engine
 │   ├── class-rbf-catalog.php      # Catalog sync, tier heuristics & image normalizer
