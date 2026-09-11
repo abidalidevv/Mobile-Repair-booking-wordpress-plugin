@@ -2462,261 +2462,386 @@ class RepairBookingForm {
             SELECT * FROM {$wpdb->prefix}rbf_bookings 
             ORDER BY created_at DESC
         ");
-        
-        echo '<div class="wrap rbf-bookings-page">';
-        echo '<h1>Bookings Management</h1>';
-        
-        // Add New Booking Button
-        echo '<div class="rbf-bookings-actions" style="margin-bottom: 20px;">';
-        echo '<a href="#" class="button button-primary" id="add-new-booking">Add New Booking</a>';
-        echo '</div>';
-        
-        if (empty($bookings)) {
-            echo '<p>No bookings found.</p>';
-        } else {
-            echo '<table class="wp-list-table widefat fixed striped">';
-            echo '<thead>';
-            echo '<tr>';
-            echo '<th>ID</th>';
-            echo '<th>Customer</th>';
-            echo '<th>Contact</th>';
-            echo '<th>Device</th>';
-            echo '<th>Repairs</th>';
-            echo '<th>Service Type</th>';
-            echo '<th>Total</th>';
-            echo '<th>Status</th>';
-            echo '<th>Date</th>';
-            echo '<th>Actions</th>';
-            echo '</tr>';
-            echo '</thead>';
-            echo '<tbody>';
-            
-            foreach ($bookings as $booking) {
-                // Get service type icon and label
-                $service_type_icon = $this->get_service_type_icon($booking->service_type);
-                $service_type_label = $this->get_service_type_label($booking->service_type);
-                
-                echo '<tr>';
-                echo '<td>' . esc_html($booking->id) . '</td>';
-                echo '<td>' . esc_html($booking->customer_name) . '</td>';
-                echo '<td>' . esc_html($booking->customer_email) . '<br>' . esc_html($booking->customer_phone) . '</td>';
-                echo '<td>' . esc_html($booking->brand) . ' ' . esc_html($booking->model) . '</td>';
-                echo '<td>' . esc_html($booking->repair) . '</td>';
-                echo '<td>' . $service_type_icon . ' ' . esc_html($service_type_label) . '</td>';
-                echo '<td>AED ' . esc_html($booking->total_amount) . '</td>';
-                echo '<td>';
-                echo '<select class="booking-status-select" data-booking-id="' . esc_attr($booking->id) . '">';
-                echo '<option value="pending" ' . selected($booking->status, 'pending', false) . '>Pending</option>';
-                echo '<option value="confirmed" ' . selected($booking->status, 'confirmed', false) . '>Confirmed</option>';
-                echo '<option value="in_progress" ' . selected($booking->status, 'in_progress', false) . '>In Progress</option>';
-                echo '<option value="completed" ' . selected($booking->status, 'completed', false) . '>Completed</option>';
-                echo '<option value="cancelled" ' . selected($booking->status, 'cancelled', false) . '>Cancelled</option>';
-                echo '</select>';
-                echo '</td>';
-                echo '<td>' . esc_html($booking->created_at) . '</td>';
-                echo '<td>';
-                echo '<a href="#" class="button button-small view-booking" data-booking-id="' . esc_attr($booking->id) . '">View</a> ';
-                echo '<a href="#" class="button button-small edit-booking" data-booking-id="' . esc_attr($booking->id) . '">Edit</a> ';
-                echo '<a href="#" class="button button-small delete-booking" data-booking-id="' . esc_attr($booking->id) . '">Delete</a> ';
-                echo '<a href="#" class="button button-small print-invoice" data-booking-id="' . esc_attr($booking->id) . '">Print Invoice</a>';
-                echo '</td>';
-                echo '</tr>';
-            }
-            
-            echo '</tbody>';
-            echo '</table>';
-        }
-        
-        // Add New Booking Modal
-        echo '<div id="add-booking-modal" class="rbf-modal" style="display: none;">';
-        echo '<div class="rbf-modal-content" style="max-width: 600px;">';
-        echo '<button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>';
-        echo '<h2>Add New Booking</h2>';
-        echo '<form id="add-booking-form">';
-        echo '<div class="rbf-form-row">';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-customer-name">Customer Name *</label>';
-        echo '<input type="text" id="new-customer-name" name="customer_name" required>';
-        echo '</div>';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-customer-email">Email *</label>';
-        echo '<input type="email" id="new-customer-email" name="customer_email" required>';
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="rbf-form-row">';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-customer-phone">Phone *</label>';
-        echo '<input type="tel" id="new-customer-phone" name="customer_phone" required>';
-        echo '</div>';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-service-type">Service Type</label>';
-        echo '<select id="new-service-type" name="service_type">';
-        echo '<option value="pickup_delivery">🚚 Pickup & Delivery Service</option>';
-        echo '<option value="onsite">🏠 Onsite Service</option>';
-        echo '<option value="store_visit">🏪 Visit Our Store</option>';
-        echo '</select>';
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="rbf-form-row">';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-brand">Brand</label>';
-        echo '<input type="text" id="new-brand" name="brand" placeholder="e.g., Apple, Samsung">';
-        echo '</div>';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-model">Model</label>';
-        echo '<input type="text" id="new-model" name="model" placeholder="e.g., iPhone 15, Galaxy S24">';
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-repairs">Repairs</label>';
-        echo '<textarea id="new-repairs" name="repairs" rows="3" placeholder="Describe the repairs needed"></textarea>';
-        echo '</div>';
-        echo '<div class="rbf-form-row">';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-subtotal">Subtotal (AED)</label>';
-        echo '<input type="number" id="new-subtotal" name="subtotal" step="0.01" min="0">';
-        echo '</div>';
-        echo '<div class="rbf-form-group">';
-        echo '<label for="new-notes">Notes</label>';
-        echo '<textarea id="new-notes" name="notes" rows="2" placeholder="Additional notes"></textarea>';
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="rbf-modal-actions">';
-        echo '<button type="button" class="button close-modal">Cancel</button>';
-        echo '<button type="submit" class="button button-primary">Add Booking</button>';
-        echo '</div>';
-        echo '</form>';
-        echo '</div>';
-        echo '</div>';
-        
-        // View/Edit Booking Modal
-        echo '<div id="booking-detail-modal" class="rbf-modal" style="display: none;">';
-        echo '<div class="rbf-modal-content" style="max-width: 800px;">';
-        echo '<button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>';
-        echo '<h2>Booking Details</h2>';
-        echo '<div id="booking-detail-content"></div>';
-        echo '<div class="rbf-modal-actions">';
-        echo '<button type="button" class="button close-modal">Close</button>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        
-        echo '</div>';
-        
-        // Add JavaScript for functionality
+
+        // Calculate stats
+        $total       = count($bookings);
+        $pending     = count(array_filter((array)$bookings, fn($b) => in_array($b->status, ['pending', 'confirmed'])));
+        $completed   = count(array_filter((array)$bookings, fn($b) => $b->status === 'completed'));
+        $total_rev   = array_sum(array_map(fn($b) => floatval($b->total_amount ?? 0), (array)$bookings));
+
         ?>
+        <div class="wrap rbf-bookings-wrap">
+
+            <!-- Page Header -->
+            <div class="rbf-bookings-header">
+                <div class="rbf-bookings-header-left">
+                    <h1>📋 Bookings Management</h1>
+                    <p>View, track and manage all customer repair bookings</p>
+                </div>
+                <div class="rbf-bookings-header-right">
+                    <button type="button" class="rbf-add-booking-btn" id="add-new-booking">
+                        <span>＋</span> Add New Booking
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="rbf-bookings-stats">
+                <div class="rbf-booking-stat-card">
+                    <div class="rbf-booking-stat-icon icon-all">📋</div>
+                    <div class="rbf-booking-stat-info">
+                        <span class="rbf-booking-stat-num"><?php echo esc_html($total); ?></span>
+                        <span class="rbf-booking-stat-label">Total Bookings</span>
+                    </div>
+                </div>
+                <div class="rbf-booking-stat-card">
+                    <div class="rbf-booking-stat-icon icon-pending">⏳</div>
+                    <div class="rbf-booking-stat-info">
+                        <span class="rbf-booking-stat-num"><?php echo esc_html($pending); ?></span>
+                        <span class="rbf-booking-stat-label">Active</span>
+                    </div>
+                </div>
+                <div class="rbf-booking-stat-card">
+                    <div class="rbf-booking-stat-icon icon-done">✅</div>
+                    <div class="rbf-booking-stat-info">
+                        <span class="rbf-booking-stat-num"><?php echo esc_html($completed); ?></span>
+                        <span class="rbf-booking-stat-label">Completed</span>
+                    </div>
+                </div>
+                <div class="rbf-booking-stat-card">
+                    <div class="rbf-booking-stat-icon icon-revenue">💰</div>
+                    <div class="rbf-booking-stat-info">
+                        <span class="rbf-booking-stat-num"><?php echo number_format($total_rev, 0); ?></span>
+                        <span class="rbf-booking-stat-label">Revenue (AED)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Toolbar -->
+            <div class="rbf-bookings-toolbar">
+                <div class="rbf-search-wrap">
+                    <span class="rbf-search-icon">🔍</span>
+                    <input type="text" id="rbf-booking-search" placeholder="Search by customer, device, email…">
+                </div>
+                <select class="rbf-filter-select" id="rbf-status-filter">
+                    <option value="">All Statuses</option>
+                    <option value="pending">⏳ Pending</option>
+                    <option value="confirmed">🔵 Confirmed</option>
+                    <option value="in_progress">🔧 In Progress</option>
+                    <option value="completed">✅ Completed</option>
+                    <option value="cancelled">❌ Cancelled</option>
+                </select>
+                <select class="rbf-filter-select" id="rbf-service-filter">
+                    <option value="">All Service Types</option>
+                    <option value="pickup_delivery">🚚 Pickup & Delivery</option>
+                    <option value="onsite">🏠 Onsite</option>
+                    <option value="store_visit">🏪 Store Visit</option>
+                </select>
+            </div>
+
+            <?php if (empty($bookings)) : ?>
+            <div class="rbf-bookings-empty">
+                <div class="rbf-bookings-empty-icon">📭</div>
+                <h3>No Bookings Yet</h3>
+                <p>Once customers submit repair bookings, they will appear here.</p>
+                <button type="button" class="rbf-add-booking-btn" id="add-new-booking-empty">
+                    <span>＋</span> Add First Booking
+                </button>
+            </div>
+            <?php else : ?>
+
+            <!-- Bookings Table -->
+            <div class="rbf-bookings-table-wrap">
+                <table class="rbf-bookings-table" id="rbf-bookings-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Device & Repair</th>
+                            <th>Service</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($bookings as $booking) :
+                            $service_type = $booking->service_type ?? 'store_visit';
+                            $service_icon = $this->get_service_type_icon($service_type);
+                            $service_label = $this->get_service_type_label($service_type);
+                            $status = $booking->status ?? 'pending';
+                            $name_initial = mb_strtoupper(mb_substr($booking->customer_name ?? 'U', 0, 1));
+                            $date_fmt = !empty($booking->created_at) ? date('M j, Y', strtotime($booking->created_at)) : '—';
+                            $time_fmt = !empty($booking->created_at) ? date('g:i A', strtotime($booking->created_at)) : '';
+                            $service_class = 'rbf-service-store';
+                            if ($service_type === 'pickup_delivery') $service_class = 'rbf-service-pickup';
+                            elseif ($service_type === 'onsite') $service_class = 'rbf-service-onsite';
+                        ?>
+                        <tr data-status="<?php echo esc_attr($status); ?>"
+                            data-service="<?php echo esc_attr($service_type); ?>"
+                            data-search="<?php echo esc_attr(strtolower(implode(' ', [$booking->customer_name ?? '', $booking->customer_email ?? '', $booking->customer_phone ?? '', $booking->brand ?? '', $booking->model ?? '']))); ?>">
+                            <td>
+                                <span class="rbf-booking-id">#<?php echo esc_html($booking->id); ?></span>
+                            </td>
+                            <td>
+                                <div class="rbf-customer-cell">
+                                    <div class="rbf-customer-avatar"><?php echo esc_html($name_initial); ?></div>
+                                    <div class="rbf-customer-info">
+                                        <span class="customer-name"><?php echo esc_html($booking->customer_name ?? '—'); ?></span>
+                                        <span class="customer-contact"><?php echo esc_html($booking->customer_phone ?? $booking->customer_email ?? '—'); ?></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="rbf-device-cell">
+                                    <span class="device-model"><?php echo esc_html(($booking->brand ?? '') . ' ' . ($booking->model ?? '')); ?></span>
+                                    <span class="device-repair" title="<?php echo esc_attr($booking->repair ?? ''); ?>"><?php echo esc_html($booking->repair ?? '—'); ?></span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="rbf-service-badge <?php echo esc_attr($service_class); ?>">
+                                    <?php echo $service_icon; ?> <?php echo esc_html($service_label); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="rbf-amount-cell">
+                                    <span class="rbf-amount-currency">AED</span><?php echo esc_html(number_format(floatval($booking->total_amount ?? 0), 2)); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="rbf-status-select-wrap">
+                                    <select class="rbf-status-select status-<?php echo esc_attr($status); ?> booking-status-select"
+                                            data-booking-id="<?php echo esc_attr($booking->id); ?>"
+                                            data-current-status="<?php echo esc_attr($status); ?>">
+                                        <option value="pending"     <?php selected($status, 'pending'); ?>>⏳ Pending</option>
+                                        <option value="confirmed"   <?php selected($status, 'confirmed'); ?>>🔵 Confirmed</option>
+                                        <option value="in_progress" <?php selected($status, 'in_progress'); ?>>🔧 In Progress</option>
+                                        <option value="completed"   <?php selected($status, 'completed'); ?>>✅ Completed</option>
+                                        <option value="cancelled"   <?php selected($status, 'cancelled'); ?>>❌ Cancelled</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="rbf-date-cell">
+                                    <span class="date-day"><?php echo esc_html($date_fmt); ?></span>
+                                    <span class="date-time"><?php echo esc_html($time_fmt); ?></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="rbf-booking-actions">
+                                    <a href="#" class="rbf-action-btn btn-view view-booking" data-booking-id="<?php echo esc_attr($booking->id); ?>" title="View Details">👁</a>
+                                    <a href="#" class="rbf-action-btn btn-print print-invoice" data-booking-id="<?php echo esc_attr($booking->id); ?>" title="Print Invoice">🖨</a>
+                                    <a href="#" class="rbf-action-btn btn-delete delete-booking" data-booking-id="<?php echo esc_attr($booking->id); ?>" title="Delete Booking">🗑</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <?php endif; ?>
+
+        </div><!-- .rbf-bookings-wrap -->
+
+        <!-- Add New Booking Modal -->
+        <div id="add-booking-modal" class="rbf-modal" style="display: none;">
+        <div class="rbf-modal-content" style="max-width: 600px;">
+        <button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>
+        <h2>📋 Add New Booking</h2>
+        <form id="add-booking-form">
+        <div class="rbf-form-row">
+        <div class="rbf-form-group">
+        <label for="new-customer-name">Customer Name *</label>
+        <input type="text" id="new-customer-name" name="customer_name" required>
+        </div>
+        <div class="rbf-form-group">
+        <label for="new-customer-email">Email *</label>
+        <input type="email" id="new-customer-email" name="customer_email" required>
+        </div>
+        </div>
+        <div class="rbf-form-row">
+        <div class="rbf-form-group">
+        <label for="new-customer-phone">Phone *</label>
+        <input type="tel" id="new-customer-phone" name="customer_phone" required>
+        </div>
+        <div class="rbf-form-group">
+        <label for="new-service-type">Service Type</label>
+        <select id="new-service-type" name="service_type">
+        <option value="pickup_delivery">🚚 Pickup &amp; Delivery Service</option>
+        <option value="onsite">🏠 Onsite Service</option>
+        <option value="store_visit">🏪 Visit Our Store</option>
+        </select>
+        </div>
+        </div>
+        <div class="rbf-form-row">
+        <div class="rbf-form-group">
+        <label for="new-brand">Brand</label>
+        <input type="text" id="new-brand" name="brand" placeholder="e.g., Apple, Samsung">
+        </div>
+        <div class="rbf-form-group">
+        <label for="new-model">Model</label>
+        <input type="text" id="new-model" name="model" placeholder="e.g., iPhone 15, Galaxy S24">
+        </div>
+        </div>
+        <div class="rbf-form-group">
+        <label for="new-repairs">Repairs</label>
+        <textarea id="new-repairs" name="repairs" rows="3" placeholder="Describe the repairs needed"></textarea>
+        </div>
+        <div class="rbf-form-row">
+        <div class="rbf-form-group">
+        <label for="new-subtotal">Subtotal (AED)</label>
+        <input type="number" id="new-subtotal" name="subtotal" step="0.01" min="0">
+        </div>
+        <div class="rbf-form-group">
+        <label for="new-notes">Notes</label>
+        <textarea id="new-notes" name="notes" rows="2" placeholder="Additional notes"></textarea>
+        </div>
+        </div>
+        <div class="rbf-modal-actions">
+        <button type="button" class="button close-modal">Cancel</button>
+        <button type="submit" class="button button-primary">Add Booking</button>
+        </div>
+        </form>
+        </div>
+        </div>
+
+        <!-- View/Edit Booking Modal -->
+        <div id="booking-detail-modal" class="rbf-modal" style="display: none;">
+        <div class="rbf-modal-content" style="max-width: 800px;">
+        <button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>
+        <h2>📄 Booking Details</h2>
+        <div id="booking-detail-content"></div>
+        <div class="rbf-modal-actions">
+        <button type="button" class="button close-modal">Close</button>
+        </div>
+        </div>
+        </div>
+
         <script>
         jQuery(document).ready(function($) {
             var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
             var nonce = '<?php echo wp_create_nonce("rbf_admin_nonce"); ?>';
-            
-            // Add New Booking Button
-            $('#add-new-booking').on('click', function(e) {
+
+            // Open Add Booking Modal
+            $('#add-new-booking, #add-new-booking-empty').on('click', function(e) {
                 e.preventDefault();
                 $('#add-booking-modal').addClass('active').css('display', 'flex');
             });
-            
+
             // Close Modal
-            $('.close-modal').on('click', function() {
+            $(document).on('click', '.close-modal', function() {
                 $('.rbf-modal').removeClass('active').css('display', 'none');
             });
-            
-            // Close modal when clicking outside
+
+            // Close modal clicking outside
             $('.rbf-modal').on('click', function(e) {
-                if (e.target === this) {
-                    $(this).removeClass('active').css('display', 'none');
-                }
+                if (e.target === this) $(this).removeClass('active').css('display', 'none');
             });
-            
-            // Status Update
-            $('.booking-status-select').on('change', function() {
-                var bookingId = $(this).data('booking-id');
-                var newStatus = $(this).val();
-                
+
+            // Live search
+            $('#rbf-booking-search').on('input', function() {
+                filterTable();
+            });
+
+            // Status filter
+            $('#rbf-status-filter').on('change', function() {
+                filterTable();
+            });
+
+            // Service filter
+            $('#rbf-service-filter').on('change', function() {
+                filterTable();
+            });
+
+            function filterTable() {
+                var search  = $('#rbf-booking-search').val().toLowerCase();
+                var status  = $('#rbf-status-filter').val();
+                var service = $('#rbf-service-filter').val();
+                $('#rbf-bookings-table tbody tr').each(function() {
+                    var rowSearch  = $(this).data('search') || '';
+                    var rowStatus  = $(this).data('status') || '';
+                    var rowService = $(this).data('service') || '';
+                    var ok = true;
+                    if (search  && rowSearch.indexOf(search) === -1) ok = false;
+                    if (status  && rowStatus  !== status)  ok = false;
+                    if (service && rowService !== service) ok = false;
+                    $(this).toggle(ok);
+                });
+            }
+
+            // Status Update - also update select colour class
+            $(document).on('change', '.booking-status-select', function() {
+                var $sel = $(this);
+                var bookingId = $sel.data('booking-id');
+                var newStatus = $sel.val();
+                $sel.removeClass('status-pending status-confirmed status-in_progress status-completed status-cancelled')
+                    .addClass('status-' + newStatus);
+                $sel.closest('tr').attr('data-status', newStatus);
                 $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'rbf_update_booking_status',
-                        booking_id: bookingId,
-                        status: newStatus,
-                        nonce: nonce
+                    url: ajaxurl, type: 'POST',
+                    data: { action: 'rbf_update_booking_status', booking_id: bookingId, status: newStatus, nonce: nonce },
+                    success: function(r) {
+                        showToast(r.success ? '✅ Status updated!' : '❌ ' + r.data, r.success ? 'success' : 'error');
                     },
-                    success: function(response) {
-                        if (response.success) {
-                            showToast('Status updated successfully!', 'success');
-                        } else {
-                            showToast('Error updating status: ' + response.data, 'error');
-                        }
-                    },
-                    error: function() {
-                        showToast('Error updating status. Please try again.', 'error');
-                    }
+                    error: function() { showToast('❌ Error updating status.', 'error'); }
                 });
             });
-            
-            // View Booking Details
-            $('.view-booking').on('click', function(e) {
+
+            // View Booking
+            $(document).on('click', '.view-booking', function(e) {
                 e.preventDefault();
                 var bookingId = $(this).data('booking-id');
-                
                 $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'rbf_get_booking_details',
-                        booking_id: bookingId,
-                        nonce: nonce
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#booking-detail-content').html(response.data);
+                    url: ajaxurl, type: 'POST',
+                    data: { action: 'rbf_get_booking_details', booking_id: bookingId, nonce: nonce },
+                    success: function(r) {
+                        if (r.success) {
+                            $('#booking-detail-content').html(r.data);
                             $('#booking-detail-modal').addClass('active').css('display', 'flex');
-                        } else {
-                            showToast('Error loading booking details: ' + response.data, 'error');
-                        }
+                        } else { showToast('❌ ' + r.data, 'error'); }
                     },
-                    error: function() {
-                        showToast('Error loading booking details. Please try again.', 'error');
-                    }
+                    error: function() { showToast('❌ Error loading details.', 'error'); }
                 });
             });
-            
-            // Edit Booking
-            $('.edit-booking').on('click', function(e) {
+
+            // Delete Booking
+            $(document).on('click', '.delete-booking', function(e) {
                 e.preventDefault();
+                if (!confirm('Delete this booking permanently?')) return;
+                var $row = $(this).closest('tr');
                 var bookingId = $(this).data('booking-id');
-                // Redirect to edit page or show edit modal
-                showToast('Edit functionality coming soon!', 'info');
+                $.ajax({
+                    url: ajaxurl, type: 'POST',
+                    data: { action: 'rbf_delete_booking', booking_id: bookingId, nonce: nonce },
+                    success: function(r) {
+                        if (r.success) {
+                            $row.fadeOut(300, function() { $row.remove(); });
+                            showToast('🗑 Booking deleted.', 'success');
+                        } else { showToast('❌ ' + r.data, 'error'); }
+                    },
+                    error: function() { showToast('❌ Error deleting.', 'error'); }
+                });
             });
 
             // Print Invoice
-            $('.print-invoice').on('click', function(e) {
+            $(document).on('click', '.print-invoice', function(e) {
                 e.preventDefault();
                 var bookingId = $(this).data('booking-id');
-                
                 $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'rbf_get_booking_details',
-                        booking_id: bookingId,
-                        nonce: nonce
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            var invoiceContent = createInvoiceContent(response.data, bookingId);
+                    url: ajaxurl, type: 'POST',
+                    data: { action: 'rbf_get_booking_details', booking_id: bookingId, nonce: nonce },
+                    success: function(r) {
+                        if (r.success) {
+                            var invoiceContent = createInvoiceContent(r.data, bookingId);
                             printInvoice(invoiceContent);
-                        } else {
-                            showToast('Error loading booking details: ' + response.data, 'error');
-                        }
+                        } else { showToast('❌ ' + r.data, 'error'); }
                     },
-                    error: function() {
-                        showToast('Error loading booking details. Please try again.', 'error');
-                    }
+                    error: function() { showToast('❌ Error loading details.', 'error'); }
                 });
             });
-            
+
             // Create Invoice Content
             function createInvoiceContent(bookingData, bookingId) {
                 var invoice = '<div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">';
@@ -2724,335 +2849,72 @@ class RepairBookingForm {
                 invoice += '<h1 style="color: #017c36; margin: 0;">Repair Booking Invoice</h1>';
                 invoice += '<p style="color: #666; margin: 5px 0;">Invoice #' + bookingId + '</p>';
                 invoice += '<p style="color: #666; margin: 5px 0;">Date: ' + new Date().toLocaleDateString() + '</p>';
-                invoice += '<p style="color: #666; margin: 5px 0;">Status: ' + (bookingData.status || 'N/A') + '</p>';
                 invoice += '</div>';
-                
-                // Customer Information Section
-                invoice += '<div style="margin-bottom: 30px;">';
-                invoice += '<h3 style="color: #333; margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Customer Information</h3>';
+                invoice += '<div style="margin-bottom: 30px;"><h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Customer Information</h3>';
                 invoice += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">';
                 invoice += '<div><strong>Name:</strong> ' + (bookingData.customer_name || 'N/A') + '</div>';
                 invoice += '<div><strong>Email:</strong> ' + (bookingData.customer_email || 'N/A') + '</div>';
                 invoice += '<div><strong>Phone:</strong> ' + (bookingData.customer_phone || 'N/A') + '</div>';
-                invoice += '<div><strong>Booking Date:</strong> ' + (bookingData.created_at ? new Date(bookingData.created_at).toLocaleDateString() : 'N/A') + '</div>';
-                invoice += '</div>';
-                invoice += '</div>';
-                
-                // Device & Service Information
-                invoice += '<div style="margin-bottom: 30px;">';
-                invoice += '<h3 style="color: #333; margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Device & Service Information</h3>';
+                invoice += '</div></div>';
+                invoice += '<div style="margin-bottom: 30px;"><h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Device & Service</h3>';
                 invoice += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">';
                 invoice += '<div><strong>Brand:</strong> ' + (bookingData.brand || 'N/A') + '</div>';
                 invoice += '<div><strong>Model:</strong> ' + (bookingData.model || 'N/A') + '</div>';
-                invoice += '<div><strong>Service Type:</strong> ' + (bookingData.service_type || 'N/A') + '</div>';
-                if (bookingData.service_date) {
-                    invoice += '<div><strong>Service Date:</strong> ' + new Date(bookingData.service_date).toLocaleDateString() + '</div>';
-                }
-                if (bookingData.service_time) {
-                    invoice += '<div><strong>Service Time:</strong> ' + bookingData.service_time + '</div>';
-                }
-                invoice += '</div>';
-                invoice += '</div>';
-                
-                // Repairs Section
-                invoice += '<div style="margin-bottom: 30px;">';
-                invoice += '<h3 style="color: #333; margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Repair Details</h3>';
+                invoice += '<div><strong>Service:</strong> ' + (bookingData.service_type || 'N/A') + '</div>';
+                invoice += '</div></div>';
+                invoice += '<div style="margin-bottom: 30px;"><h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Repairs</h3>';
                 invoice += '<div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #017c36;">';
-                invoice += '<p style="margin: 0; line-height: 1.6;">' + (bookingData.repair || 'No repair details specified') + '</p>';
-                invoice += '</div>';
-                invoice += '</div>';
-                
-                // Address Information (if available)
-                if (bookingData.address || bookingData.city || bookingData.emirate) {
-                    invoice += '<div style="margin-bottom: 30px;">';
-                    invoice += '<h3 style="color: #333; margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Service Address</h3>';
-                    invoice += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">';
-                    if (bookingData.address) invoice += '<div><strong>Address:</strong> ' + bookingData.address + '</div>';
-                    if (bookingData.street_building) invoice += '<div><strong>Street/Building:</strong> ' + bookingData.street_building + '</div>';
-                    if (bookingData.city) invoice += '<div><strong>City:</strong> ' + bookingData.city + '</div>';
-                    if (bookingData.emirate) invoice += '<div><strong>Emirate:</strong> ' + bookingData.emirate + '</div>';
-                    invoice += '</div>';
-                    invoice += '</div>';
-                }
-                
-                // Notes (if available)
-                if (bookingData.notes) {
-                    invoice += '<div style="margin-bottom: 30px;">';
-                    invoice += '<h3 style="color: #333; margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Additional Notes</h3>';
-                    invoice += '<div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">';
-                    invoice += '<p style="margin: 0; line-height: 1.6;">' + bookingData.notes + '</p>';
-                    invoice += '</div>';
-                    invoice += '</div>';
-                }
-                
-                // Pricing Section
-                invoice += '<div style="margin-bottom: 30px;">';
-                invoice += '<h3 style="color: #333; margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Pricing Details</h3>';
+                invoice += '<p style="margin: 0;">' + (bookingData.repair || 'N/A') + '</p></div></div>';
+                invoice += '<div><h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Pricing</h3>';
                 invoice += '<div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">';
-                invoice += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">';
-                invoice += '<span><strong>Subtotal:</strong></span>';
-                invoice += '<span>AED ' + (parseFloat(bookingData.subtotal || 0).toFixed(2)) + '</span>';
-                invoice += '</div>';
-                invoice += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">';
-                invoice += '<span><strong>VAT (5%):</strong></span>';
-                invoice += '<span>AED ' + (parseFloat(bookingData.vat_amount || 0).toFixed(2)) + '</span>';
-                invoice += '</div>';
+                invoice += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><span><strong>Subtotal:</strong></span><span>AED ' + parseFloat(bookingData.subtotal || 0).toFixed(2) + '</span></div>';
+                invoice += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><span><strong>VAT (5%):</strong></span><span>AED ' + parseFloat(bookingData.vat_amount || 0).toFixed(2) + '</span></div>';
                 invoice += '<div style="display: flex; justify-content: space-between; padding-top: 15px; border-top: 2px solid #017c36; font-size: 18px; font-weight: bold;">';
-                invoice += '<span><strong>TOTAL AMOUNT:</strong></span>';
-                invoice += '<span style="color: #017c36;">AED ' + (parseFloat(bookingData.total_amount || 0).toFixed(2)) + '</span>';
-                invoice += '</div>';
-                invoice += '</div>';
-                invoice += '</div>';
-                
-                // Footer
+                invoice += '<span><strong>TOTAL:</strong></span><span style="color: #017c36;">AED ' + parseFloat(bookingData.total_amount || 0).toFixed(2) + '</span>';
+                invoice += '</div></div></div>';
                 invoice += '<div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 12px;">';
-                invoice += '<p style="margin: 5px 0;"><strong>Thank you for choosing our repair service!</strong></p>';
-                invoice += '<p style="margin: 5px 0;">For any questions or support, please contact our team.</p>';
-                invoice += '<p style="margin: 5px 0;">This is an official invoice for your records.</p>';
-                invoice += '</div>';
-                invoice += '</div>';
-                
+                invoice += '<p>Thank you for choosing our repair service!</p></div></div>';
                 return invoice;
             }
-            
-            // Print Invoice Function
+
             function printInvoice(invoiceContent) {
-                var printWindow = window.open('', '_blank');
-                printWindow.document.write('<html><head><title>Repair Booking Invoice</title>');
-                printWindow.document.write('<style>body { font-family: Arial, sans-serif; } @media print { body { margin: 20px; } }</style>');
-                printWindow.document.write('</head><body>');
-                printWindow.document.write(invoiceContent);
-                printWindow.document.write('</body></html>');
-                
-                setTimeout(function() {
-                    printWindow.print();
-                }, 500);
+                var w = window.open('', '_blank');
+                w.document.write('<html><head><title>Repair Booking Invoice</title>');
+                w.document.write('<style>body{font-family:Arial,sans-serif;}@media print{body{margin:20px;}}</style>');
+                w.document.write('</head><body>');
+                w.document.write(invoiceContent);
+                w.document.write('</body></html>');
+                setTimeout(function() { w.print(); }, 500);
             }
-            
-            // Add New Booking Form
+
+            // Add New Booking Form Submit
             $('#add-booking-form').on('submit', function(e) {
                 e.preventDefault();
-                
                 var formData = new FormData(this);
                 formData.append('action', 'rbf_add_booking');
                 formData.append('nonce', nonce);
-                
                 $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            showToast('Booking added successfully!', 'success');
-                            $('#add-booking-modal').hide();
-                            location.reload();
-                        } else {
-                            showToast('Error adding booking: ' + response.data, 'error');
-                        }
+                    url: ajaxurl, type: 'POST', data: formData,
+                    processData: false, contentType: false,
+                    success: function(r) {
+                        if (r.success) {
+                            showToast('✅ Booking added!', 'success');
+                            $('#add-booking-modal').removeClass('active').css('display', 'none');
+                            setTimeout(function() { location.reload(); }, 1200);
+                        } else { showToast('❌ ' + r.data, 'error'); }
                     },
-                    error: function() {
-                        showToast('Error adding booking. Please try again.', 'error');
-                    }
+                    error: function() { showToast('❌ Error adding booking.', 'error'); }
                 });
             });
-            
-            // Toast notification function
+
+            // Modern toast
             function showToast(message, type) {
-                var toast = $('<div class="rbf-toast rbf-toast-' + type + '">' + message + '</div>');
-                $('body').append(toast);
-                setTimeout(function() {
-                    toast.fadeOut(function() {
-                        toast.remove();
-                    });
-                }, 3000);
+                var $toast = $('<div class="rbf-toast-v2 toast-' + type + '">' + message + '</div>');
+                $('body').append($toast);
+                setTimeout(function() { $toast.fadeOut(400, function() { $toast.remove(); }); }, 3200);
             }
         });
         </script>
-        
-        <style>
-        .rbf-bookings-actions {
-            margin-bottom: 20px;
-        }
-        
-        .rbf-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 100000;
-            display: none;
-        }
-        
-        .rbf-modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .rbf-form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .rbf-form-group {
-            flex: 1;
-        }
-        
-        .rbf-form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        
-        .rbf-form-group input,
-        .rbf-form-group select,
-        .rbf-form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .rbf-modal-actions {
-            margin-top: 20px;
-            text-align: right;
-        }
-        
-        .rbf-modal-actions .button {
-            margin-left: 10px;
-        }
-        
-        .rbf-toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 4px;
-            color: white;
-            z-index: 100001;
-            font-weight: 600;
-        }
-        
-        .rbf-toast-success {
-            background: #46b450;
-        }
-        
-        .rbf-toast-error {
-            background: #dc3232;
-        }
-        
-        .rbf-toast-info {
-            background: #0073aa;
-        }
-        
-        .booking-status-select {
-            padding: 4px 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: white;
-        }
-        
-        .rbf-bookings-actions .button {
-            margin-right: 10px;
-        }
-        
-        /* Booking Details Styling */
-        .booking-detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .booking-detail-section {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e1e1e1;
-        }
-        
-        .booking-detail-section h4 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: #23282d;
-            border-bottom: 2px solid #0073aa;
-            padding-bottom: 8px;
-        }
-        
-        .booking-detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .booking-detail-row:last-child {
-            border-bottom: none;
-        }
-        
-        .booking-detail-label {
-            font-weight: 600;
-            color: #555;
-            min-width: 120px;
-        }
-        
-        .booking-detail-value {
-            text-align: right;
-            color: #333;
-        }
-        
-        .rbf-status {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .rbf-status-pending {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-        
-        .rbf-status-confirmed {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        
-        .rbf-status-in_progress {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-        
-        .rbf-status-completed {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .rbf-status-cancelled {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        </style>
         <?php
     }
     
