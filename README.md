@@ -1,183 +1,93 @@
-# 🔧 EFIX — Mobile & Laptop Repair Booking Plugin for WordPress
+# Repair Booking Form — WordPress Plugin
 
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org)
-[![Version](https://img.shields.io/badge/Version-2.0.6-brightgreen.svg)](#) [![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
+[![Version](https://img.shields.io/badge/Version-2.0.6-brightgreen.svg)](#)
+[![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](LICENSE)
-[![Brands](https://img.shields.io/badge/Brands-19%20Active-orange.svg)](#supported-brands--devices)
-[![Models](https://img.shields.io/badge/Models-525%20Devices-purple.svg)](#supported-brands--devices)
-[![Suppliers](https://img.shields.io/badge/Wholesale%20Sync-LXCELL%20UAE-success.svg)](#supplier-integration--pricing-engine)
 
-A modern, enterprise-ready WordPress plugin designed for mobile phone, tablet, and laptop repair shops. Features an interactive 4-step booking wizard, real-time smart cart, live wholesale spare-parts pricing with UAE suppliers (LXCELL), multi-tiered pricing, WhatsApp automation, and printable tax invoices.
+A production-ready WordPress plugin for any **mobile phone, tablet, and laptop repair shop**. Drop in the shortcode, configure your pricing and store details, and your customers get a full interactive repair booking experience.
 
 ---
 
-## 🚀 Key Features
+## What It Does
 
-* **💎 v2.0.6 UI Fixes & Reliability Enhancements**:
-  - **Modal Dismiss Button Isolation**: Fixed close button collision where footer buttons overlapped the top-right `✕` icon.
-  - **Bookings Page Overlay Fix**: Resolved bug where default empty modals and dark backdrops blocked the Bookings management screen.
-  - **Official Brand Logos**: Refreshed Huawei, Xiaomi, and Oppo with official graphics and added automatic asset cache busting (`?v=2.0.6`).
-  - **Consolidated Master Docs**: Merged all markdown manuals into a single interactive HTML manual `docs/documentation.html`.
+Customers walk through a clean 4-step wizard:
 
-* **📱 Comprehensive Device Catalog (525 Models Across 18 Brands)**:
-  - Covers devices from 2015 to 2026+ flagships.
-  - Includes **Apple iPhone**, **Samsung Galaxy**, **Google Pixel**, **OnePlus**, **Huawei**, **Xiaomi / POCO**, **Oppo**, **iPad**, **MacBook**, **Vivo**, **Realme**, **Infinix**, **Tecno**, **Honor**, **Motorola**, **Nokia**, **Nothing / CMF**, and custom **Others**.
-* **🖼️ 100% Self-Hosted Local Imagery**:
-  - Every single model has a verified, high-resolution photo stored locally on disk in `Brands/`.
-  - Zero external CDN hotlinking, zero third-party tracking, ultra-fast loading.
-* **⚡ 6-Level Smart Pricing Cascade**:
-  - **Level 1**: Administrator Manual Override Lock (Permanent until cleared).
-  - **Level 2**: Verified Live Supplier Price (`Formula: (Part Cost + Labour) * (1 + Markup%)`).
-  - **Level 3**: Smart 4-Tier Model Price (Economy, Mid-Range, Flagship, Premium/Foldables).
-  - **Level 4**: Legacy Matrix Model Price.
-  - **Level 5**: Global Default Repair Price.
-  - **Level 6**: Master Seed Catalog Baseline.
-* **🔄 Wholesale Supplier Feeds (LXCELL UAE)**:
-  - Native Wholesale OpenXML XLSX and CSV file parsing (zero heavy external dependencies).
-  - Automated 48-hour WP-Cron sync with error audit logging and concurrency locking.
-* **🛡️ Server-Side Fraud Protection**:
-  - Client-side submitted prices are discarded; totals, subtotals, and 5% VAT are re-calculated server-side at the moment of order placement.
-  - Wholesale costs, supplier SKUs, and markup percentages are strictly hidden from customer view.
-* **🧾 Printable Invoices & Calendar Integration**:
-  - Instant branded PDF/print tax invoice with company headers, customer details, and VAT breakdown.
-  - Google Calendar and Outlook appointment sync.
-* **💬 WhatsApp Automation & Isolated Receipt Printing**:
-  - Instant automated customer notification messages via WhatsApp with direct `wa.me` links.
-  - Dedicated **Print Invoice / Receipt** engine (`rbfPrintReceipt`): prints clean, branded customer confirmation invoices isolated from website headers, navigation menus, and footers.
-  - Native AED base currency with multi-currency conversion support.
-* **🏷️ Models Management Brand Quick-Jump Header**:
-  - Sticky top brand selector bar with official logos, titles, and model count badges.
-  - Smooth anchor redirection (`#brand-section-{brand_slug}`) with visual pulse highlighting.
-  - Live instant filter searching both brand pills and model names dynamically.
-* **🎨 Executive Universal Modal & Dialog System**:
-  - Blurred frosted-glass backdrop, modern form inputs, 44px uniform controls, and circular close buttons.
-* **⚡ Zero-FOUC Pricing Engine & Modern About Showcase**:
-  - Instant CSS rendering eliminating 2-second layout flashes on the Repair Prices dashboard.
-  - Redesigned executive About page with live system telemetry, architecture breakdown, and license management.
-* **📱 Modern 4-Column Square Cards (Step 3)**:
-  - Responsive 4-in-a-row square card grid with authentic icons, duration pills, price badges, and selection checkmarks.
-  - Flawless, unclipped dropdown inputs on Step 4 with custom SVG chevrons.
+1. Pick device (brand + model with photos)
+2. Choose repairs (smart-priced cards with icons, estimates, prices)
+3. Select service type (Store Visit / Onsite / Pickup & Delivery)
+4. Confirm — VAT-inclusive total, WhatsApp notification, printable receipt
+
+Pricing, VAT, and supplier cost are calculated server-side. Customers never see your margins.
 
 ---
 
-## 📂 Project Directory Structure
+## Key Features
 
-The repository follows a clean, standardized WordPress plugin structure:
-
-```text
-repair-booking-form/
-├── repair-booking-form.php        # Core plugin entry point & hook registrations
-├── uninstall.php                  # Clean database removal on uninstall
-├── brands_models_data.json        # Master seed catalog (18 brands, 525 models)
-├── README.md                      # Primary project overview & quick start
-├── admin/                         # WordPress admin pages & dashboards
-│   ├── bookings.php               # Bookings management & invoice printer
-│   ├── dashboard.php              # Analytics, KPIs, status cards
-│   ├── models.php                 # Model catalog CRUD & tier assigner
-│   └── repairs.php                # Repair services & labour fees editor
-├── assets/                        # Compiled CSS and JavaScript
-│   ├── css/                       # Frontend & admin stylesheets (style.css, admin.css)
-│   ├── js/                        # Multi-step wizard frontend logic (main.js)
-│   └── images/repairs/            # 14 Core repair icons (screen, battery, port, etc.)
-├── Brands/                        # 100% self-hosted device images & brand logos
-│   ├── ipad_modals/               # iPad Pro, Air, Mini, 10th Gen renders
-│   ├── macbook_modals/            # MacBook Pro & MacBook Air renders
-│   ├── nothing_modals/            # Nothing & CMF phone photos
-│   └── ...                        # Apple, Samsung, Xiaomi, Huawei, etc.
-├── docs/                          # Interactive master documentation
-│   └── documentation.html         # 🌐 Master All-in-One Manual (Architecture, Guides, Hooks, Schema, FAQs)
-├── includes/                      # Object-oriented core backend classes
-│   ├── class-rbf-pricing.php      # 6-Level pricing cascade engine
-│   ├── class-rbf-catalog.php      # Catalog sync, tier heuristics & image normalizer
-│   ├── class-rbf-currency.php     # Multi-currency & VAT engine
-│   ├── class-rbf-error-logger.php # PSR-compliant debug logging
-│   ├── class-rbf-tracker.php      # Live repair status tracker
-│   ├── class-rbf-whatsapp.php     # WhatsApp automation engine
-│   ├── class-brands-models-manager.php # JSON catalog manager
-│   └── suppliers/                 # Wholesaler & spare parts feeds
-│       ├── interface-rbf-supplier.php
-│       ├── class-rbf-supplier-manager.php
-│       ├── class-rbf-supplier-sync-manager.php
-│       └── class-rbf-supplier-lxcell.php
-├── templates/                     # Frontend views
-│   └── form.php                   # [repair_booking_form] shortcode view
-└── tools/                         # CLI & Developer diagnostics
-    ├── verify_production_readiness.php
-    ├── verify_expanded_catalog.php
-    ├── check-syntax.php
-    └── debug-plugin.php
-```
+- **525 Models, 19 Brands** — Apple, Samsung, Google Pixel, OnePlus, Huawei, Xiaomi/POCO, Oppo, Vivo, Realme, Infinix, Tecno, Honor, Motorola, Nokia, Nothing/CMF, iPad, MacBook
+- **6-Level Smart Pricing Cascade** — Admin override → Live supplier → 4-tier model → Legacy matrix → Global default
+- **Wholesale Supplier Feed (LXCELL UAE)** — Native XLSX/CSV parsing, auto 48hr WP-Cron sync
+- **Server-Side Fraud Protection** — Client prices discarded; totals re-calculated at order time
+- **Printable Invoices** — Clean branded receipt isolated from site navigation
+- **WhatsApp Automation** — Instant wa.me booking summary to customer
+- **Admin Bookings Dashboard** — Search, filter, status updates, invoice print, delete
+- **Zero-FOUC Pricing Engine** — No layout flash on the repair prices page
+- **Modern Modal System** — Frosted-glass backdrop, 44px controls, animated toasts
+- **4-Column Repair Cards** — Step 3 grid with icons, duration pills, price badges
 
 ---
 
-## ⚡ Quick Start & Installation
+## Installation
 
-1. **Upload**: Copy the `repair-booking-form` folder into your WordPress installation at:  
-   `/wp-content/plugins/repair-booking-form/`
-2. **Activate**: Go to **WordPress Admin → Plugins → Installed Plugins** and click **Activate**.
-3. **Embed Booking Form**: Create or edit any WordPress page and paste the shortcode:
-   ```text
-   [repair_booking_form]
-   ```
-4. **Configure Store & Pricing**:
-   - Navigate to **Repair Booking → Settings** in your WordPress sidebar.
-   - Set your store location, working hours, and WhatsApp contact number.
-   - Configure global labour cost and markup percentage in **Supplier Settings**.
+1. Upload 
+epair-booking-form/ to /wp-content/plugins/
+2. Activate via **WordPress Admin → Plugins**
+3. Add shortcode to any page: [repair_booking_form]
+4. Configure under **Repair Booking → Settings**
 
 ---
 
-## 🎯 Shortcode Reference
+## Shortcodes
 
 | Shortcode | Description |
 |---|---|
-| `[repair_booking_form]` | Renders the complete 4-step customer repair booking wizard. |
-| `[rbf_store_info]` | Displays store address, working hours, and contact details. |
-| `[rbf_tracker]` | Live order tracking interface for customers using their Booking ID. |
-| `[rbf_brands_models]` | Displays an interactive grid of supported device brands and models. |
+| [repair_booking_form] | 4-step customer booking wizard |
+| [rbf_store_info] | Store address, hours, contact |
+| [rbf_tracker] | Live tracking by Booking ID |
+| [rbf_brands_models] | Brand & model grid |
 
 ---
 
-## 🧠 System Architecture & Pricing Engine
+## Pricing Engine
 
-The pricing engine guarantees that every device has an accurate price while protecting administrative overrides:
+`
+Admin Override → Live Supplier Cost → 4-Tier Model Price → Legacy Matrix → Global Default
+`
 
-```
-[ Customer Requests Price ]
-           │
-           ▼
-[ 1. Is Manual Override Active? ] ──YES──► [ Return Admin Locked Price ]
-           │ NO
-           ▼
-[ 2. Is Live Supplier Part In-Stock? ] ──YES──► [ (Cost + Labour) * (1 + Markup%) ]
-           │ NO / Out-of-Stock
-           ▼
-[ 3. Smart 4-Tier Model Price ] ──YES──► [ Economy / Mid / Flagship / Premium Rate ]
-           │ EMPTY
-           ▼
-[ 4. Legacy Matrix Price ]
-           │ EMPTY
-           ▼
-[ 5. Global Default Repair Price ]
-```
-
-For complete technical specifications, database schema diagrams, and synchronization state machines, please read:  
-👉 [**docs/brain.md**](docs/brain.md)
+Full details in the docs.
 
 ---
 
-## 📚 Complete Documentation Suite
+## Documentation
 
-All detailed documentation is neatly organized inside the [`docs/`](docs/) directory:
+Complete manual (architecture, DB schema, AJAX API, hooks, FAQ):
 
-* 🧠 [**System Brain & Architecture Spec**](docs/brain.md) — In-depth database schemas, pricing state machine, and security layers.
-* 📚 [**Administrator & User Manual**](docs/documentation.md) — Step-by-step instructions for shop owners, technician management, and invoices.
-* 🛠️ [**Developer Guide & API Reference**](docs/developer-guide.md) — WordPress action hooks, filters, AJAX endpoints, and custom supplier provider development.
-* 📝 [**Changelog & Release Notes**](docs/changelog.md) — Detailed version history.
+👉 docs/documentation.html — open in any browser
 
 ---
 
-## 📄 License & Credits
+## Requirements
 
-* **Author:** Abid Ali
-* **License:** GNU General Public License v2 or later
-* **Tested Up To:** WordPress 6.7
+| | Minimum |
+|---|---|
+| WordPress | 6.0+ |
+| PHP | 8.0+ |
+| MySQL | 5.7+ |
+
+---
+
+## License
+
+- **Author:** Abid Ali
+- **License:** GPL v2 or later
+- **Tested up to:** WordPress 6.7

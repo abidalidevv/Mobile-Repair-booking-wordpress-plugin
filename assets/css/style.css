@@ -7,8 +7,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* CSS Variables */
-#efix-repair-form-wrapper,
-.efix-rbf-scope {
+#rbf-repair-form-wrapper,
+.rbf-scope {
     --rbf-primary: #017c36;
     --rbf-primary-dark: #05413a;
     --rbf-primary-light: #30ab58;
@@ -41,14 +41,14 @@
     margin: 20px 0;
 }
 
-#efix-repair-form-wrapper *,
-#efix-repair-form-wrapper *::before,
-#efix-repair-form-wrapper *::after {
+#rbf-repair-form-wrapper *,
+#rbf-repair-form-wrapper *::before,
+#rbf-repair-form-wrapper *::after {
     box-sizing: border-box;
 }
 
 /* Base Container */
-#efix-repair-form-wrapper .rbf-container {
+#rbf-repair-form-wrapper .rbf-container {
     max-width: 1300px;
     margin: 0 auto;
     background: #ffffff;
@@ -61,7 +61,7 @@
 }
 
 /* Top Bar: Live Quotes & Currency Switcher */
-#efix-repair-form-wrapper .rbf-top-bar {
+#rbf-repair-form-wrapper .rbf-top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -72,7 +72,7 @@
     gap: 15px;
 }
 
-#efix-repair-form-wrapper .rbf-brand-header-badge {
+#rbf-repair-form-wrapper .rbf-brand-header-badge {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -82,7 +82,7 @@
     border: 1px solid rgba(1, 124, 54, 0.2);
 }
 
-#efix-repair-form-wrapper .rbf-badge-pulse {
+#rbf-repair-form-wrapper .rbf-badge-pulse {
     width: 10px;
     height: 10px;
     background: var(--rbf-accent);
@@ -97,13 +97,13 @@
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 210, 106, 0); }
 }
 
-#efix-repair-form-wrapper .rbf-badge-text {
+#rbf-repair-form-wrapper .rbf-badge-text {
     font-size: 13px;
     font-weight: 700;
     color: var(--rbf-primary-dark);
 }
 
-#efix-repair-form-wrapper .rbf-currency-switcher-wrap {
+#rbf-repair-form-wrapper .rbf-currency-switcher-wrap {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -113,13 +113,13 @@
     border: 1px solid var(--rbf-border);
 }
 
-#efix-repair-form-wrapper .rbf-currency-label {
+#rbf-repair-form-wrapper .rbf-currency-label {
     font-size: 13px;
     font-weight: 600;
     color: var(--rbf-text-muted);
 }
 
-#efix-repair-form-wrapper .rbf-currency-select {
+#rbf-repair-form-wrapper .rbf-currency-select {
     padding: 6px 12px;
     font-size: 13px;
     font-weight: 700;
@@ -132,13 +132,13 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-currency-select:focus {
+#rbf-repair-form-wrapper .rbf-currency-select:focus {
     border-color: var(--rbf-primary);
     box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.15);
 }
 
 /* Progress Stepper */
-#efix-repair-form-wrapper .rbf-progress-bar {
+#rbf-repair-form-wrapper .rbf-progress-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -147,7 +147,7 @@
     padding: 0 20px;
 }
 
-#efix-repair-form-wrapper .rbf-progress-step {
+#rbf-repair-form-wrapper .rbf-progress-step {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,7 +157,7 @@
     flex: 1;
 }
 
-#efix-repair-form-wrapper .rbf-progress-step:not(:last-child)::after {
+#rbf-repair-form-wrapper .rbf-progress-step:not(:last-child)::after {
     content: '';
     position: absolute;
     top: 20px;
@@ -169,12 +169,12 @@
     transition: background 0.3s ease;
 }
 
-#efix-repair-form-wrapper .rbf-progress-step.completed:not(:last-child)::after,
-#efix-repair-form-wrapper .rbf-progress-step.active:not(:last-child)::after {
+#rbf-repair-form-wrapper .rbf-progress-step.completed:not(:last-child)::after,
+#rbf-repair-form-wrapper .rbf-progress-step.active:not(:last-child)::after {
     background: var(--rbf-primary);
 }
 
-#efix-repair-form-wrapper .rbf-step-number {
+#rbf-repair-form-wrapper .rbf-step-number {
     width: 42px;
     height: 42px;
     border-radius: 50%;
@@ -189,7 +189,7 @@
     transition: all 0.3s ease;
 }
 
-#efix-repair-form-wrapper .rbf-progress-step.active .rbf-step-number {
+#rbf-repair-form-wrapper .rbf-progress-step.active .rbf-step-number {
     background: var(--rbf-primary);
     border-color: var(--rbf-primary);
     color: #ffffff;
@@ -197,13 +197,13 @@
     transform: scale(1.05);
 }
 
-#efix-repair-form-wrapper .rbf-progress-step.completed .rbf-step-number {
+#rbf-repair-form-wrapper .rbf-progress-step.completed .rbf-step-number {
     background: var(--rbf-primary-dark);
     border-color: var(--rbf-primary-dark);
     color: #ffffff;
 }
 
-#efix-repair-form-wrapper .rbf-step-label {
+#rbf-repair-form-wrapper .rbf-step-label {
     margin-top: 10px;
     font-size: 13px;
     font-weight: 600;
@@ -212,18 +212,18 @@
     text-align: center;
 }
 
-#efix-repair-form-wrapper .rbf-progress-step.active .rbf-step-label {
+#rbf-repair-form-wrapper .rbf-progress-step.active .rbf-step-label {
     color: var(--rbf-primary);
     font-weight: 700;
 }
 
 /* Steps Headers */
-#efix-repair-form-wrapper .rbf-step {
+#rbf-repair-form-wrapper .rbf-step {
     display: none;
     animation: rbfFadeIn 0.3s ease forwards;
 }
 
-#efix-repair-form-wrapper .rbf-step.active {
+#rbf-repair-form-wrapper .rbf-step.active {
     display: block;
 }
 
@@ -232,36 +232,36 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-#efix-repair-form-wrapper .rbf-step-header {
+#rbf-repair-form-wrapper .rbf-step-header {
     text-align: center;
     margin-bottom: 30px;
 }
 
-#efix-repair-form-wrapper .rbf-step-header h2 {
+#rbf-repair-form-wrapper .rbf-step-header h2 {
     font-size: 28px;
     font-weight: 800;
     color: var(--rbf-primary-dark);
     margin: 0 0 8px;
 }
 
-#efix-repair-form-wrapper .rbf-step-header p {
+#rbf-repair-form-wrapper .rbf-step-header p {
     font-size: 15px;
     color: var(--rbf-text-muted);
     margin: 0;
 }
 
-#efix-repair-form-wrapper .rbf-highlight-text {
+#rbf-repair-form-wrapper .rbf-highlight-text {
     color: var(--rbf-primary);
     text-decoration: underline;
     text-decoration-color: var(--rbf-accent);
 }
 
-#efix-repair-form-wrapper .rbf-search-box-wrapper {
+#rbf-repair-form-wrapper .rbf-search-box-wrapper {
     max-width: 550px;
     margin: 20px auto 0;
 }
 
-#efix-repair-form-wrapper .rbf-search-input {
+#rbf-repair-form-wrapper .rbf-search-input {
     width: 100%;
     padding: 14px 20px;
     font-size: 15px;
@@ -273,20 +273,20 @@
     box-shadow: var(--rbf-shadow-sm);
 }
 
-#efix-repair-form-wrapper .rbf-search-input:focus {
+#rbf-repair-form-wrapper .rbf-search-input:focus {
     border-color: var(--rbf-primary);
     background: #ffffff;
     box-shadow: 0 0 0 4px rgba(1, 124, 54, 0.12);
 }
 
 /* Nav Headers & Back Buttons */
-#efix-repair-form-wrapper .rbf-step-nav-header {
+#rbf-repair-form-wrapper .rbf-step-nav-header {
     display: flex;
     justify-content: flex-start;
     margin-bottom: 20px;
 }
 
-#efix-repair-form-wrapper .rbf-btn-back {
+#rbf-repair-form-wrapper .rbf-btn-back {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -301,7 +301,7 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-btn-back:hover {
+#rbf-repair-form-wrapper .rbf-btn-back:hover {
     background: var(--rbf-primary-subtle);
     color: var(--rbf-primary);
     border-color: var(--rbf-primary);
@@ -309,14 +309,14 @@
 }
 
 /* Brand Selection Grid */
-#efix-repair-form-wrapper .rbf-brand-grid {
+#rbf-repair-form-wrapper .rbf-brand-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     margin-top: 25px;
 }
 
-#efix-repair-form-wrapper .rbf-brand-card {
+#rbf-repair-form-wrapper .rbf-brand-card {
     background: #ffffff;
     border: 2px solid var(--rbf-border);
     border-radius: var(--rbf-radius-md);
@@ -330,20 +330,20 @@
     align-items: center;
 }
 
-#efix-repair-form-wrapper .rbf-brand-card:hover,
-#efix-repair-form-wrapper .rbf-brand-card:focus {
+#rbf-repair-form-wrapper .rbf-brand-card:hover,
+#rbf-repair-form-wrapper .rbf-brand-card:focus {
     border-color: var(--rbf-primary);
     transform: translateY(-6px);
     box-shadow: var(--rbf-shadow-md);
 }
 
-#efix-repair-form-wrapper .rbf-brand-card.active {
+#rbf-repair-form-wrapper .rbf-brand-card.active {
     border-color: var(--rbf-primary);
     background: var(--rbf-primary-subtle);
     box-shadow: 0 0 0 2px var(--rbf-primary);
 }
 
-#efix-repair-form-wrapper .rbf-brand-image {
+#rbf-repair-form-wrapper .rbf-brand-image {
     width: 70px;
     height: 70px;
     display: flex;
@@ -355,20 +355,20 @@
     padding: 10px;
 }
 
-#efix-repair-form-wrapper .rbf-brand-image img {
+#rbf-repair-form-wrapper .rbf-brand-image img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
 }
 
-#efix-repair-form-wrapper .rbf-brand-name {
+#rbf-repair-form-wrapper .rbf-brand-name {
     font-size: 17px;
     font-weight: 700;
     color: var(--rbf-text);
     margin-bottom: 6px;
 }
 
-#efix-repair-form-wrapper .rbf-brand-badge {
+#rbf-repair-form-wrapper .rbf-brand-badge {
     display: inline-block;
     font-size: 11px;
     font-weight: 700;
@@ -379,20 +379,20 @@
     margin-bottom: 8px;
 }
 
-#efix-repair-form-wrapper .rbf-brand-desc {
+#rbf-repair-form-wrapper .rbf-brand-desc {
     font-size: 12px;
     color: var(--rbf-text-muted);
 }
 
 /* Model Selection Grid */
-#efix-repair-form-wrapper .rbf-model-grid {
+#rbf-repair-form-wrapper .rbf-model-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
     margin-top: 20px;
 }
 
-#efix-repair-form-wrapper .rbf-model-card {
+#rbf-repair-form-wrapper .rbf-model-card {
     background: #ffffff;
     border: 2px solid var(--rbf-border);
     border-radius: var(--rbf-radius-md);
@@ -405,18 +405,18 @@
     align-items: center;
 }
 
-#efix-repair-form-wrapper .rbf-model-card:hover {
+#rbf-repair-form-wrapper .rbf-model-card:hover {
     border-color: var(--rbf-primary);
     transform: translateY(-5px);
     box-shadow: var(--rbf-shadow-md);
 }
 
-#efix-repair-form-wrapper .rbf-model-card.active {
+#rbf-repair-form-wrapper .rbf-model-card.active {
     border-color: var(--rbf-primary);
     background: var(--rbf-primary-subtle);
 }
 
-#efix-repair-form-wrapper .rbf-model-image {
+#rbf-repair-form-wrapper .rbf-model-image {
     width: 100px;
     height: 120px;
     display: flex;
@@ -425,27 +425,27 @@
     margin-bottom: 12px;
 }
 
-#efix-repair-form-wrapper .rbf-model-image img {
+#rbf-repair-form-wrapper .rbf-model-image img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
 }
 
-#efix-repair-form-wrapper .rbf-model-name {
+#rbf-repair-form-wrapper .rbf-model-name {
     font-size: 15px;
     font-weight: 700;
     color: var(--rbf-text);
     margin-bottom: 4px;
 }
 
-#efix-repair-form-wrapper .rbf-model-desc {
+#rbf-repair-form-wrapper .rbf-model-desc {
     font-size: 12px;
     color: var(--rbf-text-muted);
 }
 
 /* Custom Model Box */
-#efix-repair-form-wrapper .rbf-custom-box {
+#rbf-repair-form-wrapper .rbf-custom-box {
     max-width: 600px;
     margin: 30px auto;
     padding: 30px;
@@ -455,13 +455,13 @@
     text-align: center;
 }
 
-#efix-repair-form-wrapper .rbf-custom-box h3 {
+#rbf-repair-form-wrapper .rbf-custom-box h3 {
     margin-top: 0;
     color: var(--rbf-primary-dark);
 }
 
 /* Step 3: Repair Categories & List */
-#efix-repair-form-wrapper .rbf-category-filters {
+#rbf-repair-form-wrapper .rbf-category-filters {
     display: flex;
     gap: 10px;
     overflow-x: auto;
@@ -470,7 +470,7 @@
     scrollbar-width: thin;
 }
 
-#efix-repair-form-wrapper .rbf-cat-btn {
+#rbf-repair-form-wrapper .rbf-cat-btn {
     background: var(--rbf-bg-subtle);
     border: 1px solid var(--rbf-border);
     padding: 8px 18px;
@@ -483,30 +483,30 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-cat-btn:hover {
+#rbf-repair-form-wrapper .rbf-cat-btn:hover {
     background: #e2e8f0;
 }
 
-#efix-repair-form-wrapper .rbf-cat-btn.active {
+#rbf-repair-form-wrapper .rbf-cat-btn.active {
     background: var(--rbf-primary);
     color: #ffffff;
     border-color: var(--rbf-primary);
 }
 
-#efix-repair-form-wrapper .rbf-repair-container {
+#rbf-repair-form-wrapper .rbf-repair-container {
     display: grid;
     grid-template-columns: 1fr 340px;
     gap: 25px;
     align-items: start;
 }
 
-#efix-repair-form-wrapper .rbf-repair-list {
+#rbf-repair-form-wrapper .rbf-repair-list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
 
-#efix-repair-form-wrapper .rbf-repair-item {
+#rbf-repair-form-wrapper .rbf-repair-item {
     background: #ffffff;
     border: 2px solid var(--rbf-border);
     border-radius: var(--rbf-radius-md);
@@ -523,19 +523,19 @@
     min-height: 235px;
 }
 
-#efix-repair-form-wrapper .rbf-repair-item:hover {
+#rbf-repair-form-wrapper .rbf-repair-item:hover {
     border-color: var(--rbf-primary);
     box-shadow: var(--rbf-shadow-md);
     transform: translateY(-4px);
 }
 
-#efix-repair-form-wrapper .rbf-repair-item.selected {
+#rbf-repair-form-wrapper .rbf-repair-item.selected {
     border-color: var(--rbf-primary);
     background: var(--rbf-primary-subtle);
     box-shadow: 0 4px 14px rgba(1, 124, 54, 0.15);
 }
 
-#efix-repair-form-wrapper .rbf-repair-checkbox {
+#rbf-repair-form-wrapper .rbf-repair-checkbox {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -554,13 +554,13 @@
     z-index: 2;
 }
 
-#efix-repair-form-wrapper .rbf-repair-item.selected .rbf-repair-checkbox {
+#rbf-repair-form-wrapper .rbf-repair-item.selected .rbf-repair-checkbox {
     background: var(--rbf-primary);
     border-color: var(--rbf-primary);
     color: #ffffff;
 }
 
-#efix-repair-form-wrapper .rbf-repair-icon {
+#rbf-repair-form-wrapper .rbf-repair-icon {
     width: 60px;
     height: 60px;
     display: flex;
@@ -574,25 +574,25 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-repair-item:hover .rbf-repair-icon {
+#rbf-repair-form-wrapper .rbf-repair-item:hover .rbf-repair-icon {
     transform: scale(1.06);
     background: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-#efix-repair-form-wrapper .rbf-repair-icon img.rbf-repair-img-icon {
+#rbf-repair-form-wrapper .rbf-repair-icon img.rbf-repair-img-icon {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     display: block;
 }
 
-#efix-repair-form-wrapper .rbf-repair-icon .rbf-repair-emoji-icon {
+#rbf-repair-form-wrapper .rbf-repair-icon .rbf-repair-emoji-icon {
     font-size: 28px;
     line-height: 1;
 }
 
-#efix-repair-form-wrapper .rbf-repair-info {
+#rbf-repair-form-wrapper .rbf-repair-info {
     width: 100%;
     margin-bottom: 10px;
     flex-grow: 1;
@@ -601,7 +601,7 @@
     align-items: center;
 }
 
-#efix-repair-form-wrapper .rbf-repair-info h4 {
+#rbf-repair-form-wrapper .rbf-repair-info h4 {
     margin: 0 0 6px;
     font-size: 14px;
     font-weight: 700;
@@ -613,7 +613,7 @@
     overflow: hidden;
 }
 
-#efix-repair-form-wrapper .rbf-repair-info p {
+#rbf-repair-form-wrapper .rbf-repair-info p {
     margin: 0;
     font-size: 11px;
     color: var(--rbf-text-muted);
@@ -624,7 +624,7 @@
     overflow: hidden;
 }
 
-#efix-repair-form-wrapper .rbf-repair-footer {
+#rbf-repair-form-wrapper .rbf-repair-footer {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -634,7 +634,7 @@
     border-top: 1px dashed var(--rbf-border);
 }
 
-#efix-repair-form-wrapper .rbf-repair-duration {
+#rbf-repair-form-wrapper .rbf-repair-duration {
     display: inline-block;
     font-size: 11px;
     font-weight: 600;
@@ -644,19 +644,19 @@
     border-radius: 999px;
 }
 
-#efix-repair-form-wrapper .rbf-repair-price {
+#rbf-repair-form-wrapper .rbf-repair-price {
     font-size: 15px;
     font-weight: 800;
     color: var(--rbf-primary-dark);
 }
 
 /* Sticky Cart Sidebar */
-#efix-repair-form-wrapper .rbf-cart-sidebar {
+#rbf-repair-form-wrapper .rbf-cart-sidebar {
     position: sticky;
     top: 20px;
 }
 
-#efix-repair-form-wrapper .rbf-device-card {
+#rbf-repair-form-wrapper .rbf-device-card {
     background: var(--rbf-bg-subtle);
     border: 1px solid var(--rbf-border);
     border-radius: var(--rbf-radius-md);
@@ -667,7 +667,7 @@
     margin-bottom: 20px;
 }
 
-#efix-repair-form-wrapper .rbf-device-image {
+#rbf-repair-form-wrapper .rbf-device-image {
     width: 55px;
     height: 65px;
     display: flex;
@@ -675,26 +675,26 @@
     justify-content: center;
 }
 
-#efix-repair-form-wrapper .rbf-device-image img {
+#rbf-repair-form-wrapper .rbf-device-image img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
 }
 
-#efix-repair-form-wrapper .rbf-device-info h4 {
+#rbf-repair-form-wrapper .rbf-device-info h4 {
     margin: 0 0 2px;
     font-size: 15px;
     font-weight: 700;
     color: var(--rbf-primary-dark);
 }
 
-#efix-repair-form-wrapper .rbf-device-info p {
+#rbf-repair-form-wrapper .rbf-device-info p {
     margin: 0;
     font-size: 12px;
     color: var(--rbf-text-muted);
 }
 
-#efix-repair-form-wrapper .rbf-cart {
+#rbf-repair-form-wrapper .rbf-cart {
     background: #ffffff;
     border: 2px solid var(--rbf-border);
     border-radius: var(--rbf-radius-md);
@@ -702,7 +702,7 @@
     box-shadow: var(--rbf-shadow-md);
 }
 
-#efix-repair-form-wrapper .rbf-cart-header {
+#rbf-repair-form-wrapper .rbf-cart-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -711,14 +711,14 @@
     border-bottom: 1px solid var(--rbf-border);
 }
 
-#efix-repair-form-wrapper .rbf-cart-header h3 {
+#rbf-repair-form-wrapper .rbf-cart-header h3 {
     margin: 0;
     font-size: 18px;
     font-weight: 800;
     color: var(--rbf-primary-dark);
 }
 
-#efix-repair-form-wrapper .rbf-currency-badge {
+#rbf-repair-form-wrapper .rbf-currency-badge {
     background: var(--rbf-primary-subtle);
     color: var(--rbf-primary);
     font-size: 12px;
@@ -727,21 +727,21 @@
     border-radius: 6px;
 }
 
-#efix-repair-form-wrapper .rbf-cart-items {
+#rbf-repair-form-wrapper .rbf-cart-items {
     min-height: 80px;
     max-height: 240px;
     overflow-y: auto;
     margin-bottom: 20px;
 }
 
-#efix-repair-form-wrapper .rbf-cart-empty {
+#rbf-repair-form-wrapper .rbf-cart-empty {
     font-size: 13px;
     color: var(--rbf-text-light);
     text-align: center;
     padding: 20px 0;
 }
 
-#efix-repair-form-wrapper .rbf-cart-item {
+#rbf-repair-form-wrapper .rbf-cart-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -750,24 +750,24 @@
     font-size: 14px;
 }
 
-#efix-repair-form-wrapper .rbf-cart-item-name {
+#rbf-repair-form-wrapper .rbf-cart-item-name {
     font-weight: 600;
     color: var(--rbf-text);
 }
 
-#efix-repair-form-wrapper .rbf-cart-item-price {
+#rbf-repair-form-wrapper .rbf-cart-item-price {
     font-weight: 700;
     color: var(--rbf-primary);
 }
 
-#efix-repair-form-wrapper .rbf-cart-total {
+#rbf-repair-form-wrapper .rbf-cart-total {
     background: var(--rbf-bg-subtle);
     border-radius: var(--rbf-radius-sm);
     padding: 14px;
     margin-bottom: 20px;
 }
 
-#efix-repair-form-wrapper .rbf-total-line {
+#rbf-repair-form-wrapper .rbf-total-line {
     display: flex;
     justify-content: space-between;
     font-size: 13px;
@@ -775,7 +775,7 @@
     margin-bottom: 6px;
 }
 
-#efix-repair-form-wrapper .rbf-total-main {
+#rbf-repair-form-wrapper .rbf-total-main {
     font-size: 17px;
     font-weight: 800;
     color: var(--rbf-primary-dark);
@@ -785,13 +785,13 @@
     margin-bottom: 0;
 }
 
-#efix-repair-form-wrapper .rbf-cart-actions {
+#rbf-repair-form-wrapper .rbf-cart-actions {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-#efix-repair-form-wrapper .rbf-btn-primary {
+#rbf-repair-form-wrapper .rbf-btn-primary {
     background: var(--rbf-primary);
     color: #ffffff;
     border: none;
@@ -806,13 +806,13 @@
     box-shadow: 0 4px 12px rgba(1, 124, 54, 0.25);
 }
 
-#efix-repair-form-wrapper .rbf-btn-primary:hover {
+#rbf-repair-form-wrapper .rbf-btn-primary:hover {
     background: var(--rbf-primary-dark);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(1, 124, 54, 0.35);
 }
 
-#efix-repair-form-wrapper .rbf-btn-secondary {
+#rbf-repair-form-wrapper .rbf-btn-secondary {
     background: transparent;
     color: var(--rbf-text-muted);
     border: 1px solid var(--rbf-border);
@@ -826,12 +826,12 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-btn-secondary:hover {
+#rbf-repair-form-wrapper .rbf-btn-secondary:hover {
     background: #f1f5f9;
     color: var(--rbf-text);
 }
 
-#efix-repair-form-wrapper .rbf-cart-guarantees {
+#rbf-repair-form-wrapper .rbf-cart-guarantees {
     margin-top: 18px;
     padding-top: 14px;
     border-top: 1px solid var(--rbf-border);
@@ -843,21 +843,21 @@
 }
 
 /* Step 4: Booking Form Layout */
-#efix-repair-form-wrapper .rbf-booking-container {
+#rbf-repair-form-wrapper .rbf-booking-container {
     display: grid;
     grid-template-columns: 1fr 380px;
     gap: 30px;
     align-items: start;
 }
 
-#efix-repair-form-wrapper .rbf-booking-main {
+#rbf-repair-form-wrapper .rbf-booking-main {
     background: #ffffff;
     border: 1px solid var(--rbf-border);
     border-radius: var(--rbf-radius-md);
     padding: 28px;
 }
 
-#efix-repair-form-wrapper .rbf-form-section-title {
+#rbf-repair-form-wrapper .rbf-form-section-title {
     font-size: 16px;
     font-weight: 800;
     color: var(--rbf-primary-dark);
@@ -866,22 +866,22 @@
     border-bottom: 2px solid var(--rbf-primary-subtle);
 }
 
-#efix-repair-form-wrapper .rbf-form-section-title:first-child {
+#rbf-repair-form-wrapper .rbf-form-section-title:first-child {
     margin-top: 0;
 }
 
-#efix-repair-form-wrapper .rbf-form-row {
+#rbf-repair-form-wrapper .rbf-form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
 }
 
-#efix-repair-form-wrapper .rbf-form-group {
+#rbf-repair-form-wrapper .rbf-form-group {
     margin-bottom: 18px;
 }
 
-#efix-repair-form-wrapper .rbf-form-group label,
-#efix-repair-form-wrapper .rbf-form-label {
+#rbf-repair-form-wrapper .rbf-form-group label,
+#rbf-repair-form-wrapper .rbf-form-label {
     display: block;
     font-size: 13px;
     font-weight: 700;
@@ -889,10 +889,10 @@
     margin-bottom: 6px;
 }
 
-#efix-repair-form-wrapper .rbf-form-group input[type="text"],
-#efix-repair-form-wrapper .rbf-form-group input[type="email"],
-#efix-repair-form-wrapper .rbf-form-group input[type="tel"],
-#efix-repair-form-wrapper .rbf-form-group input[type="date"] {
+#rbf-repair-form-wrapper .rbf-form-group input[type="text"],
+#rbf-repair-form-wrapper .rbf-form-group input[type="email"],
+#rbf-repair-form-wrapper .rbf-form-group input[type="tel"],
+#rbf-repair-form-wrapper .rbf-form-group input[type="date"] {
     width: 100%;
     height: 48px !important;
     min-height: 48px !important;
@@ -909,9 +909,9 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-form-group select,
-#efix-repair-form-wrapper select.rbf-country-select,
-#efix-repair-form-wrapper select {
+#rbf-repair-form-wrapper .rbf-form-group select,
+#rbf-repair-form-wrapper select.rbf-country-select,
+#rbf-repair-form-wrapper select {
     width: 100%;
     height: 48px !important;
     min-height: 48px !important;
@@ -937,7 +937,7 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-form-group textarea {
+#rbf-repair-form-wrapper .rbf-form-group textarea {
     width: 100%;
     padding: 12px 14px;
     font-size: 14px;
@@ -951,21 +951,21 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-form-group input:focus,
-#efix-repair-form-wrapper .rbf-form-group select:focus,
-#efix-repair-form-wrapper .rbf-form-group textarea:focus {
+#rbf-repair-form-wrapper .rbf-form-group input:focus,
+#rbf-repair-form-wrapper .rbf-form-group select:focus,
+#rbf-repair-form-wrapper .rbf-form-group textarea:focus {
     border-color: var(--rbf-primary) !important;
     box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.14) !important;
 }
 
-#efix-repair-form-wrapper .rbf-field-hint {
+#rbf-repair-form-wrapper .rbf-field-hint {
     font-size: 11px;
     color: var(--rbf-text-muted);
     display: block;
     margin-top: 4px;
 }
 
-#efix-repair-form-wrapper .rbf-phone-input-wrap {
+#rbf-repair-form-wrapper .rbf-phone-input-wrap {
     display: grid;
     grid-template-columns: 175px 1fr;
     gap: 10px;
@@ -973,13 +973,13 @@
 }
 
 /* Radio Group: Service Types */
-#efix-repair-form-wrapper .rbf-radio-group {
+#rbf-repair-form-wrapper .rbf-radio-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
 }
 
-#efix-repair-form-wrapper .rbf-radio-label {
+#rbf-repair-form-wrapper .rbf-radio-label {
     background: var(--rbf-bg-subtle);
     border: 2px solid var(--rbf-border);
     border-radius: var(--rbf-radius-sm);
@@ -992,32 +992,32 @@
     transition: all 0.2s ease;
 }
 
-#efix-repair-form-wrapper .rbf-radio-label input[type="radio"] {
+#rbf-repair-form-wrapper .rbf-radio-label input[type="radio"] {
     position: absolute;
     opacity: 0;
 }
 
-#efix-repair-form-wrapper .rbf-radio-label:hover {
+#rbf-repair-form-wrapper .rbf-radio-label:hover {
     border-color: var(--rbf-primary);
 }
 
-#efix-repair-form-wrapper .rbf-radio-label.active {
+#rbf-repair-form-wrapper .rbf-radio-label.active {
     background: var(--rbf-primary-subtle);
     border-color: var(--rbf-primary);
 }
 
-#efix-repair-form-wrapper .rbf-radio-label strong {
+#rbf-repair-form-wrapper .rbf-radio-label strong {
     font-size: 14px;
     color: var(--rbf-text);
 }
 
-#efix-repair-form-wrapper .rbf-radio-label small {
+#rbf-repair-form-wrapper .rbf-radio-label small {
     font-size: 12px;
     color: var(--rbf-text-muted);
 }
 
 /* Store Info Box */
-#efix-repair-form-wrapper .rbf-store-info-box {
+#rbf-repair-form-wrapper .rbf-store-info-box {
     background: var(--rbf-bg-subtle);
     border-left: 4px solid var(--rbf-primary);
     padding: 14px 18px;
@@ -1026,12 +1026,12 @@
     margin-bottom: 16px;
 }
 
-#efix-repair-form-wrapper .rbf-store-info-box p {
+#rbf-repair-form-wrapper .rbf-store-info-box p {
     margin: 4px 0;
 }
 
 /* WhatsApp Opt-in */
-#efix-repair-form-wrapper .rbf-whatsapp-optin {
+#rbf-repair-form-wrapper .rbf-whatsapp-optin {
     background: #e7fce9;
     border: 1px solid rgba(37, 211, 102, 0.4);
     padding: 12px 16px;
@@ -1039,7 +1039,7 @@
     margin-bottom: 20px;
 }
 
-#efix-repair-form-wrapper .rbf-checkbox-label {
+#rbf-repair-form-wrapper .rbf-checkbox-label {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1049,7 +1049,7 @@
     cursor: pointer;
 }
 
-#efix-repair-form-wrapper .rbf-payment-note {
+#rbf-repair-form-wrapper .rbf-payment-note {
     background: #fffbeb;
     border: 1px solid #fef3c7;
     border-radius: var(--rbf-radius-sm);
@@ -1059,22 +1059,22 @@
     margin-top: 15px;
 }
 
-#efix-repair-form-wrapper .rbf-payment-note p {
+#rbf-repair-form-wrapper .rbf-payment-note p {
     margin: 0;
 }
 
 /* Step 5: Success & WhatsApp Direct */
-#efix-repair-form-wrapper .rbf-step-success {
+#rbf-repair-form-wrapper .rbf-step-success {
     text-align: center;
     padding: 40px 20px;
 }
 
-#efix-repair-form-wrapper .rbf-success-content {
+#rbf-repair-form-wrapper .rbf-success-content {
     max-width: 650px;
     margin: 0 auto;
 }
 
-#efix-repair-form-wrapper .rbf-success-icon-wrap {
+#rbf-repair-form-wrapper .rbf-success-icon-wrap {
     width: 90px;
     height: 90px;
     border-radius: 50%;
@@ -1086,13 +1086,13 @@
     margin: 0 auto 20px;
 }
 
-#efix-repair-form-wrapper .rbf-success-icon {
+#rbf-repair-form-wrapper .rbf-success-icon {
     font-size: 45px;
     color: var(--rbf-primary);
     font-weight: bold;
 }
 
-#efix-repair-form-wrapper .rbf-booking-id-card {
+#rbf-repair-form-wrapper .rbf-booking-id-card {
     background: var(--rbf-bg-subtle);
     border: 2px dashed var(--rbf-primary);
     border-radius: var(--rbf-radius-md);
@@ -1103,20 +1103,20 @@
     gap: 4px;
 }
 
-#efix-repair-form-wrapper .rbf-booking-id-label {
+#rbf-repair-form-wrapper .rbf-booking-id-label {
     font-size: 11px;
     font-weight: 700;
     color: var(--rbf-text-muted);
     letter-spacing: 1px;
 }
 
-#efix-repair-form-wrapper .rbf-booking-id-val {
+#rbf-repair-form-wrapper .rbf-booking-id-val {
     font-size: 26px;
     font-weight: 800;
     color: var(--rbf-primary-dark);
 }
 
-#efix-repair-form-wrapper .rbf-btn-wa-direct {
+#rbf-repair-form-wrapper .rbf-btn-wa-direct {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1133,14 +1133,14 @@
     margin-bottom: 12px;
 }
 
-#efix-repair-form-wrapper .rbf-btn-wa-direct:hover {
+#rbf-repair-form-wrapper .rbf-btn-wa-direct:hover {
     background: var(--rbf-whatsapp-dark);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
     color: #ffffff;
 }
 
-#efix-repair-form-wrapper .rbf-success-actions {
+#rbf-repair-form-wrapper .rbf-success-actions {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -1149,7 +1149,7 @@
 }
 
 /* Loading Overlay */
-#efix-repair-form-wrapper .rbf-loading {
+#rbf-repair-form-wrapper .rbf-loading {
     position: absolute;
     inset: 0;
     background: rgba(255, 255, 255, 0.9);
@@ -1161,7 +1161,7 @@
     z-index: 99;
 }
 
-#efix-repair-form-wrapper .rbf-spinner {
+#rbf-repair-form-wrapper .rbf-spinner {
     width: 48px;
     height: 48px;
     border: 4px solid var(--rbf-border);
@@ -1174,7 +1174,7 @@
     to { transform: rotate(360deg); }
 }
 
-#efix-repair-form-wrapper .rbf-loading-text {
+#rbf-repair-form-wrapper .rbf-loading-text {
     margin-top: 14px;
     font-size: 15px;
     font-weight: 700;
@@ -1182,65 +1182,65 @@
 }
 
 /* Arabic RTL Support */
-[dir="rtl"] #efix-repair-form-wrapper,
-.rtl #efix-repair-form-wrapper {
+[dir="rtl"] #rbf-repair-form-wrapper,
+.rtl #rbf-repair-form-wrapper {
     direction: rtl;
     text-align: right;
 }
 
-[dir="rtl"] #efix-repair-form-wrapper .rbf-btn-back,
-.rtl #efix-repair-form-wrapper .rbf-btn-back {
+[dir="rtl"] #rbf-repair-form-wrapper .rbf-btn-back,
+.rtl #rbf-repair-form-wrapper .rbf-btn-back {
     flex-direction: row-reverse;
 }
 
-[dir="rtl"] #efix-repair-form-wrapper .rbf-progress-step:not(:last-child)::after,
-.rtl #efix-repair-form-wrapper .rbf-progress-step:not(:last-child)::after {
+[dir="rtl"] #rbf-repair-form-wrapper .rbf-progress-step:not(:last-child)::after,
+.rtl #rbf-repair-form-wrapper .rbf-progress-step:not(:last-child)::after {
     left: auto;
     right: 50%;
 }
 
 /* Responsive Breakpoints */
 @media (max-width: 992px) {
-    #efix-repair-form-wrapper .rbf-repair-container,
-    #efix-repair-form-wrapper .rbf-booking-container {
+    #rbf-repair-form-wrapper .rbf-repair-container,
+    #rbf-repair-form-wrapper .rbf-booking-container {
         grid-template-columns: 1fr;
     }
     
-    #efix-repair-form-wrapper .rbf-cart-sidebar,
-    #efix-repair-form-wrapper .rbf-booking-sidebar {
+    #rbf-repair-form-wrapper .rbf-cart-sidebar,
+    #rbf-repair-form-wrapper .rbf-booking-sidebar {
         position: static;
     }
 }
 
 @media (max-width: 768px) {
-    #efix-repair-form-wrapper .rbf-container {
+    #rbf-repair-form-wrapper .rbf-container {
         padding: 20px 16px;
     }
     
-    #efix-repair-form-wrapper .rbf-form-row {
+    #rbf-repair-form-wrapper .rbf-form-row {
         grid-template-columns: 1fr;
     }
     
-    #efix-repair-form-wrapper .rbf-phone-input-wrap {
+    #rbf-repair-form-wrapper .rbf-phone-input-wrap {
         grid-template-columns: 1fr;
     }
     
-    #efix-repair-form-wrapper .rbf-step-number {
+    #rbf-repair-form-wrapper .rbf-step-number {
         width: 34px;
         height: 34px;
         font-size: 13px;
     }
     
-    #efix-repair-form-wrapper .rbf-step-label {
+    #rbf-repair-form-wrapper .rbf-step-label {
         font-size: 11px;
     }
     
-    #efix-repair-form-wrapper .rbf-brand-grid {
+    #rbf-repair-form-wrapper .rbf-brand-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
     
-    #efix-repair-form-wrapper .rbf-model-grid {
+    #rbf-repair-form-wrapper .rbf-model-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
@@ -1248,36 +1248,36 @@
 
 /* Responsive Grid Breakpoints for Step 3 Repairs */
 @media (max-width: 1200px) {
-    #efix-repair-form-wrapper .rbf-repair-list {
+    #rbf-repair-form-wrapper .rbf-repair-list {
         grid-template-columns: repeat(3, 1fr) !important;
     }
 }
 
 @media (max-width: 900px) {
-    #efix-repair-form-wrapper .rbf-repair-container {
+    #rbf-repair-form-wrapper .rbf-repair-container {
         grid-template-columns: 1fr !important;
     }
-    #efix-repair-form-wrapper .rbf-repair-list {
+    #rbf-repair-form-wrapper .rbf-repair-list {
         grid-template-columns: repeat(3, 1fr) !important;
     }
 }
 
 @media (max-width: 650px) {
-    #efix-repair-form-wrapper .rbf-repair-list {
+    #rbf-repair-form-wrapper .rbf-repair-list {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px !important;
     }
-    #efix-repair-form-wrapper .rbf-repair-item {
+    #rbf-repair-form-wrapper .rbf-repair-item {
         padding: 14px 10px 10px !important;
         min-height: 210px !important;
     }
-    #efix-repair-form-wrapper .rbf-phone-input-wrap {
+    #rbf-repair-form-wrapper .rbf-phone-input-wrap {
         grid-template-columns: 1fr !important;
     }
 }
 
 @media (max-width: 420px) {
-    #efix-repair-form-wrapper .rbf-repair-list {
+    #rbf-repair-form-wrapper .rbf-repair-list {
         grid-template-columns: 1fr !important;
     }
 }
@@ -1330,7 +1330,7 @@
         padding: 0 !important;
     }
 
-    #efix-repair-form-wrapper {
+    #rbf-repair-form-wrapper {
         border: none !important;
         box-shadow: none !important;
         margin: 0 !important;
@@ -1339,7 +1339,7 @@
         width: 100% !important;
     }
 
-    #efix-repair-form-wrapper .rbf-container {
+    #rbf-repair-form-wrapper .rbf-container {
         border: none !important;
         box-shadow: none !important;
         padding: 10px 0 !important;
@@ -1347,14 +1347,14 @@
         width: 100% !important;
     }
 
-    #efix-repair-form-wrapper .rbf-step-success {
+    #rbf-repair-form-wrapper .rbf-step-success {
         display: block !important;
         padding: 5px 0 !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
     }
 
-    #efix-repair-form-wrapper .rbf-booking-id-card {
+    #rbf-repair-form-wrapper .rbf-booking-id-card {
         border: 2px dashed #017c36 !important;
         background: #f8fafc !important;
         -webkit-print-color-adjust: exact !important;
@@ -1362,7 +1362,7 @@
         margin: 15px auto !important;
     }
 
-    #efix-repair-form-wrapper .rbf-confirmation-details {
+    #rbf-repair-form-wrapper .rbf-confirmation-details {
         margin-top: 15px !important;
     }
 }

@@ -35,7 +35,7 @@ $store_email = get_option('rbf_store_email', get_option('admin_email'));
 $store_hours = get_option('rbf_store_working_hours', 'Daily: 9:00 AM - 10:00 PM');
 ?>
 
-<div id="efix-repair-form-wrapper" class="efix-rbf-scope">
+<div id="rbf-repair-form-wrapper" class="rbf-scope">
     <div id="repair-booking-form" class="rbf-container">
         
         <!-- Header Topbar with Currency Switcher & Trust Badges -->
@@ -469,7 +469,7 @@ $store_hours = get_option('rbf_store_working_hours', 'Daily: 9:00 AM - 10:00 PM'
                 
                 <div class="rbf-booking-id-card">
                     <span class="rbf-booking-id-label">YOUR TRACKING ID</span>
-                    <span class="rbf-booking-id-val" id="booking-id">eFIX-XXXXX</span>
+                    <span class="rbf-booking-id-val" id="booking-id">RBF-XXXXXX</span>
                 </div>
 
                 <div class="rbf-success-actions">

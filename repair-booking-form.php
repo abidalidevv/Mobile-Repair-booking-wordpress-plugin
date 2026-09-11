@@ -449,7 +449,7 @@ class RepairBookingForm {
         }
         
         // Generate unique booking ID - shorter format with brand name
-        $booking_id = 'eFIX-' . strtoupper(substr(md5(time() . rand()), 0, 5));
+        $booking_id = 'RBF-' . strtoupper(substr(md5(time() . rand()), 0, 6));
         
         // Authoritative Server-Side Pricing Recalculation (Phase 1, Item 3)
         // Never trust client-submitted prices, subtotal, VAT, or total.
@@ -1095,8 +1095,8 @@ class RepairBookingForm {
             <div class="rbf-admin-header">
                 <div class="rbf-header-left">
                     <h1>
-                        eFix Repair Booking Engine
-                        <span class="rbf-version-badge">v2.0.0 Enterprise</span>
+                        Repair Booking Plugin
+                        <span class="rbf-version-badge">v2.0.6</span>
                     </h1>
                     <p class="rbf-header-desc">Commercial booking, pricing engine, multi-currency & WhatsApp automation for device repair shops.</p>
                 </div>
@@ -2475,8 +2475,8 @@ class RepairBookingForm {
             <!-- Page Header -->
             <div class="rbf-bookings-header">
                 <div class="rbf-bookings-header-left">
-                    <h1>📋 Bookings Management</h1>
-                    <p>View, track and manage all customer repair bookings</p>
+                    <h1>Bookings</h1>
+                    <p>Manage and track all repair bookings</p>
                 </div>
                 <div class="rbf-bookings-header-right">
                     <button type="button" class="rbf-add-booking-btn" id="add-new-booking">
@@ -2488,28 +2488,28 @@ class RepairBookingForm {
             <!-- Stats Bar -->
             <div class="rbf-bookings-stats">
                 <div class="rbf-booking-stat-card">
-                    <div class="rbf-booking-stat-icon icon-all">📋</div>
+                    <div class="rbf-booking-stat-icon icon-all"></div>
                     <div class="rbf-booking-stat-info">
                         <span class="rbf-booking-stat-num"><?php echo esc_html($total); ?></span>
-                        <span class="rbf-booking-stat-label">Total Bookings</span>
+                        <span class="rbf-booking-stat-label">All Bookings</span>
                     </div>
                 </div>
                 <div class="rbf-booking-stat-card">
-                    <div class="rbf-booking-stat-icon icon-pending">⏳</div>
+                    <div class="rbf-booking-stat-icon icon-pending"></div>
                     <div class="rbf-booking-stat-info">
                         <span class="rbf-booking-stat-num"><?php echo esc_html($pending); ?></span>
                         <span class="rbf-booking-stat-label">Active</span>
                     </div>
                 </div>
                 <div class="rbf-booking-stat-card">
-                    <div class="rbf-booking-stat-icon icon-done">✅</div>
+                    <div class="rbf-booking-stat-icon icon-done"></div>
                     <div class="rbf-booking-stat-info">
                         <span class="rbf-booking-stat-num"><?php echo esc_html($completed); ?></span>
                         <span class="rbf-booking-stat-label">Completed</span>
                     </div>
                 </div>
                 <div class="rbf-booking-stat-card">
-                    <div class="rbf-booking-stat-icon icon-revenue">💰</div>
+                    <div class="rbf-booking-stat-icon icon-revenue"></div>
                     <div class="rbf-booking-stat-info">
                         <span class="rbf-booking-stat-num"><?php echo number_format($total_rev, 0); ?></span>
                         <span class="rbf-booking-stat-label">Revenue (AED)</span>
@@ -2520,22 +2520,22 @@ class RepairBookingForm {
             <!-- Filter Toolbar -->
             <div class="rbf-bookings-toolbar">
                 <div class="rbf-search-wrap">
-                    <span class="rbf-search-icon">🔍</span>
+                    <svg class="rbf-search-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     <input type="text" id="rbf-booking-search" placeholder="Search by customer, device, email…">
                 </div>
                 <select class="rbf-filter-select" id="rbf-status-filter">
-                    <option value="">All Statuses</option>
-                    <option value="pending">⏳ Pending</option>
-                    <option value="confirmed">🔵 Confirmed</option>
-                    <option value="in_progress">🔧 In Progress</option>
-                    <option value="completed">✅ Completed</option>
-                    <option value="cancelled">❌ Cancelled</option>
+                    <option value="">Status: All</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
                 </select>
                 <select class="rbf-filter-select" id="rbf-service-filter">
-                    <option value="">All Service Types</option>
+                    <option value="">Service: All</option>
                     <option value="pickup_delivery">🚚 Pickup & Delivery</option>
-                    <option value="onsite">🏠 Onsite</option>
-                    <option value="store_visit">🏪 Store Visit</option>
+                    <option value="onsite">Onsite</option>
+                    <option value="store_visit">Store Visit</option>
                 </select>
             </div>
 
@@ -2649,7 +2649,7 @@ class RepairBookingForm {
         <div id="add-booking-modal" class="rbf-modal" style="display: none;">
         <div class="rbf-modal-content" style="max-width: 600px;">
         <button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>
-        <h2>📋 Add New Booking</h2>
+        <h2>Add New Booking</h2>
         <form id="add-booking-form">
         <div class="rbf-form-row">
         <div class="rbf-form-group">
@@ -2711,7 +2711,7 @@ class RepairBookingForm {
         <div id="booking-detail-modal" class="rbf-modal" style="display: none;">
         <div class="rbf-modal-content" style="max-width: 800px;">
         <button type="button" class="rbf-modal-dismiss-btn close-modal" aria-label="Close modal" title="Close">✕</button>
-        <h2>📄 Booking Details</h2>
+        <h2>Booking Details</h2>
         <div id="booking-detail-content"></div>
         <div class="rbf-modal-actions">
         <button type="button" class="button close-modal">Close</button>
@@ -5640,7 +5640,7 @@ class RepairBookingForm {
         }
         
         // Generate unique booking ID - shorter format with brand name
-        $booking_id = 'eFIX-' . strtoupper(substr(md5(time() . rand()), 0, 5));
+        $booking_id = 'RBF-' . strtoupper(substr(md5(time() . rand()), 0, 6));
         
         // Calculate VAT and totals
         $subtotal = floatval($_POST['subtotal'] ?? 0);
