@@ -246,3 +246,21 @@ To ensure printouts and PDF exports never awkwardly split across 2 sheets of pap
 2. **2-Column Details Grid**: Customer and device metadata are laid out in a compact CSS grid (`grid-template-columns: 1fr 1fr; gap: 4px 14px;`), saving ~130px of vertical height compared to vertical stacks.
 3. **Horizontal Status Banner**: Company branding is positioned opposite date/VAT info, and the verified checkmark is combined with the Tracking ID badge in a sleek horizontal banner.
 4. **CSS Break Restrictions**: `@page { size: A4 portrait; margin: 8mm 10mm; }` combined with `page-break-inside: avoid !important; break-inside: avoid !important;` prevents browser print engines from fracturing the receipt card.
+
+### 11.5 Models Page Brand Quick-Jump Header & Live Filter (v2.0.5)
+Managing 525+ models across 19 brands requires rapid viewport navigation:
+1. **Sticky Header Pill Bar (`.rbf-brand-nav-container`)**: Positioned stickily at the top of the Models Management page with a blurred backdrop (`backdrop-filter: blur(10px)`). Displays high-res brand logos, brand names, and model count pills for every active brand.
+2. **Anchor ID Redirection**: Clicking a brand pill smoothly scrolls the window to `#brand-section-{brand_slug}` with `scroll-behavior: smooth` and triggers a brief emerald highlight pulse (`.rbf-brand-highlight`) around the target section.
+3. **Live Instant Search**: Includes `#rbf-brand-quick-search` to dynamically filter pills, brand sections, and model cards as the administrator types.
+4. **Back to Top Buttons**: Each brand section header features an anchor link returning to `#rbf-brand-nav-top`.
+
+### 11.6 Executive Universal Modal Design System (v2.0.5)
+Admin modals for Add/Edit Brand, Model, Repair Service, and Bookings were standardized to eliminate unstyled HTML elements:
+1. **Backdrop & Container**: 70% dark slate backdrop with 8px blur, smooth scale-up transition (`transform: scale(0.95) -> 1`), and emerald top accent border (`border-top: 5px solid #017c36`).
+2. **Form Elements**: Uniform 44px height inputs, rounded 8px corners, focused emerald glow borders (`box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.15)`), custom file upload areas, and high-legibility labels.
+3. **Circular Close Controls**: Positioned top-right with hover rotation (`transform: rotate(90deg)`) and red accent states.
+
+### 11.7 Zero-FOUC Pricing Engine & Redesigned About Showcase (v2.0.5)
+1. **FOUC Elimination**: Moved inline pricing CSS to the top of `admin_repair_prices()` and duplicated rules in `assets/css/admin.css` to guarantee immediate rendering without a 2-second layout delay.
+2. **Highlight Metric Spacing**: Formatted `.rbf-stat-card.highlight` ("160 vs 7,840 Base Grid Cells") to prevent overlapping or broken letter wrapping.
+3. **About Page Showcase**: Upgraded `admin_about()` to an executive SaaS dashboard highlighting live system telemetry, the 4 architectural pillars, license state, and direct links to interactive documentation.

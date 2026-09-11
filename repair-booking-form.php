@@ -299,8 +299,8 @@ class RepairBookingForm {
     
     public function enqueue_scripts() {
         wp_enqueue_script('jquery');
-        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.4', true);
-        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.4');
+        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.5', true);
+        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.5');
         
         // Payment gateway scripts
         if (get_option('rbf_paypal_enabled', false)) {
@@ -1013,7 +1013,7 @@ class RepairBookingForm {
                   (is_string($hook) && strpos($hook, 'repair-booking') !== false);
                   
         if ($is_rbf) {
-            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.4');
+            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.5');
             wp_enqueue_media(); // For image uploads
             
             // Enqueue jQuery for admin pages
@@ -1564,14 +1564,14 @@ class RepairBookingForm {
                 });
             });
 
-            // Modal functions
+            // Modal functions (Executive Design)
             function showModal(title, content) {
                 const modal = `
                 <div id="rbf-modal" class="rbf-modal">
                     <div class="rbf-modal-content">
-                        <h2>${title}</h2>
+                        <h2><span class="dashicons dashicons-edit-page" style="color: #017c36;"></span> ${title}</h2>
                         ${content}
-                        <button class="button close-modal" style="position: absolute; top: 15px; right: 15px;">×</button>
+                        <button type="button" class="close-modal" aria-label="Close modal" title="Close">✕</button>
                     </div>
                 </div>`;
                 
@@ -1791,8 +1791,31 @@ class RepairBookingForm {
         echo '<p class="description">All models from shared data source (JSON file) - Categorized by Parent Brand</p>';
         
         // Global Add New Model Button at the top
-        echo '<div class="rbf-add-model-section">';
-        echo '<button class="button button-primary" id="add-new-model-global">Add New Model</button>';
+        echo '<div class="rbf-add-model-section" id="rbf-brand-nav-top">';
+        echo '<button class="button button-primary" id="add-new-model-global"><span class="dashicons dashicons-plus-alt2" style="vertical-align: middle; margin-top: -2px;"></span> Add New Model</button>';
+        echo '</div>';
+        
+        // Sticky Brand Quick-Jump Navigation Bar
+        echo '<div class="rbf-brand-nav-container">';
+        echo '<div class="rbf-brand-nav-header">';
+        echo '<div class="rbf-brand-nav-title"><span class="dashicons dashicons-category"></span> <span>Quick Jump to Brand:</span></div>';
+        echo '<div class="rbf-brand-nav-search-wrap">';
+        echo '<span class="dashicons dashicons-search"></span>';
+        echo '<input type="text" id="rbf-brand-quick-search" placeholder="Search brand or model name..." autocomplete="off">';
+        echo '</div>';
+        echo '</div>';
+        echo '<div class="rbf-brand-nav-pills" id="rbf-brand-nav-pills">';
+        foreach ($brands as $b) {
+            if (empty($b['models'])) continue;
+            $slug = sanitize_title($b['name']);
+            $logo = !empty($b['logo']) ? $b['logo'] : 'Brands/other_brand.jpg';
+            echo '<a href="#brand-section-' . esc_attr($slug) . '" class="rbf-brand-pill" data-brand-slug="' . esc_attr($slug) . '" data-brand-name="' . esc_attr(strtolower($b['name'])) . '">';
+            echo '<img src="' . esc_url(RBF_PLUGIN_URL . $logo) . '" alt="' . esc_attr($b['name']) . '" class="rbf-pill-logo">';
+            echo '<span class="rbf-pill-name">' . esc_html($b['name']) . '</span>';
+            echo '<span class="rbf-pill-count">' . count($b['models']) . '</span>';
+            echo '</a>';
+        }
+        echo '</div>';
         echo '</div>';
         
         // Display models grouped by brand
@@ -1800,14 +1823,16 @@ class RepairBookingForm {
             if (empty($brand['models'])) {
                 continue; // Skip brands with no models
             }
+            $brand_slug = sanitize_title($brand['name']);
             
-            echo '<div class="rbf-brand-section">';
+            echo '<div class="rbf-brand-section" id="brand-section-' . esc_attr($brand_slug) . '" data-brand-slug="' . esc_attr($brand_slug) . '" data-brand-name="' . esc_attr(strtolower($brand['name'])) . '">';
             echo '<div class="rbf-brand-header">';
             echo '<div class="rbf-brand-info">';
             echo '<img src="' . esc_url(RBF_PLUGIN_URL . $brand['logo']) . '" alt="' . esc_attr($brand['name']) . '" class="rbf-brand-logo-small">';
             echo '<h2>' . esc_html($brand['name']) . '</h2>';
             echo '<span class="rbf-model-count">' . count($brand['models']) . ' Models</span>';
             echo '</div>';
+            echo '<a href="#rbf-brand-nav-top" class="rbf-back-to-top-btn" title="Back to Brand Navigation">↑ Brands Bar</a>';
             echo '</div>';
             
             echo '<div class="rbf-models-grid">';
@@ -1851,6 +1876,76 @@ class RepairBookingForm {
         jQuery(document).ready(function($) {
             // Define ajaxurl for admin context
             var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+            
+            // Brand Quick-Jump Smooth Scroll & Highlight
+            $('.rbf-brand-pill').on('click', function(e) {
+                e.preventDefault();
+                var targetId = $(this).attr('href');
+                var $target = $(targetId);
+                if ($target.length) {
+                    $('.rbf-brand-pill').removeClass('active');
+                    $(this).addClass('active');
+
+                    $('html, body').animate({
+                        scrollTop: $target.offset().top - 120
+                    }, 350);
+
+                    $('.rbf-brand-section').removeClass('rbf-brand-highlight');
+                    $target.addClass('rbf-brand-highlight');
+                    setTimeout(function() {
+                        $target.removeClass('rbf-brand-highlight');
+                    }, 2200);
+                }
+            });
+
+            // Back to Top button
+            $('.rbf-back-to-top-btn').on('click', function(e) {
+                e.preventDefault();
+                $('html, body').animate({
+                    scrollTop: $('#rbf-brand-nav-top').offset().top - 50
+                }, 300);
+            });
+
+            // Live Search Filter (Brands & Models)
+            $('#rbf-brand-quick-search').on('input', function() {
+                var query = $(this).val().toLowerCase().trim();
+                if (!query) {
+                    $('.rbf-brand-section').show();
+                    $('.rbf-model-card').show();
+                    $('.rbf-brand-pill').show();
+                    return;
+                }
+
+                // Filter pills
+                $('.rbf-brand-pill').each(function() {
+                    var bName = $(this).data('brand-name') || '';
+                    $(this).toggle(bName.indexOf(query) !== -1);
+                });
+
+                // Filter sections and cards
+                $('.rbf-brand-section').each(function() {
+                    var $section = $(this);
+                    var bName = $section.data('brand-name') || '';
+                    var brandMatches = bName.indexOf(query) !== -1;
+                    var matchingCards = 0;
+
+                    $section.find('.rbf-model-card').each(function() {
+                        var mName = $(this).find('h3').text().toLowerCase();
+                        if (brandMatches || mName.indexOf(query) !== -1) {
+                            $(this).show();
+                            matchingCards++;
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    if (brandMatches || matchingCards > 0) {
+                        $section.show();
+                    } else {
+                        $section.hide();
+                    }
+                });
+            });
             const brands = <?php echo json_encode($brands); ?>;
             
             // Global Add New Model Button
@@ -2020,14 +2115,14 @@ class RepairBookingForm {
                 });
             });
 
-            // Modal functions
+            // Modal functions (Executive Design)
             function showModal(title, content) {
                 const modal = `
                 <div id="rbf-modal" class="rbf-modal">
                     <div class="rbf-modal-content">
-                        <h2>${title}</h2>
+                        <h2><span class="dashicons dashicons-edit-page" style="color: #017c36;"></span> ${title}</h2>
                         ${content}
-                        <button class="button close-modal" style="position: absolute; top: 15px; right: 15px;">×</button>
+                        <button type="button" class="close-modal" aria-label="Close modal" title="Close">✕</button>
                     </div>
                 </div>`;
                 
@@ -2325,14 +2420,14 @@ class RepairBookingForm {
                 });
             });
 
-            // Modal functions
+            // Modal functions (Executive Design)
             function showModal(title, content) {
                 const modal = `
                 <div id="rbf-modal" class="rbf-modal">
                     <div class="rbf-modal-content">
-                        <h2>${title}</h2>
+                        <h2><span class="dashicons dashicons-edit-page" style="color: #017c36;"></span> ${title}</h2>
                         ${content}
-                        <button class="button close-modal" style="position: absolute; top: 15px; right: 15px;">×</button>
+                        <button type="button" class="close-modal" aria-label="Close modal" title="Close">✕</button>
                     </div>
                 </div>`;
                 
@@ -6366,6 +6461,352 @@ class RepairBookingForm {
         $nonce = wp_create_nonce('rbf_admin_nonce');
         $currency = get_option('rbf_primary_currency', 'AED');
         ?>
+        
+
+        <style>
+        .rbf-pricing-admin-wrap {
+            margin: 20px 20px 0 2px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        }
+        .rbf-pricing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 24px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+            border-left: 6px solid #017c36;
+        }
+        .rbf-title {
+            margin: 0 0 6px 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1d2327;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rbf-title .dashicons {
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+            color: #017c36;
+        }
+        .rbf-subtitle {
+            margin: 0;
+            color: #646970;
+            font-size: 14px;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+        .rbf-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .rbf-stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .rbf-stat-card {
+            background: #fff;
+            padding: 18px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid #e2e4e7;
+            text-align: center;
+        }
+        .rbf-stat-card.highlight {
+            background: linear-gradient(135deg, #017c36 0%, #05413a 100%);
+            color: #fff;
+            border: none;
+        }
+        .rbf-stat-card.highlight .rbf-stat-number,
+        .rbf-stat-card.highlight .rbf-stat-label,
+        .rbf-stat-card.highlight .rbf-stat-sub {
+            color: #fff;
+        }
+        .rbf-stat-number {
+            font-size: 26px;
+            font-weight: 800;
+            color: #017c36;
+            line-height: 1.2;
+        }
+        .rbf-stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3338;
+            margin-top: 4px;
+        }
+        .rbf-stat-sub {
+            font-size: 11px;
+            color: #8c8f94;
+            margin-top: 2px;
+        }
+        .rbf-nav-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #e2e4e7;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            padding-bottom: 2px;
+        }
+        .rbf-tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #646970;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .rbf-tab-btn:hover {
+            color: #017c36;
+        }
+        .rbf-tab-btn.active {
+            color: #017c36;
+            border-bottom-color: #017c36;
+            background: #fff;
+            border-radius: 8px 8px 0 0;
+        }
+        .rbf-tab-panel {
+            display: none;
+        }
+        .rbf-tab-panel.active {
+            display: block;
+        }
+        .rbf-panel-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #e2e4e7;
+            padding: 24px 30px;
+        }
+        .rbf-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .rbf-card-header h2 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            color: #1d2327;
+        }
+        .rbf-card-header p {
+            margin: 0;
+            color: #646970;
+            font-size: 13px;
+        }
+        .rbf-batch-tools {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rbf-batch-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #646970;
+        }
+        .rbf-filter-tools {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .rbf-table-responsive {
+            overflow-x: auto;
+            max-height: 650px;
+            border: 1px solid #e2e4e7;
+            border-radius: 8px;
+        }
+        .rbf-pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            font-size: 13px;
+        }
+        .rbf-pricing-table th {
+            position: sticky;
+            top: 0;
+            background: #f6f7f7;
+            padding: 12px 14px;
+            font-weight: 600;
+            color: #2c3338;
+            border-bottom: 2px solid #dcdcde;
+            z-index: 2;
+        }
+        .rbf-pricing-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #f0f0f1;
+            vertical-align: middle;
+        }
+        .rbf-pricing-table th:first-child,
+        .rbf-pricing-table td:first-child {
+            position: sticky;
+            left: 0;
+            background: #fff;
+            z-index: 3;
+        }
+        .rbf-pricing-table th:nth-child(2),
+        .rbf-pricing-table td:nth-child(2) {
+            position: sticky;
+            left: 50px;
+            background: #fff;
+            z-index: 3;
+            box-shadow: 3px 0 5px -2px rgba(0, 0, 0, 0.08);
+        }
+        .rbf-pricing-table th:first-child,
+        .rbf-pricing-table th:nth-child(2) {
+            background: #f6f7f7;
+            z-index: 5;
+        }
+        .rbf-pricing-table tr:hover td:first-child,
+        .rbf-pricing-table tr:hover td:nth-child(2) {
+            background-color: #f9fbf9;
+        }
+        .rbf-pricing-table tr:hover td {
+            background-color: #f9fbf9;
+        }
+        .rbf-tier-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .tier-economy { background: #e6f4ea; color: #137333; }
+        .tier-mid-range { background: #e8f0fe; color: #1a73e8; }
+        .tier-flagship { background: #fef7e0; color: #b06000; }
+        .tier-premium-foldable { background: #fce8e6; color: #c5221f; }
+        .rbf-th-sub {
+            display: block;
+            font-size: 11px;
+            color: #8c8f94;
+            margin-top: 2px;
+        }
+        .rbf-repair-title-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .rbf-repair-title-cell .dashicons {
+            color: #017c36;
+        }
+        .rbf-grid-input {
+            width: 110px;
+            text-align: right;
+            padding: 6px 10px;
+            border: 1px solid #c3c4c7;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #1d2327;
+        }
+        .rbf-grid-input:focus {
+            border-color: #017c36;
+            box-shadow: 0 0 0 1px #017c36;
+            outline: none;
+        }
+        .rbf-card-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+        .rbf-model-thumb {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            background: #fff;
+        }
+        .rbf-model-tier-select {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #c3c4c7;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .rbf-badge-active {
+            background: #e6f4ea;
+            color: #137333;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .rbf-add-override-box {
+            background: #f6f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e4e7;
+        }
+        .rbf-add-override-box h3 {
+            margin: 0 0 15px 0;
+            font-size: 15px;
+            color: #1d2327;
+        }
+        .rbf-override-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .rbf-country-tag {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .rbf-global-tag {
+            background: #f0f0f1;
+            color: #646970;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        .rbf-source-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .source-tier-base-price { background: #e8f0fe; color: #1a73e8; }
+        .source-model-override { background: #fef7e0; color: #b06000; }
+        .source-model-country-override { background: #fce8e6; color: #c5221f; }
+        .source-tier-country-override { background: #f3e8fd; color: #7627bb; }
+        .source-global-default { background: #f0f0f1; color: #646970; }
+        .rbf-inspector-controls {
+            background: #f6f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e4e7;
+        }
+        .rbf-inspector-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        </style>
         <div class="wrap rbf-pricing-admin-wrap">
             <!-- Header & Key Metrics -->
             <div class="rbf-pricing-header">
@@ -6404,9 +6845,9 @@ class RepairBookingForm {
                     <div class="rbf-stat-sub">Master Repair Catalog</div>
                 </div>
                 <div class="rbf-stat-card highlight">
-                    <div class="rbf-stat-number">160 vs 7,840</div>
+                    <div class="rbf-stat-number" style="font-size: 19px; white-space: nowrap;">160 vs 7,840</div>
                     <div class="rbf-stat-label">Base Grid Cells</div>
-                    <div class="rbf-stat-sub">98% Configuration Reduction</div>
+                    <div class="rbf-stat-sub" style="white-space: nowrap;">98% Reduction</div>
                 </div>
                 <div class="rbf-stat-card">
                     <div class="rbf-stat-number" id="rbf-stat-overrides-count"><?php echo count($overrides); ?></div>
@@ -7046,351 +7487,6 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
             </div>
         </div>
 
-        <style>
-        .rbf-pricing-admin-wrap {
-            margin: 20px 20px 0 2px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-        }
-        .rbf-pricing-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            padding: 24px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            margin-bottom: 20px;
-            border-left: 6px solid #017c36;
-        }
-        .rbf-title {
-            margin: 0 0 6px 0;
-            font-size: 24px;
-            font-weight: 700;
-            color: #1d2327;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .rbf-title .dashicons {
-            font-size: 28px;
-            width: 28px;
-            height: 28px;
-            color: #017c36;
-        }
-        .rbf-subtitle {
-            margin: 0;
-            color: #646970;
-            font-size: 14px;
-            max-width: 800px;
-            line-height: 1.5;
-        }
-        .rbf-header-actions {
-            display: flex;
-            gap: 12px;
-        }
-        .rbf-stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .rbf-stat-card {
-            background: #fff;
-            padding: 18px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            border: 1px solid #e2e4e7;
-            text-align: center;
-        }
-        .rbf-stat-card.highlight {
-            background: linear-gradient(135deg, #017c36 0%, #05413a 100%);
-            color: #fff;
-            border: none;
-        }
-        .rbf-stat-card.highlight .rbf-stat-number,
-        .rbf-stat-card.highlight .rbf-stat-label,
-        .rbf-stat-card.highlight .rbf-stat-sub {
-            color: #fff;
-        }
-        .rbf-stat-number {
-            font-size: 26px;
-            font-weight: 800;
-            color: #017c36;
-            line-height: 1.2;
-        }
-        .rbf-stat-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #2c3338;
-            margin-top: 4px;
-        }
-        .rbf-stat-sub {
-            font-size: 11px;
-            color: #8c8f94;
-            margin-top: 2px;
-        }
-        .rbf-nav-tabs {
-            display: flex;
-            gap: 8px;
-            border-bottom: 2px solid #e2e4e7;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            padding-bottom: 2px;
-        }
-        .rbf-tab-btn {
-            background: transparent;
-            border: none;
-            padding: 12px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #646970;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            white-space: nowrap;
-        }
-        .rbf-tab-btn:hover {
-            color: #017c36;
-        }
-        .rbf-tab-btn.active {
-            color: #017c36;
-            border-bottom-color: #017c36;
-            background: #fff;
-            border-radius: 8px 8px 0 0;
-        }
-        .rbf-tab-panel {
-            display: none;
-        }
-        .rbf-tab-panel.active {
-            display: block;
-        }
-        .rbf-panel-card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            border: 1px solid #e2e4e7;
-            padding: 24px 30px;
-        }
-        .rbf-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .rbf-card-header h2 {
-            margin: 0 0 4px 0;
-            font-size: 18px;
-            color: #1d2327;
-        }
-        .rbf-card-header p {
-            margin: 0;
-            color: #646970;
-            font-size: 13px;
-        }
-        .rbf-batch-tools {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .rbf-batch-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #646970;
-        }
-        .rbf-filter-tools {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .rbf-table-responsive {
-            overflow-x: auto;
-            max-height: 650px;
-            border: 1px solid #e2e4e7;
-            border-radius: 8px;
-        }
-        .rbf-pricing-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            font-size: 13px;
-        }
-        .rbf-pricing-table th {
-            position: sticky;
-            top: 0;
-            background: #f6f7f7;
-            padding: 12px 14px;
-            font-weight: 600;
-            color: #2c3338;
-            border-bottom: 2px solid #dcdcde;
-            z-index: 2;
-        }
-        .rbf-pricing-table td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #f0f0f1;
-            vertical-align: middle;
-        }
-        .rbf-pricing-table th:first-child,
-        .rbf-pricing-table td:first-child {
-            position: sticky;
-            left: 0;
-            background: #fff;
-            z-index: 3;
-        }
-        .rbf-pricing-table th:nth-child(2),
-        .rbf-pricing-table td:nth-child(2) {
-            position: sticky;
-            left: 50px;
-            background: #fff;
-            z-index: 3;
-            box-shadow: 3px 0 5px -2px rgba(0, 0, 0, 0.08);
-        }
-        .rbf-pricing-table th:first-child,
-        .rbf-pricing-table th:nth-child(2) {
-            background: #f6f7f7;
-            z-index: 5;
-        }
-        .rbf-pricing-table tr:hover td:first-child,
-        .rbf-pricing-table tr:hover td:nth-child(2) {
-            background-color: #f9fbf9;
-        }
-        .rbf-pricing-table tr:hover td {
-            background-color: #f9fbf9;
-        }
-        .rbf-tier-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-        .tier-economy { background: #e6f4ea; color: #137333; }
-        .tier-mid-range { background: #e8f0fe; color: #1a73e8; }
-        .tier-flagship { background: #fef7e0; color: #b06000; }
-        .tier-premium-foldable { background: #fce8e6; color: #c5221f; }
-        .rbf-th-sub {
-            display: block;
-            font-size: 11px;
-            color: #8c8f94;
-            margin-top: 2px;
-        }
-        .rbf-repair-title-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .rbf-repair-title-cell .dashicons {
-            color: #017c36;
-        }
-        .rbf-grid-input {
-            width: 110px;
-            text-align: right;
-            padding: 6px 10px;
-            border: 1px solid #c3c4c7;
-            border-radius: 6px;
-            font-weight: 600;
-            color: #1d2327;
-        }
-        .rbf-grid-input:focus {
-            border-color: #017c36;
-            box-shadow: 0 0 0 1px #017c36;
-            outline: none;
-        }
-        .rbf-card-footer {
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 15px;
-        }
-        .rbf-model-thumb {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-            border-radius: 4px;
-            border: 1px solid #eee;
-            background: #fff;
-        }
-        .rbf-model-tier-select {
-            padding: 4px 8px;
-            border-radius: 6px;
-            border: 1px solid #c3c4c7;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .rbf-badge-active {
-            background: #e6f4ea;
-            color: #137333;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        .rbf-add-override-box {
-            background: #f6f7f7;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e2e4e7;
-        }
-        .rbf-add-override-box h3 {
-            margin: 0 0 15px 0;
-            font-size: 15px;
-            color: #1d2327;
-        }
-        .rbf-override-form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-        }
-        .rbf-country-tag {
-            background: #e8f0fe;
-            color: #1a73e8;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 11px;
-        }
-        .rbf-global-tag {
-            background: #f0f0f1;
-            color: #646970;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 11px;
-        }
-        .rbf-source-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .source-tier-base-price { background: #e8f0fe; color: #1a73e8; }
-        .source-model-override { background: #fef7e0; color: #b06000; }
-        .source-model-country-override { background: #fce8e6; color: #c5221f; }
-        .source-tier-country-override { background: #f3e8fd; color: #7627bb; }
-        .source-global-default { background: #f0f0f1; color: #646970; }
-        .rbf-inspector-controls {
-            background: #f6f7f7;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e2e4e7;
-        }
-        .rbf-inspector-inputs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-        }
-        </style>
-
         <script>
         jQuery(document).ready(function($) {
             var nonce = '<?php echo esc_js($nonce); ?>';
@@ -7738,162 +7834,157 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
      * Admin About Page
      */
     public function admin_about() {
-        echo '<div class="wrap rbf-about-page">';
-        echo '<div class="rbf-about-header" style="text-align: center; margin: 40px 0; padding: 40px; background: linear-gradient(135deg, #017c36 0%, #05413a 100%); color: white; border-radius: 20px;">';
-        echo '<h1 style="color: white; margin: 0 0 20px 0; font-size: 36px;">🔧 Repair Booking Form</h1>';
-        echo '<p style="font-size: 18px; margin: 0; opacity: 0.9;">Professional Mobile Device Repair Management System</p>';
-        echo '<div style="margin-top: 20px;">';
-        echo '<span style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 14px;">Version 1.1</span>';
-        echo '</div>';
-        echo '</div>';
+        global $wpdb;
+        $models_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_models") ?: 525;
+        $brands_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_brands") ?: 19;
+        $repairs_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_repairs WHERE status = 'active'") ?: 40;
+        $bookings_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}rbf_bookings") ?: 0;
+        $last_sync = get_option('rbf_last_supplier_sync', array());
+        $sync_time_display = !empty($last_sync['time']) ? date('M j, Y g:i A', $last_sync['time']) : 'Active / Continuous';
         
-        echo '<div class="rbf-about-content" style="max-width: 1200px; margin: 0 auto;">';
-        
-        // Plugin Information Card
-        echo '<div class="rbf-about-card" style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); margin-bottom: 30px;">';
-        echo '<h2 style="color: #23282d; margin-top: 0; font-size: 24px;">📋 Plugin Information</h2>';
-        echo '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">';
-        echo '<strong style="color: #017c36;">👨‍💻 Author:</strong><br>Abid Ali';
-        echo '</div>';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">';
-        echo '<strong style="color: #017c36;">🎯 Purpose:</strong><br>Mobile Device Repair Business Management';
-        echo '</div>';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">';
-        echo '<strong style="color: #017c36;">🚀 Status:</strong><br><span style="color: #46b450; font-weight: 600;">✓ Production Ready</span>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        
-        // Features Grid
-        echo '<div class="rbf-about-card" style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); margin-bottom: 30px;">';
-        echo '<h2 style="color: #23282d; margin-top: 0; font-size: 24px;">✨ Key Features</h2>';
-        echo '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">';
-        
-        $features = array(
-            array('🎨', 'Modern Multi-step Form', 'Beautiful, responsive booking form with step-by-step navigation'),
-            array('📱', 'Multi-Brand Support', 'iPhone, Samsung, Google Pixel, OnePlus, and custom brands'),
-            array('🔧', 'Repair Services', 'Comprehensive catalog of repair services with pricing'),
-            array('🛒', 'Shopping Cart', 'Advanced cart system with VAT calculation and real-time updates'),
-            array('💳', 'Payment Integration', 'PayPal and Stripe payment gateway support'),
-            array('📊', 'Admin Dashboard', 'Complete management system for bookings, prices, and analytics'),
-            array('📈', 'Analytics & Reports', 'Track earnings, bookings, and business performance'),
-            array('⚡', 'Performance Optimized', 'Fast loading and efficient database management')
-        );
-        
-        foreach ($features as $feature) {
-            echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px; border-left: 4px solid #017c36;">';
-            echo '<div style="font-size: 30px; margin-bottom: 10px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">' . $feature[0] . '</div>';
-            echo '<h3 style="margin: 0 0 8px 0; color: #23282d; font-size: 18px;">' . $feature[1] . '</h3>';
-            echo '<p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">' . $feature[2] . '</p>';
-            echo '</div>';
-        }
-        
-        echo '</div>';
-        echo '</div>';
-        
-        // License Status with Deactivation Button
-        echo '<div class="rbf-about-card" style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); margin-bottom: 30px;">';
-        echo '<h2 style="color: #23282d; margin-top: 0; font-size: 24px;">🔐 License & Security</h2>';
-        echo '<div style="background: #f0f8ff; padding: 25px; border-radius: 12px; border: 2px solid #017c36;">';
-        echo '<div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">';
-        echo '<div class="rbf-status-icon" style="background: #46b450; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">✓</div>';
-        echo '<div style="flex: 1;">';
-        echo '<h3 style="margin: 0; color: #23282d;">License Status: <span style="color: #46b450;">ACTIVATED</span></h3>';
-        echo '<p style="margin: 5px 0 0 0; color: #666;">Your license is automatically managed by the system</p>';
-        echo '<p style="margin: 5px 0 0 0; color: #017c36; font-weight: 500;">Master Key: Abidali@254</p>';
-        echo '</div>';
-        echo '<div>';
-        echo '<button type="button" id="deactivate-license" class="button button-secondary" style="background: #dc3545; border-color: #dc3545; color: white;">Deactivate License</button>';
-        echo '<button type="button" id="reactivate-license" class="button button-primary" style="margin-left: 10px;">Reactivate License</button>';
-        echo '</div>';
-        echo '</div>';
-        echo '<p style="margin: 0; color: #017c36; font-weight: 500;">🔒 Secure • Reliable • Professional</p>';
-        echo '</div>';
-        echo '</div>';
-        
-        // Technical Details
-        echo '<div class="rbf-about-card" style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); margin-bottom: 30px;">';
-        echo '<h2 style="color: #23282d; margin-top: 0; font-size: 24px;">⚙️ Technical Specifications</h2>';
-        echo '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">';
-        echo '<strong style="color: #017c36;">Database:</strong><br>MySQL with optimized queries';
-        echo '</div>';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">';
-        echo '<strong style="color: #017c36;">Frontend:</strong><br>HTML5, CSS3, JavaScript (jQuery)';
-        echo '</div>';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">';
-        echo '<strong style="color: #017c36;">Backend:</strong><br>PHP 7.4+, WordPress 5.0+';
-        echo '</div>';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">';
-        echo '<strong style="color: #017c36;">Security:</strong><br>Nonce verification, SQL injection protection';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        
-        // Support & Contact
-        echo '<div class="rbf-about-card" style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); margin-bottom: 30px;">';
-        echo '<h2 style="color: #23282d; margin-top: 0; font-size: 24px;">📞 Support & Contact</h2>';
-        echo '<div style="text-align: center; padding: 30px;">';
-        echo '<p style="font-size: 18px; color: #666; margin-bottom: 25px;">Need help or have questions? Our support team is here to assist you.</p>';
-        echo '<div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">';
-        echo '<a href="mailto:abidmmp100@gmail.com" style="text-decoration: none; color: inherit;">';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px; min-width: 200px; transition: all 0.3s ease; cursor: pointer;">';
-        echo '<div style="font-size: 30px; margin-bottom: 10px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">📧</div>';
-        echo '<strong>Email Support</strong><br>';
-        echo '<small>abidmmp100@gmail.com</small>';
-        echo '</div>';
-        echo '</a>';
-        echo '<a href="' . plugin_dir_url(__FILE__) . 'docs/documentation.html" target="_blank" style="text-decoration: none; color: inherit;">';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px; min-width: 200px; transition: all 0.3s ease; cursor: pointer;">';
-        echo '<div style="font-size: 30px; margin-bottom: 10px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">📚</div>';
-        echo '<strong>Documentation</strong><br>';
-        echo '<small>Complete user guide</small>';
-        echo '</div>';
-        echo '</a>';
-        echo '<div style="background: #f8f9fa; padding: 20px; border-radius: 12px; min-width: 200px;">';
-        echo '<div style="font-size: 30px; margin-bottom: 10px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">🔄</div>';
-        echo '<strong>Updates</strong><br>';
-        echo '<small>Regular feature updates</small>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        
-        echo '</div>'; // Close rbf-about-content
-        echo '</div>'; // Close wrap
-        
-        // Add CSS to fix icon sizing
-        echo '<style>
-        .rbf-about-page img[src*=".svg"], 
-        .rbf-about-page img[src*=".png"], 
-        .rbf-about-page img[src*=".jpg"],
-        .rbf-about-page img[src*=".jpeg"],
-        .rbf-about-page .emoji,
-        .rbf-about-page img[src*="emoji"] {
-            width: 30px !important;
-            height: 30px !important;
-            max-width: 30px !important;
-            max-height: 30px !important;
-        }
-        
-        .rbf-about-page .rbf-step-number {
-            width: 40px !important;
-            height: 40px !important;
-            max-width: 40px !important;
-            max-height: 40px !important;
-        }
-        
-        .rbf-about-page .rbf-status-icon {
-            width: 50px !important;
-            height: 50px !important;
-            max-width: 50px !important;
-            max-height: 50px !important;
-        }
-        </style>';
-        
-        // Add JavaScript for license deactivation and reactivation
-        echo '<script type="text/javascript">
+        ?>
+        <div class="wrap rbf-about-page">
+            <!-- Hero Header -->
+            <div class="rbf-about-hero">
+                <h1><span class="dashicons dashicons-admin-tools" style="font-size: 34px; width: 34px; height: 34px;"></span> eFix Repair Booking System</h1>
+                <p>Enterprise Multi-Step Device Repair Automation, Cascading Wholesale Pricing Matrix, Automated Supplier Feeds, and Direct WhatsApp Dispatch for WordPress.</p>
+                <div class="rbf-about-badges">
+                    <span class="rbf-about-badge pulse">Enterprise v2.0.5</span>
+                    <span class="rbf-about-badge">PHP <?php echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION; ?> Native</span>
+                    <span class="rbf-about-badge">WordPress 6.7+ Verified</span>
+                    <span class="rbf-about-badge">MariaDB Optimized</span>
+                    <span class="rbf-about-badge">Zero-Chrome Print Engine</span>
+                </div>
+            </div>
+
+            <!-- Live Metrics Overview -->
+            <div class="rbf-stats-bar" style="margin-bottom: 24px;">
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number"><?php echo esc_html($brands_count); ?></div>
+                    <div class="rbf-stat-label">Device Brands</div>
+                    <div class="rbf-stat-sub">Official High-Res Logos</div>
+                </div>
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number"><?php echo esc_html($models_count); ?></div>
+                    <div class="rbf-stat-label">Device Models</div>
+                    <div class="rbf-stat-sub">Unique IDs & Authentic Imagery</div>
+                </div>
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number"><?php echo esc_html($repairs_count); ?></div>
+                    <div class="rbf-stat-label">Master Repair Services</div>
+                    <div class="rbf-stat-sub">Square Responsive Cards</div>
+                </div>
+                <div class="rbf-stat-card highlight">
+                    <div class="rbf-stat-number" style="font-size: 19px; white-space: nowrap;">160 vs 7,840</div>
+                    <div class="rbf-stat-label">Cascading Pricing Grid</div>
+                    <div class="rbf-stat-sub" style="white-space: nowrap;">98% Reduction</div>
+                </div>
+                <div class="rbf-stat-card">
+                    <div class="rbf-stat-number"><?php echo esc_html($bookings_count); ?></div>
+                    <div class="rbf-stat-label">Customer Bookings</div>
+                    <div class="rbf-stat-sub">Live Tracking & Invoices</div>
+                </div>
+            </div>
+
+            <!-- Core Architectural Pillars -->
+            <div class="rbf-about-section">
+                <div class="rbf-about-section-header">
+                    <h2><span class="dashicons dashicons-shield"></span> Core System Architecture</h2>
+                    <p>Engineered for high-volume mobile repair operations and automated wholesale supplier integration</p>
+                </div>
+                <div class="rbf-about-grid-4">
+                    <div class="rbf-about-feature-box">
+                        <div class="rbf-about-feature-icon">📱</div>
+                        <h3>Multi-Step Booking Wizard</h3>
+                        <p>Intuitive 5-stage customer booking flow featuring authentic brand logos, model drilldown, 4-column square box cards, high-legibility dropdowns, and instant cart calculation.</p>
+                    </div>
+                    <div class="rbf-about-feature-box">
+                        <div class="rbf-about-feature-icon">⚡</div>
+                        <h3>Cascading Tier Pricing</h3>
+                        <p>Hierarchical pricing engine resolving 7,840 model-repair combinations using just 160 base cells, with locked manual overrides and server-side checkout validation.</p>
+                    </div>
+                    <div class="rbf-about-feature-box">
+                        <div class="rbf-about-feature-icon">🔄</div>
+                        <h3>Automated Wholesale Sync</h3>
+                        <p>Integrates LXCell and NSC wholesale feeds with pure OpenXML XLSX/CSV parsing, 48-hour scheduled cron runs, stock status tracking, and strict concurrency locks.</p>
+                    </div>
+                    <div class="rbf-about-feature-box">
+                        <div class="rbf-about-feature-icon">🧾</div>
+                        <h3>1-Page Receipt Print Engine</h3>
+                        <p>Isolated print frame architecture (`rbfPrintReceipt()`) producing clean, single-page customer invoices with zero website chrome, 2-column detail grid, and 5% UAE VAT breakdown.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- License & Diagnostics Section -->
+            <div class="rbf-about-section">
+                <div class="rbf-about-section-header">
+                    <h2><span class="dashicons dashicons-admin-network"></span> License & System Environment</h2>
+                    <p>Operational health metrics and security parameters</p>
+                </div>
+                
+                <div class="rbf-about-license-box">
+                    <div class="rbf-about-license-info">
+                        <h3 style="display: flex; align-items: center; gap: 8px;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background: #017c36; border-radius: 50%;"></span>
+                            License Status: <strong>ACTIVATED & LICENSED</strong>
+                        </h3>
+                        <p>Automatic background synchronization active • Master Key: <code>Abidali@254</code></p>
+                        <p style="margin-top: 4px; font-size: 12px; color: #065f46;">Last Supplier Feeds Sync: <strong><?php echo esc_html($sync_time_display); ?></strong></p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" id="deactivate-license" class="button" style="color: #b32d2e; border-color: #b32d2e;">Deactivate License</button>
+                        <button type="button" id="reactivate-license" class="button button-primary">Reactivate License</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+                    <div style="background: #f8fafc; padding: 14px 18px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Primary Currency</span>
+                        <div style="font-size: 16px; font-weight: 800; color: #017c36; margin-top: 2px;"><?php echo esc_html(get_option('rbf_primary_currency', 'AED')); ?> (UAE Dirham)</div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 14px 18px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">VAT Taxation Rate</span>
+                        <div style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 2px;"><?php echo esc_html(get_option('rbf_vat_rate', 5)); ?>% Standard Tax</div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 14px 18px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">PHP & Memory Limit</span>
+                        <div style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 2px;">PHP <?php echo PHP_VERSION; ?> (<?php echo ini_get('memory_limit'); ?>)</div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 14px 18px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Database Engine</span>
+                        <div style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 2px;"><?php echo esc_html($wpdb->prefix); ?> (8 Active Tables)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support & Developer Resources -->
+            <div class="rbf-about-section">
+                <div class="rbf-about-section-header">
+                    <h2><span class="dashicons dashicons-sos"></span> Support & Developer Resources</h2>
+                    <p>Official technical documentation, support channels, and developer contacts</p>
+                </div>
+                <div class="rbf-about-support-cards">
+                    <a href="<?php echo esc_url(RBF_PLUGIN_URL . 'docs/documentation.html'); ?>" target="_blank" class="rbf-about-support-card">
+                        <div class="icon">📚</div>
+                        <strong>Interactive Documentation</strong>
+                        <small>Full visual user manual & API guides</small>
+                    </a>
+                    <a href="mailto:abidmmp100@gmail.com" class="rbf-about-support-card">
+                        <div class="icon">👨‍💻</div>
+                        <strong>Lead Architect: Abid Ali</strong>
+                        <small>abidmmp100@gmail.com</small>
+                    </a>
+                    <div class="rbf-about-support-card">
+                        <div class="icon">⚡</div>
+                        <strong>Version 2.0.5 Live</strong>
+                        <small>Production release with 1-page receipts</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
         jQuery(document).ready(function($) {
             $("#deactivate-license").on("click", function() {
                 if (confirm("Are you sure you want to deactivate the license? This will disable the plugin functionality.")) {
@@ -7902,7 +7993,7 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
                         type: "POST",
                         data: {
                             action: "rbf_deactivate_license",
-                            nonce: "' . wp_create_nonce('rbf_deactivate_license') . '"
+                            nonce: "<?php echo wp_create_nonce('rbf_deactivate_license'); ?>"
                         },
                         success: function(response) {
                             if (response.success) {
@@ -7926,7 +8017,7 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
                         type: "POST",
                         data: {
                             action: "rbf_reactivate_license",
-                            nonce: "' . wp_create_nonce('rbf_reactivate_license') . '"
+                            nonce: "<?php echo wp_create_nonce('rbf_reactivate_license'); ?>"
                         },
                         success: function(response) {
                             if (response.success) {
@@ -7943,7 +8034,8 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
                 }
             });
         });
-        </script>';
+        </script>
+        <?php
     }
 
     /**

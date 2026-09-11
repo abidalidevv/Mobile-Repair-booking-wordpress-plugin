@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.5] - 2026-09-11
+
+### 🚀 **Brand Quick-Jump Navigation, Executive Modal UI & Instant CSS Rendering**
+
+#### 🏷️ **Models Management Brand Quick-Jump Header**
+- **Sticky Brand Navigation Bar**: Added a modern, sticky top navigation header (`rbf-brand-nav-container`) listing all active brands with logos, brand names, and model count pills.
+- **Anchor ID Redirection**: Clicking on any brand pill smoothly scrolls the viewport directly to that brand's section via anchor ID (`#brand-section-{brand_slug}`) with an emerald pulse highlight animation (`rbf-brand-highlight`).
+- **Live Search & Filter**: Integrated a real-time search input (`#rbf-brand-quick-search`) allowing administrators to instantly filter both brand pills and model cards across all sections simultaneously.
+- **Back to Top Quick Return**: Placed compact "↑ Brands Bar" jump buttons on every brand section header.
+
+#### 🎨 **Universal Modal & Popup UI Overhaul**
+- **Executive SaaS Dialog System**: Completely overhauled the styling for Add Brand, Edit Brand, Add Model, Edit Model, Add Repair Service, Edit Repair Service, and Admin Booking modals.
+- **Backdrop & Transitions**: Added darkened frosted-glass backdrop blur (`backdrop-filter: blur(8px)`) and smooth scale-up entrance animations.
+- **Input Styling**: Styled all form labels, text fields, number inputs, dropdowns, textareas, and file upload pickers with modern focus rings, consistent 44px heights, and subtle shadows.
+- **Circular Close Button**: Implemented a modern circular close button (`.close-modal`) with hover rotation and color transitions.
+- **Actions Bar**: Added high-contrast primary submit buttons with emerald hover glow alongside sleek secondary cancel buttons.
+
+#### ⚡ **Repair Prices Zero-FOUC (Instant CSS Rendering)**
+- **Eliminated Flash of Unstyled Content**: Moved the internal `<style>` block from the bottom of `admin_repair_prices()` to the very top before any HTML table or DOM content is output, and duplicated rules to `assets/css/admin.css`.
+- **Card Spacing & Layout Fix**: Corrected `.rbf-stat-card.highlight` metric text formatting ("160 vs 7,840") so numbers and subtitles never squish or awkwardly wrap.
+- **Responsive Stats Bar**: Expanded min-width columns to `215px` ensuring multi-line statistics have ample breathing room.
+
+#### 🌟 **About Page Executive Redesign**
+- **SaaS Enterprise Showcase**: Replaced inline-styled elements with an executive dashboard showcasing system architecture, live model/brand telemetry, and PHP/WordPress environmental diagnostics.
+- **Architectural Pillars**: Highlights the 5-stage Multi-Step Wizard, Cascading Tier Pricing Engine, Automated Wholesale Feeds (LXCell & NSC), and Isolated 1-Page Receipt Engine.
+- **Interactive Resources**: Direct links to interactive visual documentation (`docs/documentation.html`), GitHub repository, and developer contact information.
+
+---
+
 ## [2.0.4] - 2026-09-11
 
 ### 🧾 **Single-Page Receipt Print Layout Optimization**

@@ -115,6 +115,9 @@ The frontend wizard guides customers through an intuitive, mobile-optimized 4-st
     - **Tier 4 (Premium/Foldable)**: Fold, Flip, MacBook series (multiplier: `1.65x`).
   - Single and bulk tier assignment tools.
 
+- **Brand Quick-Jump Navigation Bar**: Sticky top bar with high-res brand logos and model count badges. Click any brand to smoothly scroll directly to its models (`#brand-section-{slug}`). Includes live search filter to instantly find any brand or model.
+  - **Executive Modal Dialogs**: Add/Edit Brand, Model, and Repair Service popups with frosted blur backdrop, modern inputs, 44px uniform controls, and circular close buttons.
+
 ### 5.4 Repair Services & Labour Cost
 - **Location**: `Repair Booking → Repairs`
 - **Features**:

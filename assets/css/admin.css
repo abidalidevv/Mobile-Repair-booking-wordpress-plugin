@@ -941,3 +941,720 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ==========================================================================
+   Models Management: Brand Quick-Jump Navigation Bar (v2.0.5)
+   ========================================================================== */
+.rbf-brand-nav-container {
+    position: sticky;
+    top: 32px;
+    z-index: 990;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--rbf-border);
+    border-radius: var(--rbf-radius);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px -3px rgba(15, 23, 42, 0.08);
+}
+
+.rbf-brand-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.rbf-brand-nav-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--rbf-dark);
+}
+
+.rbf-brand-nav-title .dashicons {
+    color: var(--rbf-primary);
+    font-size: 19px;
+    width: 19px;
+    height: 19px;
+}
+
+.rbf-brand-nav-search-wrap {
+    position: relative;
+    min-width: 250px;
+}
+
+.rbf-brand-nav-search-wrap .dashicons {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--rbf-muted);
+    font-size: 16px;
+}
+
+.rbf-brand-nav-search-wrap input {
+    width: 100%;
+    padding: 7px 14px 7px 34px !important;
+    border: 1.5px solid var(--rbf-border) !important;
+    border-radius: 20px !important;
+    font-size: 12.5px !important;
+    background: #f8fafc !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+.rbf-brand-nav-search-wrap input:focus {
+    background: #ffffff !important;
+    border-color: var(--rbf-primary) !important;
+    box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.15) !important;
+    outline: none !important;
+}
+
+.rbf-brand-nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-height: 140px;
+    overflow-y: auto;
+    padding: 2px 4px 4px 0;
+    scrollbar-width: thin;
+}
+
+.rbf-brand-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1px solid var(--rbf-border);
+    border-radius: 24px;
+    padding: 5px 12px 5px 6px;
+    text-decoration: none !important;
+    color: var(--rbf-dark) !important;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+}
+
+.rbf-brand-pill:hover {
+    background: #ffffff;
+    border-color: var(--rbf-primary);
+    color: var(--rbf-primary) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(1, 124, 54, 0.15);
+}
+
+.rbf-brand-pill.active {
+    background: var(--rbf-primary);
+    border-color: var(--rbf-primary);
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(1, 124, 54, 0.25);
+}
+
+.rbf-brand-pill.active .rbf-pill-count {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.rbf-pill-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 2px;
+    flex-shrink: 0;
+}
+
+.rbf-pill-name {
+    line-height: 1;
+}
+
+.rbf-pill-count {
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 12px;
+    line-height: 1;
+}
+
+.rbf-brand-section {
+    scroll-margin-top: 130px;
+    transition: all 0.3s ease;
+}
+
+.rbf-brand-section.rbf-brand-highlight {
+    outline: 3px solid #017c36;
+    box-shadow: 0 0 25px rgba(1, 124, 54, 0.35);
+}
+
+.rbf-back-to-top-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.rbf-back-to-top-btn:hover {
+    background: #ffffff;
+    color: #017c36 !important;
+}
+
+/* ==========================================================================
+   Admin Universal Modal & Popup Design System (v2.0.5)
+   ========================================================================== */
+.rbf-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(15, 23, 42, 0.7) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 100000 !important;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: rbfFadeIn 0.2s ease-out;
+}
+
+@keyframes rbfFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rbfScaleUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.rbf-modal-content {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    padding: 28px 32px !important;
+    width: 540px !important;
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    position: relative !important;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+    border: none !important;
+    border-top: 5px solid #017c36 !important;
+    animation: rbfScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box !important;
+}
+
+.rbf-modal-content h2 {
+    margin: 0 0 20px 0 !important;
+    font-size: 21px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    padding-bottom: 14px !important;
+    border-bottom: 1.5px solid #f1f5f9 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.rbf-modal-content .close-modal {
+    position: absolute !important;
+    top: 20px !important;
+    right: 22px !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}
+
+.rbf-modal-content .close-modal:hover {
+    background: #fee2e2 !important;
+    color: #ef4444 !important;
+    border-color: #fca5a5 !important;
+    transform: rotate(90deg) !important;
+}
+
+.rbf-modal .rbf-form-group {
+    margin-bottom: 18px !important;
+}
+
+.rbf-modal .rbf-form-group label {
+    display: block !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin-bottom: 7px !important;
+    letter-spacing: -0.1px !important;
+}
+
+.rbf-modal .rbf-form-group input[type="text"],
+.rbf-modal .rbf-form-group input[type="number"],
+.rbf-modal .rbf-form-group input[type="email"],
+.rbf-modal .rbf-form-group input[type="url"],
+.rbf-modal .rbf-form-group select,
+.rbf-modal .rbf-form-group textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 44px !important;
+    padding: 10px 14px !important;
+    font-size: 13.5px !important;
+    color: #0f172a !important;
+    background: #f8fafc !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.rbf-modal .rbf-form-group textarea {
+    height: auto !important;
+    min-height: 85px !important;
+    line-height: 1.5 !important;
+    resize: vertical !important;
+}
+
+.rbf-modal .rbf-form-group input:focus,
+.rbf-modal .rbf-form-group select:focus,
+.rbf-modal .rbf-form-group textarea:focus {
+    background: #ffffff !important;
+    border-color: #017c36 !important;
+    box-shadow: 0 0 0 3px rgba(1, 124, 54, 0.15) !important;
+    outline: none !important;
+}
+
+.rbf-modal .rbf-form-group input[type="file"] {
+    display: block !important;
+    width: 100% !important;
+    padding: 10px 12px !important;
+    background: #f8fafc !important;
+    border: 1.5px dashed #cbd5e1 !important;
+    border-radius: 8px !important;
+    font-size: 12.5px !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+.rbf-modal .rbf-form-group input[type="file"]:hover {
+    border-color: #017c36 !important;
+    background: #f0fdf4 !important;
+}
+
+.rbf-modal .rbf-form-group small {
+    display: block !important;
+    font-size: 11.5px !important;
+    color: #64748b !important;
+    margin-top: 5px !important;
+    line-height: 1.4 !important;
+}
+
+.rbf-modal-actions {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-top: 26px !important;
+    padding-top: 18px !important;
+    border-top: 1.5px solid #f1f5f9 !important;
+}
+
+.rbf-modal-actions .button,
+.rbf-modal-actions button {
+    height: 42px !important;
+    padding: 0 20px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+}
+
+.rbf-modal-actions .close-modal {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+.rbf-modal-actions .close-modal:hover {
+    background: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+.rbf-modal-actions .button-primary {
+    background: #017c36 !important;
+    border: 1px solid #017c36 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(1, 124, 54, 0.25) !important;
+}
+
+.rbf-modal-actions .button-primary:hover {
+    background: #01622b !important;
+    border-color: #01622b !important;
+    box-shadow: 0 6px 16px rgba(1, 124, 54, 0.35) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ==========================================================================
+   Pricing Engine Page Instant CSS & Card Spacing Fix (Eliminates FOUC)
+   ========================================================================== */
+.rbf-pricing-admin-wrap {
+    margin: 20px 20px 0 2px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.rbf-pricing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 24px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+    border-left: 6px solid #017c36;
+}
+.rbf-title {
+    margin: 0 0 6px 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d2327;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.rbf-title .dashicons {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: #017c36;
+}
+.rbf-subtitle {
+    margin: 0;
+    color: #646970;
+    font-size: 13.5px;
+    line-height: 1.5;
+    max-width: 800px;
+}
+.rbf-header-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+.rbf-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.rbf-stat-card {
+    background: #fff;
+    padding: 18px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 105px;
+    box-sizing: border-box;
+}
+.rbf-stat-card.highlight {
+    background: linear-gradient(135deg, #05413a 0%, #017c36 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(1, 124, 54, 0.25) !important;
+}
+.rbf-stat-card.highlight .rbf-stat-number {
+    color: #fff !important;
+    font-size: 19px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.2px;
+}
+.rbf-stat-card.highlight .rbf-stat-label {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    margin-top: 3px !important;
+}
+.rbf-stat-card.highlight .rbf-stat-sub {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 11px !important;
+    margin-top: 2px !important;
+    white-space: nowrap !important;
+}
+.rbf-stat-number {
+    font-size: 24px;
+    font-weight: 800;
+    color: #017c36;
+    line-height: 1.2;
+}
+.rbf-stat-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2c3338;
+    margin-top: 4px;
+}
+.rbf-stat-sub {
+    font-size: 11.5px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   About Page: Modern SaaS Architecture & Showcase Design (v2.0.5)
+   ========================================================================== */
+.rbf-about-page {
+    max-width: 1400px;
+    margin: 20px 20px 40px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.rbf-about-hero {
+    background: linear-gradient(135deg, #043831 0%, #017c36 50%, #044e3f 100%);
+    color: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(1, 124, 54, 0.2);
+    margin-bottom: 26px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.rbf-about-hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.rbf-about-hero h1 {
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 10px 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.5px;
+}
+
+.rbf-about-hero p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 20px 0;
+    max-width: 780px;
+    line-height: 1.6;
+}
+
+.rbf-about-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rbf-about-badge {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rbf-about-badge.pulse::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.4);
+}
+
+.rbf-about-section {
+    background: #ffffff;
+    border: 1px solid var(--rbf-border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--rbf-shadow-sm);
+}
+
+.rbf-about-section-header {
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid #f1f5f9;
+}
+
+.rbf-about-section-header h2 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin: 0 0 4px 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rbf-about-section-header p {
+    font-size: 13px;
+    color: var(--rbf-muted);
+    margin: 0;
+}
+
+.rbf-about-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.rbf-about-feature-box {
+    background: #f8fafc;
+    border: 1px solid var(--rbf-border);
+    border-radius: 12px;
+    padding: 22px;
+    transition: all 0.2s ease;
+}
+
+.rbf-about-feature-box:hover {
+    background: #ffffff;
+    border-color: var(--rbf-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.rbf-about-feature-icon {
+    font-size: 26px;
+    margin-bottom: 12px;
+    display: inline-block;
+}
+
+.rbf-about-feature-box h3 {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.rbf-about-feature-box p {
+    font-size: 13px;
+    color: #475569;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.rbf-about-license-box {
+    background: #f0fdf4;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 22px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.rbf-about-license-info h3 {
+    color: #065f46 !important;
+    margin: 0 0 4px 0 !important;
+    font-size: 16px !important;
+}
+
+.rbf-about-license-info p {
+    color: #047857;
+    margin: 0;
+    font-size: 13px;
+}
+
+.rbf-about-support-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.rbf-about-support-card {
+    background: #f8fafc;
+    border: 1px solid var(--rbf-border);
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none !important;
+    color: inherit !important;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.rbf-about-support-card:hover {
+    background: #ffffff;
+    border-color: var(--rbf-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(1, 124, 54, 0.1);
+}
+
+.rbf-about-support-card .icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.rbf-about-support-card strong {
+    font-size: 14px;
+    color: #0f172a;
+}
+
+.rbf-about-support-card small {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 4px;
+}

@@ -671,3 +671,9 @@ PHP server-side counterpart that sanitizes and returns clean relative asset path
 
 #### Backend Helper: `RBF_WhatsApp::send_booking_notification($booking)` & `get_direct_whatsapp_url($booking)`
 Handles automated UltraMsg API dispatch and free `https://wa.me/` direct chat link generation without fatal errors.
+
+### 12.3 Brand Quick-Jump Header & Universal Modals (v2.0.5)
+- **Brand Navigation**: Container `.rbf-brand-nav-container`, pills `.rbf-brand-pill`, brand anchor IDs `#brand-section-{slug}`.
+- **Modal System**: Wrapper `.rbf-modal`, content `.rbf-modal-content`, close control `.close-modal`, form fields `.rbf-form-group`.
+- **Pricing Zero-FOUC**: CSS eagerly injected before HTML rendering; `.rbf-stat-card.highlight` formatted with `white-space: nowrap` and flexible clamp font sizes.
+- **About Showcase**: Class-based layout `.rbf-about-page`, `.rbf-about-hero`, `.rbf-about-section`, `.rbf-about-grid-4`.

@@ -1,9 +1,9 @@
 # 🔧 EFIX — Mobile & Laptop Repair Booking Plugin for WordPress
 
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org)
-[![Version](https://img.shields.io/badge/Version-2.0.3-brightgreen.svg)](#) [![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
+[![Version](https://img.shields.io/badge/Version-2.0.5-brightgreen.svg)](#) [![PHP](https://img.shields.io/badge/PHP-8.0%20--%208.3%2B-777bb4.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](LICENSE)
-[![Brands](https://img.shields.io/badge/Brands-18%20Active-orange.svg)](#supported-brands--devices)
+[![Brands](https://img.shields.io/badge/Brands-19%20Active-orange.svg)](#supported-brands--devices)
 [![Models](https://img.shields.io/badge/Models-525%20Devices-purple.svg)](#supported-brands--devices)
 [![Suppliers](https://img.shields.io/badge/Wholesale%20Sync-LXCELL%20UAE-success.svg)](#supplier-integration--pricing-engine)
 
@@ -39,6 +39,15 @@ A modern, enterprise-ready WordPress plugin designed for mobile phone, tablet, a
   - Instant automated customer notification messages via WhatsApp with direct `wa.me` links.
   - Dedicated **Print Invoice / Receipt** engine (`rbfPrintReceipt`): prints clean, branded customer confirmation invoices isolated from website headers, navigation menus, and footers.
   - Native AED base currency with multi-currency conversion support.
+* **🏷️ Models Management Brand Quick-Jump Header**:
+  - Sticky top brand selector bar with official logos, titles, and model count badges.
+  - Smooth anchor redirection (`#brand-section-{brand_slug}`) with visual pulse highlighting.
+  - Live instant filter searching both brand pills and model names dynamically.
+* **🎨 Executive Universal Modal & Dialog System**:
+  - Blurred frosted-glass backdrop, modern form inputs, 44px uniform controls, and circular close buttons.
+* **⚡ Zero-FOUC Pricing Engine & Modern About Showcase**:
+  - Instant CSS rendering eliminating 2-second layout flashes on the Repair Prices dashboard.
+  - Redesigned executive About page with live system telemetry, architecture breakdown, and license management.
 * **📱 Modern 4-Column Square Cards (Step 3)**:
   - Responsive 4-in-a-row square card grid with authentic icons, duration pills, price badges, and selection checkmarks.
   - Flawless, unclipped dropdown inputs on Step 4 with custom SVG chevrons.
