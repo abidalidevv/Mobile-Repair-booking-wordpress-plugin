@@ -299,8 +299,8 @@ class RepairBookingForm {
     
     public function enqueue_scripts() {
         wp_enqueue_script('jquery');
-        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.3', true);
-        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.3');
+        wp_enqueue_script('rbf-main', RBF_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '2.0.4', true);
+        wp_enqueue_style('rbf-style', RBF_PLUGIN_URL . 'assets/css/style.css', array(), '2.0.4');
         
         // Payment gateway scripts
         if (get_option('rbf_paypal_enabled', false)) {
@@ -1013,7 +1013,7 @@ class RepairBookingForm {
                   (is_string($hook) && strpos($hook, 'repair-booking') !== false);
                   
         if ($is_rbf) {
-            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.3');
+            wp_enqueue_style('rbf-admin', RBF_PLUGIN_URL . 'assets/css/admin.css', array(), '2.0.4');
             wp_enqueue_media(); // For image uploads
             
             // Enqueue jQuery for admin pages
@@ -8082,10 +8082,10 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
      * Get HTML for invoice
      */
     private function get_invoice_html($booking, $is_print = false) {
-        $business_name = get_option('rbf_business_name', 'Your Business Name');
+        $business_name = get_option('rbf_business_name', 'eFix Repair Services');
         $business_address = get_option('rbf_business_address', 'Dubai, UAE');
         $business_phone = get_option('rbf_business_phone', '+971 50 123 4567');
-        $business_email = get_option('rbf_business_email', 'info@yourbusiness.com');
+        $business_email = get_option('rbf_business_email', 'info@efix.ae');
         $business_logo = get_option('rbf_business_logo', '');
         $vat_number = get_option('rbf_vat_number', 'VAT No: 123456789012345');
         
@@ -8094,91 +8094,107 @@ $lxcell_status = $lxcell_provider ? $lxcell_provider->get_status() : array();
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>Invoice - ' . $booking->booking_id . '</title>
+            <title>Invoice - ' . esc_attr($booking->booking_id) . '</title>
             <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-                .invoice-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #017c36; padding-bottom: 20px; }
-                .business-info { margin-bottom: 30px; }
-                .customer-info { margin-bottom: 30px; }
-                .invoice-details { margin-bottom: 30px; }
-                .services-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-                .services-table th, .services-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-                .services-table th { background: #017c36; color: white; }
-                .totals { text-align: right; margin-bottom: 30px; }
-                .footer { text-align: center; margin-top: 50px; color: #666; }
-                .logo { max-width: 200px; margin-bottom: 20px; }
+                @page { size: A4 portrait; margin: 8mm 10mm; }
+                * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 10px; font-size: 11.5px; color: #0f172a; line-height: 1.35; }
+                .invoice-box { max-width: 650px; margin: 0 auto; page-break-inside: avoid !important; break-inside: avoid !important; }
+                .invoice-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #017c36; padding-bottom: 8px; }
+                .header-left h1 { color: #017c36; margin: 0 0 2px; font-size: 18px; font-weight: 800; }
+                .header-left p { margin: 1px 0; font-size: 10px; color: #64748b; }
+                .header-right { text-align: right; }
+                .header-right p { margin: 1px 0; font-size: 10px; color: #64748b; }
+                .invoice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+                .info-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 12px; font-size: 11px; }
+                .info-card h3 { margin: 0 0 6px; font-size: 11.5px; color: #017c36; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; }
+                .info-card p { margin: 2px 0; }
+                .services-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 11px; }
+                .services-table th, .services-table td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; }
+                .services-table th { background: #017c36; color: white; font-size: 10.5px; }
+                .totals-wrap { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+                .totals-box { width: 230px; background: #fafafa; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 10px; font-size: 11px; }
+                .totals-box p { margin: 2px 0; display: flex; justify-content: space-between; }
+                .total-main { font-weight: 800; color: #017c36; font-size: 12.5px; border-top: 1px dashed #017c36; padding-top: 3px; margin-top: 3px; }
+                .footer { text-align: center; margin-top: 10px; padding-top: 6px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 10px; }
+                .logo { max-height: 40px; margin-bottom: 4px; }
                 ' . ($is_print ? '
                 @media print {
-                    body { margin: 0; padding: 15px; }
-                    .invoice-header { page-break-after: avoid; }
-                    .services-table { page-break-inside: avoid; }
-                    .totals { page-break-before: avoid; }
-                    .footer { page-break-before: avoid; }
+                    body { margin: 0; padding: 0; }
+                    .no-print { display: none !important; }
+                    .invoice-box { page-break-inside: avoid !important; break-inside: avoid !important; }
                 }' : '') . '
             </style>
         </head>
         <body>
-            <div class="invoice-header">
-                ' . ($business_logo ? '<img src="' . esc_url($business_logo) . '" alt="' . esc_attr($business_name) . '" class="logo" style="max-width: 200px; margin-bottom: 20px;">' : '') . '
-                <h1 style="color: #017c36; margin: 0;">' . $business_name . '</h1>
-                <p style="margin: 5px 0;">' . $business_address . '</p>
-                <p style="margin: 5px 0;">Phone: ' . $business_phone . ' | Email: ' . $business_email . '</p>
-                <p style="margin: 5px 0;">' . $vat_number . '</p>
+            <div class="invoice-box">
+                <div class="invoice-header">
+                    <div class="header-left">
+                        ' . ($business_logo ? '<img src="' . esc_url($business_logo) . '" alt="' . esc_attr($business_name) . '" class="logo">' : '') . '
+                        <h1>' . esc_html($business_name) . '</h1>
+                        <p>' . esc_html($business_address) . ' | Tel: ' . esc_html($business_phone) . '</p>
+                    </div>
+                    <div class="header-right">
+                        <p><strong>INVOICE:</strong> #' . esc_html($booking->booking_id) . '</p>
+                        <p><strong>Date:</strong> ' . date('F j, Y', strtotime($booking->created_at ?: 'now')) . '</p>
+                        <p>' . esc_html($vat_number) . '</p>
+                    </div>
+                </div>
+                
+                <div class="invoice-grid">
+                    <div class="info-card">
+                        <h3>Customer Information</h3>
+                        <p><strong>Name:</strong> ' . esc_html($booking->customer_name) . '</p>
+                        <p><strong>Phone:</strong> ' . esc_html($booking->customer_phone) . '</p>
+                        ' . ($booking->customer_email ? '<p><strong>Email:</strong> ' . esc_html($booking->customer_email) . '</p>' : '') . '
+                        ' . ($booking->address ? '<p><strong>Address:</strong> ' . esc_html($booking->address) . '</p>' : '') . '
+                    </div>
+                    <div class="info-card">
+                        <h3>Service & Device Details</h3>
+                        <p><strong>Device:</strong> ' . esc_html($booking->brand . ' ' . $booking->model) . '</p>
+                        <p><strong>Service:</strong> ' . esc_html($booking->service_type ?: 'Service Center') . '</p>
+                        <p><strong>Status:</strong> <span style="color: #017c36; font-weight: bold;">Confirmed</span></p>
+                        <p><strong>Payment:</strong> Pay After Repair</p>
+                    </div>
+                </div>
+                
+                <table class="services-table">
+                    <thead>
+                        <tr>
+                            <th>Service Description</th>
+                            <th style="width: 110px; text-align: center;">Duration</th>
+                            <th style="width: 110px; text-align: right;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>' . esc_html($booking->repair ?: 'Device Repair Services') . '</strong></td>
+                            <td style="text-align: center; color: #64748b;">01-02 Hours</td>
+                            <td style="text-align: right; font-weight: 700; color: #017c36;">AED ' . number_format($booking->subtotal, 2) . '</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="totals-wrap">
+                    <div class="totals-box">
+                        <p><span>Subtotal:</span><span>AED ' . number_format($booking->subtotal, 2) . '</span></p>
+                        <p><span>VAT (5%):</span><span>AED ' . number_format($booking->vat_amount, 2) . '</span></p>
+                        <p class="total-main"><span>Total Amount:</span><span>AED ' . number_format($booking->total_amount, 2) . '</span></p>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p style="margin: 2px 0;"><strong>Thank you for choosing ' . esc_html($business_name) . '!</strong></p>
+                    <p style="margin: 2px 0;">For queries contact ' . esc_html($business_phone) . ' | ' . esc_html($business_email) . '</p>
+                </div>
+                
+                ' . ($is_print ? '
+                <div class="no-print" style="text-align: center; margin-top: 15px; padding: 10px; border-top: 1px solid #e2e8f0;">
+                    <button onclick="window.print()" style="background: #017c36; color: white; border: none; padding: 8px 18px; border-radius: 5px; font-size: 13px; font-weight: 700; cursor: pointer;">
+                        🖨️ Print Invoice
+                    </button>
+                </div>' : '') . '
             </div>
-            
-            <div class="customer-info">
-                <h3>Customer Information</h3>
-                <p><strong>Name:</strong> ' . esc_html($booking->customer_name) . '</p>
-                <p><strong>Phone:</strong> ' . esc_html($booking->customer_phone) . '</p>
-                <p><strong>Email:</strong> ' . esc_html($booking->customer_email) . '</p>
-                <p><strong>Address:</strong> ' . esc_html($booking->address) . '</p>
-            </div>
-            
-            <div class="invoice-details">
-                <h3>Invoice Details</h3>
-                <p><strong>Invoice Number:</strong> ' . $booking->booking_id . '</p>
-                <p><strong>Booking Date:</strong> ' . date('F j, Y', strtotime($booking->created_at)) . '</p>
-                <p><strong>Invoice Date:</strong> <span style="color: #017c36; font-weight: bold;">' . date('F j, Y') . '</span></p>
-                <p><strong>Device:</strong> ' . esc_html($booking->brand . ' ' . $booking->model) . '</p>
-                <p><strong>Service Type:</strong> ' . esc_html($booking->service_type ?: 'Pickup & Delivery') . '</p>
-            </div>
-            
-            <table class="services-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Repair Services</td>
-                        <td>' . esc_html($booking->repair) . '</td>
-                        <td>AED ' . number_format($booking->subtotal, 2) . '</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="totals">
-                <p><strong>Subtotal:</strong> AED ' . number_format($booking->subtotal, 2) . '</p>
-                <p><strong>VAT (5%):</strong> AED ' . number_format($booking->vat_amount, 2) . '</p>
-                <p><strong style="font-size: 18px; color: #017c36;">Total Amount:</strong> AED ' . number_format($booking->total_amount, 2) . '</p>
-            </div>
-            
-            <div class="footer">
-                <p>Thank you for choosing our services!</p>
-                <p>For any queries, please contact us at ' . $business_phone . '</p>
-                <p><small>Invoice generated on ' . date('F j, Y \a\t g:i A') . '</small></p>
-            </div>
-            
-            ' . ($is_print ? '
-            <div style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #ddd;">
-                <button onclick="window.print()" style="background: #017c36; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 16px; cursor: pointer;">
-                    🖨️ Print Invoice
-                </button>
-                <p style="margin-top: 10px; color: #666; font-size: 14px;">Click the button above to print this invoice</p>
-            </div>' : '') . '
         </body>
         </html>';
         

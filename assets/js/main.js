@@ -688,7 +688,7 @@
      * Dedicated Print Receipt Function
      * Prints clean confirmation receipt WITHOUT website header/menus/footer
      */
-    window.rbfPrintReceipt = function() {
+        window.rbfPrintReceipt = function() {
         const b = state.completedBooking || {
             bookingId: $('#booking-id').text().trim() || 'eFIX-BOOKING',
             name: $('#customer-name').val() || 'Customer',
@@ -712,25 +712,36 @@
         const sitePhone = rbfData.site_phone || '+971 50 123 4567';
         const siteAddress = rbfData.site_address || 'Dubai, United Arab Emirates';
         const vatNumber = rbfData.vat_number || 'VAT No: 123456789012345';
-        const repairsList = (b.repairs && b.repairs.length > 0) 
-            ? b.repairs.map(r => r.name).join(', ') 
-            : 'Device Inspection & Repair';
 
         let repairsRowsHtml = '';
         if (b.repairs && b.repairs.length > 0) {
             b.repairs.forEach(function(r) {
                 repairsRowsHtml += `
                     <tr>
-                        <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9;"><strong>${r.name}</strong><br><small style="color: #64748b;">${r.duration || '01-02 Hours'}</small></td>
-                        <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9; text-align: right; font-weight: 700; color: #017c36;">${formatPrice(r.price)}</td>
+                        <td style="padding: 5px 8px; border-bottom: 1px solid #e2e8f0;">
+                            <strong>${r.name}</strong>
+                        </td>
+                        <td style="padding: 5px 8px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 10px;">
+                            ${r.duration || '01-02 Hours'}
+                        </td>
+                        <td style="padding: 5px 8px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 700; color: #017c36;">
+                            ${formatPrice(r.price)}
+                        </td>
                     </tr>
                 `;
             });
         } else {
             repairsRowsHtml = `
                 <tr>
-                    <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9;">Device Repair Services</td>
-                    <td style="padding: 10px 12px; border-bottom: 1px solid #f1f5f9; text-align: right; font-weight: 700; color: #017c36;">${b.formattedTotal}</td>
+                    <td style="padding: 5px 8px; border-bottom: 1px solid #e2e8f0;">
+                        <strong>Device Repair Services</strong>
+                    </td>
+                    <td style="padding: 5px 8px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 10px;">
+                        01-02 Hours
+                    </td>
+                    <td style="padding: 5px 8px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 700; color: #017c36;">
+                        ${b.formattedTotal}
+                    </td>
                 </tr>
             `;
         }
@@ -741,74 +752,273 @@
     <meta charset="utf-8">
     <title>Repair Receipt - ${b.bookingId}</title>
     <style>
-        @page { size: auto; margin: 12mm 15mm; }
-        * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-        body { font-family: 'Segoe UI', Arial, -apple-system, sans-serif; color: #0f172a; background: #ffffff; margin: 0; padding: 15px; font-size: 13px; line-height: 1.5; }
-        .receipt-box { max-width: 650px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; padding: 28px; background: #ffffff; }
-        .receipt-header { text-align: center; border-bottom: 2px solid #017c36; padding-bottom: 16px; margin-bottom: 20px; }
-        .store-brand { font-size: 24px; font-weight: 800; color: #017c36; margin: 0 0 4px; }
-        .store-meta { font-size: 11px; color: #64748b; margin: 2px 0; }
-        .status-check { width: 52px; height: 52px; border-radius: 50%; background: #e8f7ee; border: 2px solid #017c36; color: #017c36; font-size: 26px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
-        .confirmed-title { font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 4px; text-align: center; }
-        .confirmed-subtitle { font-size: 12px; color: #64748b; text-align: center; margin: 0 0 16px; }
-        .tracking-card { border: 2px dashed #017c36; border-radius: 10px; padding: 14px 20px; text-align: center; background: #f8fafc; margin-bottom: 20px; }
-        .tracking-label { font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 1.5px; text-transform: uppercase; }
-        .tracking-val { font-size: 26px; font-weight: 800; color: #017c36; margin-top: 3px; letter-spacing: 1px; }
-        .details-card { border: 2px dashed #017c36; border-radius: 10px; padding: 18px 20px; background: #ffffff; margin-bottom: 20px; }
-        .details-card p { margin: 6px 0; font-size: 13px; line-height: 1.5; color: #1e293b; }
-        .details-card strong { color: #0f172a; width: 100px; display: inline-block; }
-        .table-wrap { margin-top: 15px; }
-        .table-wrap table { width: 100%; border-collapse: collapse; }
-        .table-wrap th { background: #f8fafc; color: #475569; font-size: 12px; font-weight: 700; text-align: left; padding: 8px 12px; border-bottom: 2px solid #e2e8f0; }
-        .totals-box { margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
-        .total-row { display: flex; justify-content: space-between; font-size: 12px; color: #475569; margin-bottom: 4px; }
-        .total-grand { font-size: 16px; font-weight: 800; color: #017c36; padding-top: 6px; border-top: 1.5px dashed #017c36; margin-top: 6px; }
-        .guarantee-pills { display: flex; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; margin: 18px 0; font-size: 11px; font-weight: 600; color: #334155; }
-        .receipt-footer { text-align: center; border-top: 1px solid #e2e8f0; padding-top: 12px; color: #64748b; font-size: 11px; }
+        @page { 
+            size: A4 portrait; 
+            margin: 8mm 10mm; 
+        }
+        * { 
+            box-sizing: border-box; 
+            -webkit-print-color-adjust: exact !important; 
+            print-color-adjust: exact !important; 
+        }
+        html, body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            color: #0f172a; 
+            background: #ffffff; 
+            margin: 0; 
+            padding: 0; 
+            font-size: 11px; 
+            line-height: 1.35; 
+        }
+        .receipt-box { 
+            max-width: 650px; 
+            margin: 0 auto; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 8px; 
+            padding: 12px 18px; 
+            background: #ffffff;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+        .receipt-header { 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #017c36; 
+            padding-bottom: 6px; 
+            margin-bottom: 8px; 
+        }
+        .store-brand { 
+            font-size: 18px; 
+            font-weight: 800; 
+            color: #017c36; 
+            margin: 0 0 2px; 
+            letter-spacing: -0.3px;
+        }
+        .store-meta { 
+            font-size: 9.5px; 
+            color: #64748b; 
+            margin: 1px 0; 
+        }
+        .header-right {
+            text-align: right;
+        }
+
+        .status-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin-bottom: 8px;
+        }
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-check { 
+            width: 24px; 
+            height: 24px; 
+            border-radius: 50%; 
+            background: #017c36; 
+            color: #ffffff; 
+            font-size: 13px; 
+            font-weight: bold; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-shrink: 0;
+        }
+        .confirmed-title { 
+            font-size: 12.5px; 
+            font-weight: 800; 
+            color: #065f46; 
+            margin: 0; 
+        }
+        .confirmed-subtitle { 
+            font-size: 9.5px; 
+            color: #047857; 
+            margin: 1px 0 0; 
+        }
+        .tracking-card { 
+            background: #ffffff;
+            border: 1.5px dashed #017c36; 
+            border-radius: 6px; 
+            padding: 4px 10px; 
+            text-align: right; 
+        }
+        .tracking-label { 
+            font-size: 8.5px; 
+            font-weight: 700; 
+            color: #64748b; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            display: block;
+        }
+        .tracking-val { 
+            font-size: 15px; 
+            font-weight: 800; 
+            color: #017c36; 
+            letter-spacing: 0.5px; 
+        }
+
+        .details-grid { 
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 14px;
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 6px; 
+            padding: 8px 12px; 
+            margin-bottom: 8px; 
+        }
+        .detail-row { 
+            display: flex; 
+            font-size: 11px; 
+            line-height: 1.35; 
+        }
+        .detail-lbl { 
+            font-weight: 700; 
+            color: #475569; 
+            width: 76px; 
+            flex-shrink: 0; 
+        }
+        .detail-val { 
+            color: #0f172a; 
+            font-weight: 500; 
+            word-break: break-word; 
+        }
+
+        .table-wrap { 
+            margin-bottom: 6px; 
+        }
+        .table-wrap table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        .table-wrap th { 
+            background: #f1f5f9; 
+            color: #334155; 
+            font-size: 10.5px; 
+            font-weight: 700; 
+            text-align: left; 
+            padding: 5px 8px; 
+            border-bottom: 1.5px solid #cbd5e1; 
+        }
+        .table-wrap td {
+            padding: 5px 8px; 
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        .totals-section { 
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+        .totals-box { 
+            width: 230px;
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 6px 10px;
+        }
+        .total-row { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 10.5px; 
+            color: #475569; 
+            margin-bottom: 2px; 
+        }
+        .total-grand { 
+            font-size: 13px; 
+            font-weight: 800; 
+            color: #017c36; 
+            padding-top: 4px; 
+            border-top: 1px dashed #017c36; 
+            margin-top: 3px; 
+        }
+
+        .guarantee-pills { 
+            display: flex; 
+            justify-content: space-around; 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 6px; 
+            padding: 5px 8px; 
+            margin-bottom: 8px; 
+            font-size: 10px; 
+            font-weight: 600; 
+            color: #334155; 
+        }
+        .receipt-footer { 
+            text-align: center; 
+            border-top: 1px solid #e2e8f0; 
+            padding-top: 6px; 
+            color: #64748b; 
+            font-size: 9.5px; 
+            line-height: 1.3; 
+        }
     </style>
 </head>
 <body>
     <div class="receipt-box">
         <div class="receipt-header">
-            <div class="store-brand">${siteName}</div>
-            <p class="store-meta">${siteAddress} • Phone: ${sitePhone}</p>
-            <p class="store-meta">${vatNumber} • Date: ${b.dateFormatted}</p>
-        </div>
-
-        <div class="status-check">✓</div>
-        <h2 class="confirmed-title">🎉 Repair Booking Confirmed!</h2>
-        <p class="confirmed-subtitle">Thank you! Your repair request has been registered. A technician has been assigned.</p>
-
-        <div class="tracking-card">
-            <div class="tracking-label">YOUR TRACKING ID</div>
-            <div class="tracking-val">${b.bookingId}</div>
-        </div>
-
-        <div class="details-card">
-            <p><strong>Customer:</strong> ${b.name}</p>
-            <p><strong>Phone:</strong> ${b.phone}</p>
-            ${b.email ? `<p><strong>Email:</strong> ${b.email}</p>` : ''}
-            <p><strong>Device:</strong> ${b.brand} - ${b.model}</p>
-            ${b.imei ? `<p><strong>IMEI/SN:</strong> ${b.imei}</p>` : ''}
-            <p><strong>Service:</strong> ${b.serviceType} ${b.serviceDate ? `(${b.serviceDate} ${b.serviceTime})` : ''}</p>
-            ${b.address ? `<p><strong>Address:</strong> ${b.address}</p>` : ''}
-            <p><strong>Repairs:</strong> ${repairsList}</p>
-            <p><strong>Total Cost:</strong> <span style="font-weight: 800; color: #017c36;">${b.formattedTotal} (VAT incl.)</span></p>
-
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Service Details</th>
-                            <th style="text-align: right;">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${repairsRowsHtml}
-                    </tbody>
-                </table>
+            <div>
+                <div class="store-brand">${siteName}</div>
+                <p class="store-meta">${siteAddress} • Tel: ${sitePhone}</p>
             </div>
+            <div class="header-right">
+                <p class="store-meta"><strong>Date:</strong> ${b.dateFormatted}</p>
+                <p class="store-meta">${vatNumber}</p>
+            </div>
+        </div>
 
+        <div class="status-banner">
+            <div class="status-left">
+                <span class="status-check">✓</span>
+                <div>
+                    <div class="confirmed-title">Repair Booking Confirmed</div>
+                    <div class="confirmed-subtitle">Technician assigned & repair slot reserved</div>
+                </div>
+            </div>
+            <div class="tracking-card">
+                <span class="tracking-label">TRACKING ID</span>
+                <span class="tracking-val">${b.bookingId}</span>
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-row"><span class="detail-lbl">Customer:</span><span class="detail-val">${b.name}</span></div>
+            <div class="detail-row"><span class="detail-lbl">Device:</span><span class="detail-val">${b.brand} - ${b.model}</span></div>
+            <div class="detail-row"><span class="detail-lbl">Phone:</span><span class="detail-val">${b.phone}</span></div>
+            <div class="detail-row"><span class="detail-lbl">Service:</span><span class="detail-val">${b.serviceType}</span></div>
+            ${b.email ? `<div class="detail-row"><span class="detail-lbl">Email:</span><span class="detail-val">${b.email}</span></div>` : ''}
+            ${b.serviceDate ? `<div class="detail-row"><span class="detail-lbl">Slot:</span><span class="detail-val">${b.serviceDate} ${b.serviceTime}</span></div>` : ''}
+            ${b.imei ? `<div class="detail-row"><span class="detail-lbl">IMEI/SN:</span><span class="detail-val">${b.imei}</span></div>` : ''}
+            ${b.address ? `<div class="detail-row" style="grid-column: 1 / -1;"><span class="detail-lbl">Address:</span><span class="detail-val">${b.address}</span></div>` : ''}
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Repair Service / Item</th>
+                        <th style="text-align: center; width: 110px;">Est. Time</th>
+                        <th style="text-align: right; width: 110px;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${repairsRowsHtml}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="totals-section">
             <div class="totals-box">
                 <div class="total-row"><span>Subtotal:</span><span>${b.formattedSubtotal}</span></div>
                 <div class="total-row"><span>VAT (5%):</span><span>${b.formattedVat}</span></div>
@@ -820,11 +1030,12 @@
             <span>🛡️ Up to 12M Warranty</span>
             <span>⚡ No Fix, No Fee</span>
             <span>🔒 100% Data Safe</span>
+            <span>⭐ Genuine Quality Parts</span>
         </div>
 
         <div class="receipt-footer">
-            <p style="margin: 3px 0;"><strong>Thank you for choosing ${siteName}!</strong></p>
-            <p style="margin: 3px 0;">Please keep this receipt or your tracking ID <strong>#${b.bookingId}</strong> for device collection.</p>
+            <p style="margin: 2px 0;"><strong>Thank you for trusting ${siteName}!</strong></p>
+            <p style="margin: 2px 0;">Keep this receipt or your tracking ID <strong>#${b.bookingId}</strong> for device handover and collection.</p>
         </div>
     </div>
 </body>
@@ -855,7 +1066,6 @@
                     printIframe.contentWindow.focus();
                     printIframe.contentWindow.print();
                 } catch(e) {
-                    // Fallback to window.open if iframe print is blocked
                     const win = window.open('', '_blank');
                     win.document.write(receiptHtml);
                     win.document.close();
@@ -864,7 +1074,6 @@
                 }
             }, 300);
         } catch(err) {
-            // Popup window fallback
             const win = window.open('', '_blank');
             win.document.write(receiptHtml);
             win.document.close();
@@ -874,3 +1083,4 @@
     };
 
 })(jQuery);
+

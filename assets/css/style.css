@@ -1286,6 +1286,16 @@
    Comprehensive @media print: Hide Website Menus, Headers & Footers
    ========================================================================== */
 @media print {
+    @page {
+        size: A4 portrait;
+        margin: 8mm 10mm;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
     /* Hide all website theme elements outside the booking confirmation */
     header,
     nav,
@@ -1339,7 +1349,9 @@
 
     #efix-repair-form-wrapper .rbf-step-success {
         display: block !important;
-        padding: 15px 0 !important;
+        padding: 5px 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
     }
 
     #efix-repair-form-wrapper .rbf-booking-id-card {

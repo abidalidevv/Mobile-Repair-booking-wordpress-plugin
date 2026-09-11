@@ -239,3 +239,10 @@ Raw `window.print()` triggers the browser to capture the host WordPress theme he
 2. When the user clicks **🧾 Print Invoice / Receipt**, `window.rbfPrintReceipt()` renders a self-contained, print-styled HTML document into a hidden iframe (`#rbf-receipt-print-iframe`).
 3. The print command is dispatched directly on the isolated iframe document (`printIframe.contentWindow.print()`), ensuring **0% website chrome, 0% menu bars, and 0% theme footers** in the print dialog.
 4. Supplemented by scoped `@media print` CSS rules in `style.css` which suppress all external theme containers (`header`, `nav`, `footer`, `.main-navigation`, `#wpadminbar`).
+
+### 11.4 Strict Single-Page Printing Architecture (v2.0.4)
+To ensure printouts and PDF exports never awkwardly split across 2 sheets of paper (such as pushing the Total Amount or terms to page 2):
+1. **Vertical Footprint Optimization**: The layout consumes under 460px of vertical space, well within standard A4 (~1060px at 96 DPI) and Letter (~990px) printable boundaries.
+2. **2-Column Details Grid**: Customer and device metadata are laid out in a compact CSS grid (`grid-template-columns: 1fr 1fr; gap: 4px 14px;`), saving ~130px of vertical height compared to vertical stacks.
+3. **Horizontal Status Banner**: Company branding is positioned opposite date/VAT info, and the verified checkmark is combined with the Tracking ID badge in a sleek horizontal banner.
+4. **CSS Break Restrictions**: `@page { size: A4 portrait; margin: 8mm 10mm; }` combined with `page-break-inside: avoid !important; break-inside: avoid !important;` prevents browser print engines from fracturing the receipt card.

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.4] - 2026-09-11
+
+### 🧾 **Single-Page Receipt Print Layout Optimization**
+
+#### 📄 **Print Formatting & Zero-Spillover Architecture**
+- **Strict 1-Page Layout**: Redesigned customer confirmation receipt (`window.rbfPrintReceipt()`) and admin invoice template (`get_invoice_html()`) so that the entire receipt prints cleanly and completely on **exactly 1 sheet of paper** (A4 or US Letter) with zero overflow onto page 2.
+- **2-Column Compact Details Grid**: Replaced the 9-row vertical stack of customer, device, and service info with a space-efficient 2-column grid (`display: grid; grid-template-columns: 1fr 1fr;`), cutting vertical height by over 130px.
+- **Unified Header & Status Banner**: Formatted company information horizontally opposite date/VAT metadata, and merged the confirmed checkmark with the Tracking ID badge into a compact banner, saving over 200px of whitespace.
+- **Print Engine Safeguards**: Added `@page { size: A4 portrait; margin: 8mm 10mm; }` and `page-break-inside: avoid !important; break-inside: avoid !important;` on all print wrappers.
+- **Asset Version Bump**: Enqueued scripts and styles bumped to version `2.0.4` for immediate browser cache busting.
+
+---
+
 ## [2.0.3] - 2026-09-10
 
 ### 🚀 **Frontend Grid, Dropdown UI & Isolated Receipt Printing Release**
